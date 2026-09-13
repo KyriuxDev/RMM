@@ -1,0 +1,31 @@
+// datascan.rc — Recursos embebidos en el .exe
+1 ICON "icono.ico"
+
+1 VERSIONINFO
+FILEVERSION     1,0,0,0
+PRODUCTVERSION  1,0,0,0
+FILEFLAGSMASK   0x3fL
+FILEFLAGS       0x0L
+FILEOS          0x40004L
+FILETYPE        0x1L
+FILESUBTYPE     0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080A04b0"
+        BEGIN
+            VALUE "CompanyName",      "IMSS Oaxaca"
+            VALUE "FileDescription",  "DataScan - Agente de inventario"
+            VALUE "FileVersion",      "1.0.0.0"
+            VALUE "InternalName",     "datascan"
+            VALUE "LegalCopyright",   "IMSS Oaxaca"
+            VALUE "OriginalFilename", "DataScan.exe"
+            VALUE "ProductName",      "DataScan"
+            VALUE "ProductVersion",   "1.0.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x080A, 1200
+    END
+END

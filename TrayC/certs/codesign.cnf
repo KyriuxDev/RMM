@@ -1,0 +1,18 @@
+[req]
+default_bits       = 4096
+prompt             = no
+default_md         = sha256
+distinguished_name = dn
+x509_extensions    = v3_codesign
+
+[dn]
+CN = Sistemas IMSS Sur Oaxaca
+O  = Instituto Mexicano del Seguro Social
+OU = Delegacion Oaxaca
+C  = MX
+
+[v3_codesign]
+basicConstraints       = critical, CA:FALSE
+keyUsage                = critical, digitalSignature
+extendedKeyUsage        = critical, codeSigning
+subjectKeyIdentifier    = hash
