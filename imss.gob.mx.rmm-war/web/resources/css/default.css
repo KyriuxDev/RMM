@@ -1,0 +1,30 @@
+/* Estilos base - RMM IMSS */
+:root {
+    --fondo: #E8ECEF;
+    --blanco: #FFFFFF;
+    --rojo: #C80000;
+    --azul: #0074B7;
+    --azul-hover: #00609A;
+    --texto: #1A2433;
+    --texto-sec: #4A5565;
+    --borde-input: #8A9BB5;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 14px;
+    color: var(--texto);
+    background-color: var(--fondo);
+}
+
+.logo-rmm {
+    display: inline-block;
+    background-color: var(--rojo);
+    color: var(--blanco);
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-align: center;
+}

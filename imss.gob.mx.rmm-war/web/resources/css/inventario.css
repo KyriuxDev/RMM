@@ -1,0 +1,15 @@
+/* Vista: inventario */
+.grafica-contenedor {
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F6F8FA;
+    border: 1px dashed #CBD3DB;
+}
+
+.grafica-contenedor img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}

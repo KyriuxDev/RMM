@@ -1,0 +1,16 @@
+/* Vista: tablero */
+.t-mapa {
+    width: fit-content;
+    max-width: 100%;
+}
+
+.mapa-contenedor {
+    background-color: #EEF2F5;
+    border: 1px solid #E1E6EB;
+}
+
+.mapa-contenedor img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}

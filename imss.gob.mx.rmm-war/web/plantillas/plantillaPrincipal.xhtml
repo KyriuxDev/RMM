@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Plantilla principal: sidebar + encabezado + contenido + pie.
+    Las piezas fijas están en archivos aparte y se incluyen con ui:include.
+
+    Uso en una vista:
+        <ui:composition template="/plantillas/plantillaPrincipal.xhtml">
+            <ui:param name="seccion" value="Tableros"/>
+            <ui:param name="titulo"  value="Título de la página"/>
+            <ui:define name="acciones"> botones del encabezado (opcional) </ui:define>
+            <ui:define name="content">  contenido </ui:define>
+        </ui:composition>
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" />
+        <h:outputStylesheet library="primefaces" name="primeicons/primeicons.css"/>
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="principal.css"/>
+        <ui:insert name="estilos"/>
+        <title>#{titulo} | RMM IMSS</title>
+    </h:head>
+
+    <h:body>
+        <div class="app" id="app">
+            <ui:include src="/plantillas/sidebar.xhtml"/>
+
+            <div class="app-main">
+                <ui:include src="/plantillas/encabezado.xhtml"/>
+
+                <main class="app-contenido">
+                    <ui:insert name="content">Contenido</ui:insert>
+                </main>
+
+                <ui:include src="/plantillas/pie.xhtml"/>
+            </div>
+        </div>
+        <h:outputScript library="js" name="rmm.js"/>
+    </h:body>
+
+</html>
