@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<!--
+    Menú lateral con p:panelMenu (se incluye en plantillaPrincipal.xhtml).
+
+    - Clic en una sección: muestra u oculta sus subsecciones (lo hace PrimeFaces en el navegador).
+    - La sección de la vista actual aparece abierta y resaltada (parámetros "seccion" y "subseccion").
+    - multiple="false": solo una sección abierta a la vez.
+    - stateful="false": no recuerda lo que se abrió en la página anterior; siempre abre la sección actual.
+
+    Las subsecciones cuya vista todavía no existe usan url="#". Cuando creen la vista,
+    cambien url="#" por outcome="/vista/...". (Un outcome hacia una vista que no existe
+    muestra el aviso "Este vínculo está desactivado...")
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="primefaces">
+
+    <aside class="sidebar">
+        <div class="sidebar-top">
+            <h:link outcome="/vista/tableros/vista-general" styleClass="logo-rmm" value="RMM"/>
+        </div>
+
+        <p:panelMenu styleClass="menu" multiple="false" stateful="false">
+            <!-- Tableros -->
+            <p:submenu label="Tableros" icon="pi pi-objects-column" expanded="#{seccion eq 'tableros'}"
+                       styleClass="seccion-tableros #{seccion eq 'tableros' ? 'activa' : ''}">
+                <p:menuitem value="Vista general" outcome="/vista/tableros/vista-general"
+                            styleClass="#{subseccion eq 'vista-general' ? 'activo' : ''}"/>
+                <p:menuitem value="Indicadores por unidad" url="#"
+                            styleClass="#{subseccion eq 'indicadores-unidad' ? 'activo' : ''}"/>
+            </p:submenu>
+
+            <!-- Monitoreo -->
+            <p:submenu label="Monitoreo" icon="pi pi-wave-pulse" expanded="#{seccion eq 'monitoreo'}"
+                       styleClass="seccion-monitoreo #{seccion eq 'monitoreo' ? 'activa' : ''}">
+                <p:menuitem value="Estado y rendimiento" url="#"
+                            styleClass="#{subseccion eq 'estado-rendimiento' ? 'activo' : ''}"/>
+            </p:submenu>
+
+            <!-- Alertas -->
+            <p:submenu label="Alertas" icon="pi pi-bell" expanded="#{seccion eq 'alertas'}"
+                       styleClass="seccion-alertas #{seccion eq 'alertas' ? 'activa' : ''}">
+                <p:menuitem value="Alertas activas" url="#"
+                            styleClass="#{subseccion eq 'alertas-activas' ? 'activo' : ''}"/>
+                <p:menuitem value="Umbrales" url="#"
+                            styleClass="#{subseccion eq 'umbrales' ? 'activo' : ''}"/>
+                <p:menuitem value="Notificaciones" url="#"
+                            styleClass="#{subseccion eq 'notificaciones' ? 'activo' : ''}"/>
+            </p:submenu>
+
+            <!-- Incidencias -->
+            <p:submenu label="Incidencias" icon="pi pi-file" expanded="#{seccion eq 'incidencias'}"
+                       styleClass="seccion-incidencias #{seccion eq 'incidencias' ? 'activa' : ''}">
+                <p:menuitem value="Lista de incidencias" url="#"
+                            styleClass="#{subseccion eq 'lista-incidencias' ? 'activo' : ''}"/>
+                <p:menuitem value="Mi actividad" url="#"
+                            styleClass="#{subseccion eq 'mi-actividad' ? 'activo' : ''}"/>
+                <p:menuitem value="Historial por equipo" url="#"
+                            styleClass="#{subseccion eq 'historial-equipo' ? 'activo' : ''}"/>
+            </p:submenu>
+
+            <!-- Inventario -->
+            <p:submenu label="Inventario" icon="pi pi-desktop" expanded="#{seccion eq 'inventario'}"
+                       styleClass="seccion-inventario #{seccion eq 'inventario' ? 'activa' : ''}">
+                <p:menuitem value="Equipos" url="#"
+                            styleClass="#{subseccion eq 'equipos' ? 'activo' : ''}"/>
+                <p:menuitem value="Software no autorizado" url="#"
+                            styleClass="#{subseccion eq 'software-no-autorizado' ? 'activo' : ''}"/>
+                <p:menuitem value="Agentes" url="#"
+                            styleClass="#{subseccion eq 'agentes' ? 'activo' : ''}"/>
+            </p:submenu>
+
+            <!-- Reportes -->
+            <p:submenu label="Reportes" icon="pi pi-chart-bar" expanded="#{seccion eq 'reportes'}"
+                       styleClass="seccion-reportes #{seccion eq 'reportes' ? 'activa' : ''}">
+                <p:menuitem value="Disponibilidad, SLA e incidencias" url="#"
+                            styleClass="#{subseccion eq 'disponibilidad-sla' ? 'activo' : ''}"/>
+            </p:submenu>
+
+            <!-- Administración -->
+            <p:submenu label="Administración" icon="pi pi-cog" expanded="#{seccion eq 'administracion'}"
+                       styleClass="seccion-administracion #{seccion eq 'administracion' ? 'activa' : ''}">
+                <p:menuitem value="Usuarios" url="#"
+                            styleClass="#{subseccion eq 'usuarios' ? 'activo' : ''}"/>
+                <p:menuitem value="Roles y permisos" url="#"
+                            styleClass="#{subseccion eq 'roles-permisos' ? 'activo' : ''}"/>
+                <p:menuitem value="Unidades" url="#"
+                            styleClass="#{subseccion eq 'unidades' ? 'activo' : ''}"/>
+                <p:menuitem value="Metas SLA" url="#"
+                            styleClass="#{subseccion eq 'metas-sla' ? 'activo' : ''}"/>
+                <p:menuitem value="Correo y conectores" url="#"
+                            styleClass="#{subseccion eq 'correo-conectores' ? 'activo' : ''}"/>
+            </p:submenu>
+        </p:panelMenu>
+
+        <!-- Al dar clic en una subsección, el resaltado (clase "activo") pasa a esa subsección.
+             Si la subsección tiene vista, la página nueva la vuelve a marcar con el parámetro "subseccion". -->
+        <script type="text/javascript">
+            $(document).on('click', '.sidebar .ui-panelmenu .ui-menuitem-link', function () {
+                $('.sidebar .ui-panelmenu .ui-menuitem-link.activo').removeClass('activo');
+                $(this).addClass('activo');
+            });
+        </script>
+
+        <ui:include src="/plantillas/partes/pie.xhtml"/>
+    </aside>
+
+</ui:composition>

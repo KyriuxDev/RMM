@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<!-- Encabezado superior (se incluye en plantillaPrincipal.xhtml) -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="primefaces">
+
+    <header class="encabezado">
+        <div class="encabezado-titulo">
+            <div class="migas">
+                <h:link outcome="#{migaEnlace}" value="#{migaSeccion}" rendered="#{not empty migaEnlace}"/>
+                <h:outputText value="#{migaSeccion}" rendered="#{empty migaEnlace}"/>
+                <ui:fragment rendered="#{not empty migaPagina}">
+                    <span class="separador">/</span>
+                    <span>#{migaPagina}</span>
+                </ui:fragment>
+            </div>
+            <h1>
+                #{titulo}
+                <h:outputText value="#{etiqueta}" styleClass="pastilla" rendered="#{not empty etiqueta}"/>
+            </h1>
+        </div>
+
+        <h:form id="formBuscar" styleClass="encabezado-buscar" prependId="false">
+            <i class="pi pi-search"></i>
+            <p:inputText id="buscarEquipo" placeholder="Buscar equipo por hostname o IP" autocomplete="off"/>
+        </h:form>
+
+        <a href="#" class="campana" title="Alertas activas">
+            <i class="pi pi-bell"></i>
+        </a>
+    </header>
+
+</ui:composition>

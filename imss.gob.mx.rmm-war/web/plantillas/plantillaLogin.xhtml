@@ -7,10 +7,10 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" />
-        <h:outputStylesheet library="css" name="default.css"/>
-        <h:outputStylesheet library="css" name="login.css"/>
-        <title><ui:insert name="titulo">Acceso</ui:insert>RMM IMSS</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" />
+        <h:outputStylesheet library="css" name="comun/default.css"/>
+        <h:outputStylesheet library="css" name="plantillas/login.css"/>
+        <title><ui:insert name="titulo">Acceso</ui:insert> | RMM IMSS</title>
     </h:head>
 
     <h:body>
@@ -18,8 +18,14 @@
             <div class="login-tarjeta">
                 <div class="login-logo">
                     <span class="logo-rmm">RMM</span>
+                    <p class="login-subtitulo">Monitoreo y administración remota de equipos</p>
                 </div>
+
                 <ui:insert name="content">Formulario de acceso</ui:insert>
+
+                <p class="login-nota">
+                    Acceso solo para personal autorizado. La sesión se cierra tras 30 min sin actividad.
+                </p>
             </div>
         </div>
     </h:body>

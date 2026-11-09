@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/plantillas/plantillaLogin.xhtml">
+
+    <ui:define name="titulo">Iniciar sesión</ui:define>
+
+    <ui:define name="content">
+        <h:form id="formLogin" prependId="false">
+            <p:messages id="mensajes" showSummary="true" showDetail="false"/>
+
+            <!-- Usuario: matrícula (6 a 10 dígitos) o correo que termine en @imss.gob.mx -->
+            <div class="campo">
+                <p:outputLabel for="identificador" value="Usuario"/>
+                <p:inputText id="identificador"
+                             placeholder="Matrícula o correo institucional"
+                             autocomplete="username" maxlength="80"
+                             required="true" requiredMessage="Escribe tu matrícula o tu correo institucional."
+                             validatorMessage="Escribe tu matrícula (solo números) o tu correo institucional (@imss.gob.mx).">
+                    <f:validateRegex pattern="(?i)^\s*(\d{6,10}|[a-z0-9._%+-]+@imss\.gob\.mx)\s*$"/>
+                </p:inputText>
+            </div>
+
+            <div class="campo">
+                <p:outputLabel for="contrasena" value="Contraseña"/>
+                <p:password id="contrasena" feedback="false" autocomplete="current-password"
+                            required="true" requiredMessage="Escribe tu contraseña."/>
+            </div>
+
+            <!-- Por ahora solo valida el formato y entra al tablero (sin autenticar). -->
+            <p:commandButton value="Iniciar sesión" styleClass="boton-primario"
+                             action="/vista/tableros/vista-general?faces-redirect=true"
+                             process="@form" update="@form"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,16 +1,35 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-    Plantilla principal: sidebar + encabezado + contenido + pie.
-    Las piezas fijas están en archivos aparte y se incluyen con ui:include.
+    Plantilla principal: menú lateral (con su pie) + encabezado + contenido.
 
     Uso en una vista:
         <ui:composition template="/plantillas/plantillaPrincipal.xhtml">
-            <ui:param name="seccion" value="Tableros"/>
-            <ui:param name="titulo"  value="Título de la página"/>
-            <ui:define name="acciones"> botones del encabezado (opcional) </ui:define>
-            <ui:define name="content">  contenido </ui:define>
+            <ui:param name="seccion"     value="tableros"/>        sección activa del menú
+            <ui:param name="subseccion"  value="vista-general"/>   subsección activa del menú
+            <ui:param name="migaSeccion" value="Tableros"/>        migas: texto de la sección
+            <ui:param name="migaEnlace"  value="/vista/tableros/vista-general"/>  (opcional) a dónde lleva la sección
+            <ui:param name="migaPagina"  value="Vista general"/>   migas: página actual
+            <ui:param name="titulo"      value="Vista general"/>   título grande
+            <ui:param name="etiqueta"    value="1,248 equipos"/>   (opcional) pastilla junto al título
+            <ui:define name="estilos"> hojas de estilo de la vista (opcional) </ui:define>
+            <ui:define name="content"> contenido </ui:define>
         </ui:composition>
+
+    Ids de "seccion" / "subseccion": ver plantillas/partes/sidebar.xhtml.
+
+    Organización de carpetas (web/):
+        plantillas/                 plantillas de página (principal y login)
+        plantillas/partes/          piezas que usan: encabezado, menú lateral (sidebar) y pie
+        vista/<seccion>/            una carpeta por sección del menú:
+                                    acceso, tableros, monitoreo, alertas, incidencias,
+                                    inventario, reportes, administracion
+        resources/css/comun/        estilos base de todo el sitio
+        resources/css/plantillas/   estilos de las plantillas
+        resources/css/<seccion>/    estilos de cada vista, con el mismo nombre que la vista
+                                    (p. ej. vista/tableros/vista-general.xhtml
+                                         -> css/tableros/vista-general.css)
+        resources/img/              imágenes
 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="jakarta.faces.facelets"
@@ -21,27 +40,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" />
         <h:outputStylesheet library="primefaces" name="primeicons/primeicons.css"/>
-        <h:outputStylesheet library="css" name="default.css"/>
-        <h:outputStylesheet library="css" name="principal.css"/>
+        <h:outputStylesheet library="css" name="comun/default.css"/>
+        <h:outputStylesheet library="css" name="plantillas/principal.css"/>
         <ui:insert name="estilos"/>
         <title>#{titulo} | RMM IMSS</title>
     </h:head>
 
     <h:body>
-        <div class="app" id="app">
-            <ui:include src="/plantillas/sidebar.xhtml"/>
+        <div class="app">
+            <ui:include src="/plantillas/partes/sidebar.xhtml"/>
 
             <div class="app-main">
-                <ui:include src="/plantillas/encabezado.xhtml"/>
+                <ui:include src="/plantillas/partes/encabezado.xhtml"/>
 
                 <main class="app-contenido">
                     <ui:insert name="content">Contenido</ui:insert>
                 </main>
-
-                <ui:include src="/plantillas/pie.xhtml"/>
             </div>
         </div>
-        <h:outputScript library="js" name="rmm.js"/>
     </h:body>
 
 </html>

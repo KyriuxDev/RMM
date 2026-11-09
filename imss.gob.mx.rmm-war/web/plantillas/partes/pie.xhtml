@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<!-- Pie del menú lateral: usuario y "Cerrar sesión" (se incluye en sidebar.xhtml).
+     Por ahora los datos del usuario son fijos. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html">
+
+    <div class="sidebar-pie">
+        <div class="usuario">
+            <span class="avatar">AM</span>
+            <div class="usuario-datos">
+                <div class="usuario-nombre">Alexander Martínez</div>
+                <div class="usuario-puesto">Auxiliar de Soporte Técnico</div>
+            </div>
+        </div>
+
+        <h:link outcome="/vista/acceso/login" styleClass="cerrar-sesion">
+            <i class="pi pi-sign-out"></i> Cerrar sesión
+        </h:link>
+    </div>
+
+</ui:composition>
