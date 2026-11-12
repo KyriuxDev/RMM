@@ -82,7 +82,7 @@
             <!-- Administración -->
             <p:submenu label="Administración" icon="pi pi-cog" expanded="#{seccion eq 'administracion'}"
                        styleClass="seccion-administracion #{seccion eq 'administracion' ? 'activa' : ''}">
-                <p:menuitem value="Usuarios" url="#"
+                <p:menuitem value="Usuarios" outcome="/vista/administracion/usuarios.xhtml"
                             styleClass="#{subseccion eq 'usuarios' ? 'activo' : ''}"/>
                 <p:menuitem value="Roles y permisos" url="#"
                             styleClass="#{subseccion eq 'roles-permisos' ? 'activo' : ''}"/>

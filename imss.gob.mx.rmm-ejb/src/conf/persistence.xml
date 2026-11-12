@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.2"
+             xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd">
+
+    <persistence-unit name="rmmPU" transaction-type="JTA">
+        <!-- Recurso JDBC creado en GlassFish (JDBC Resources) -->
+        <jta-data-source>jdbc/rmm</jta-data-source>
+
+        <!-- Toma automáticamente todas las clases @Entity del módulo EJB -->
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+        <properties>
+            <!--
+              Generación de tablas a partir de las entidades:
+                none   = no toca la BD (usar si las tablas ya existen)
+                create = crea las tablas que falten al desplegar
+            -->
+            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+
+            <!-- Muestra en el log de GlassFish el SQL que ejecuta EclipseLink -->
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>

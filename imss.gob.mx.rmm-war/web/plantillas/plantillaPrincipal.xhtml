@@ -1,36 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!--
-    Plantilla principal: menú lateral (con su pie) + encabezado + contenido.
 
-    Uso en una vista:
-        <ui:composition template="/plantillas/plantillaPrincipal.xhtml">
-            <ui:param name="seccion"     value="tableros"/>        sección activa del menú
-            <ui:param name="subseccion"  value="vista-general"/>   subsección activa del menú
-            <ui:param name="migaSeccion" value="Tableros"/>        migas: texto de la sección
-            <ui:param name="migaEnlace"  value="/vista/tableros/vista-general"/>  (opcional) a dónde lleva la sección
-            <ui:param name="migaPagina"  value="Vista general"/>   migas: página actual
-            <ui:param name="titulo"      value="Vista general"/>   título grande
-            <ui:param name="etiqueta"    value="1,248 equipos"/>   (opcional) pastilla junto al título
-            <ui:define name="estilos"> hojas de estilo de la vista (opcional) </ui:define>
-            <ui:define name="content"> contenido </ui:define>
-        </ui:composition>
-
-    Ids de "seccion" / "subseccion": ver plantillas/partes/sidebar.xhtml.
-
-    Organización de carpetas (web/):
-        plantillas/                 plantillas de página (principal y login)
-        plantillas/partes/          piezas que usan: encabezado, menú lateral (sidebar) y pie
-        vista/<seccion>/            una carpeta por sección del menú:
-                                    acceso, tableros, monitoreo, alertas, incidencias,
-                                    inventario, reportes, administracion
-        resources/css/comun/        estilos base de todo el sitio
-        resources/css/plantillas/   estilos de las plantillas
-        resources/css/<seccion>/    estilos de cada vista, con el mismo nombre que la vista
-                                    (p. ej. vista/tableros/vista-general.xhtml
-                                         -> css/tableros/vista-general.css)
-        resources/img/              imágenes
--->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="jakarta.faces.facelets"
       xmlns:h="jakarta.faces.html">
@@ -38,6 +8,7 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/svg+xml" href="#{resource['img:favicon.svg']}" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" />
         <h:outputStylesheet library="primefaces" name="primeicons/primeicons.css"/>
         <h:outputStylesheet library="css" name="comun/default.css"/>
