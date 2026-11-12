@@ -32,11 +32,11 @@ import java.util.List;
  * @author kyriux
  */
 @Entity
-@Table(name = "Alerta")
+@Table(name = "alerta")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Alerta.findAll", query = "SELECT a FROM Alerta a"),
-    @NamedQuery(name = "Alerta.findById", query = "SELECT a FROM Alerta a WHERE a.id = :id"),
+    @NamedQuery(name = "Alerta.findByIdAlerta", query = "SELECT a FROM Alerta a WHERE a.idAlerta = :idAlerta"),
     @NamedQuery(name = "Alerta.findByTipoAlerta", query = "SELECT a FROM Alerta a WHERE a.tipoAlerta = :tipoAlerta"),
     @NamedQuery(name = "Alerta.findByNivelGravedad", query = "SELECT a FROM Alerta a WHERE a.nivelGravedad = :nivelGravedad"),
     @NamedQuery(name = "Alerta.findByDescripcion", query = "SELECT a FROM Alerta a WHERE a.descripcion = :descripcion"),
@@ -48,60 +48,60 @@ public class Alerta implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_alerta")
+    private Integer idAlerta;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "TipoAlerta")
+    @Column(name = "tipo_alerta")
     private String tipoAlerta;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "NivelGravedad")
+    @Column(name = "nivel_gravedad")
     private String nivelGravedad;
     @Size(max = 255)
-    @Column(name = "Descripcion")
+    @Column(name = "descripcion")
     private String descripcion;
-    @Column(name = "FechaGeneracion")
+    @Column(name = "fecha_generacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaGeneracion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Estado")
+    @Column(name = "estado")
     private String estado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "alertaID")
-    private List<Notificacion> notificacionList;
-    @JoinColumn(name = "EquipoID", referencedColumnName = "ID")
+    @JoinColumn(name = "id_equipo", referencedColumnName = "id_equipo")
     @ManyToOne(optional = false)
-    private Equipo equipoID;
-    @JoinColumn(name = "UmbralAlertaID", referencedColumnName = "ID")
+    private Equipo idEquipo;
+    @JoinColumn(name = "id_umbral_alerta", referencedColumnName = "id_umbral_alerta")
     @ManyToOne(optional = false)
-    private UmbralAlerta umbralAlertaID;
-    @OneToMany(mappedBy = "alertaID")
+    private UmbralAlerta idUmbralAlerta;
+    @OneToMany(mappedBy = "idAlerta")
     private List<Incidencia> incidenciaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAlerta")
+    private List<Notificacion> notificacionList;
 
     public Alerta() {
     }
 
-    public Alerta(Integer id) {
-        this.id = id;
+    public Alerta(Integer idAlerta) {
+        this.idAlerta = idAlerta;
     }
 
-    public Alerta(Integer id, String tipoAlerta, String nivelGravedad, String estado) {
-        this.id = id;
+    public Alerta(Integer idAlerta, String tipoAlerta, String nivelGravedad, String estado) {
+        this.idAlerta = idAlerta;
         this.tipoAlerta = tipoAlerta;
         this.nivelGravedad = nivelGravedad;
         this.estado = estado;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdAlerta() {
+        return idAlerta;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdAlerta(Integer idAlerta) {
+        this.idAlerta = idAlerta;
     }
 
     public String getTipoAlerta() {
@@ -144,29 +144,20 @@ public class Alerta implements Serializable {
         this.estado = estado;
     }
 
-    @XmlTransient
-    public List<Notificacion> getNotificacionList() {
-        return notificacionList;
+    public Equipo getIdEquipo() {
+        return idEquipo;
     }
 
-    public void setNotificacionList(List<Notificacion> notificacionList) {
-        this.notificacionList = notificacionList;
+    public void setIdEquipo(Equipo idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
-    public Equipo getEquipoID() {
-        return equipoID;
+    public UmbralAlerta getIdUmbralAlerta() {
+        return idUmbralAlerta;
     }
 
-    public void setEquipoID(Equipo equipoID) {
-        this.equipoID = equipoID;
-    }
-
-    public UmbralAlerta getUmbralAlertaID() {
-        return umbralAlertaID;
-    }
-
-    public void setUmbralAlertaID(UmbralAlerta umbralAlertaID) {
-        this.umbralAlertaID = umbralAlertaID;
+    public void setIdUmbralAlerta(UmbralAlerta idUmbralAlerta) {
+        this.idUmbralAlerta = idUmbralAlerta;
     }
 
     @XmlTransient
@@ -178,10 +169,19 @@ public class Alerta implements Serializable {
         this.incidenciaList = incidenciaList;
     }
 
+    @XmlTransient
+    public List<Notificacion> getNotificacionList() {
+        return notificacionList;
+    }
+
+    public void setNotificacionList(List<Notificacion> notificacionList) {
+        this.notificacionList = notificacionList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idAlerta != null ? idAlerta.hashCode() : 0);
         return hash;
     }
 
@@ -192,7 +192,7 @@ public class Alerta implements Serializable {
             return false;
         }
         Alerta other = (Alerta) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idAlerta == null && other.idAlerta != null) || (this.idAlerta != null && !this.idAlerta.equals(other.idAlerta))) {
             return false;
         }
         return true;
@@ -200,7 +200,7 @@ public class Alerta implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Alerta[ id=" + id + " ]";
+        return "modelo.Alerta[ idAlerta=" + idAlerta + " ]";
     }
     
 }

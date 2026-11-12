@@ -27,11 +27,11 @@ import java.util.Date;
  * @author kyriux
  */
 @Entity
-@Table(name = "SesionMonitoreo")
+@Table(name = "sesion_monitoreo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SesionMonitoreo.findAll", query = "SELECT s FROM SesionMonitoreo s"),
-    @NamedQuery(name = "SesionMonitoreo.findById", query = "SELECT s FROM SesionMonitoreo s WHERE s.id = :id"),
+    @NamedQuery(name = "SesionMonitoreo.findByIdSesionMonitoreo", query = "SELECT s FROM SesionMonitoreo s WHERE s.idSesionMonitoreo = :idSesionMonitoreo"),
     @NamedQuery(name = "SesionMonitoreo.findByInicioSesion", query = "SELECT s FROM SesionMonitoreo s WHERE s.inicioSesion = :inicioSesion"),
     @NamedQuery(name = "SesionMonitoreo.findByFinSesion", query = "SELECT s FROM SesionMonitoreo s WHERE s.finSesion = :finSesion"),
     @NamedQuery(name = "SesionMonitoreo.findByDesconexionAbrupta", query = "SELECT s FROM SesionMonitoreo s WHERE s.desconexionAbrupta = :desconexionAbrupta"),
@@ -42,36 +42,36 @@ public class SesionMonitoreo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
-    @Column(name = "InicioSesion")
+    @Column(name = "id_sesion_monitoreo")
+    private Integer idSesionMonitoreo;
+    @Column(name = "inicio_sesion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date inicioSesion;
-    @Column(name = "FinSesion")
+    @Column(name = "fin_sesion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date finSesion;
-    @Column(name = "DesconexionAbrupta")
+    @Column(name = "desconexion_abrupta")
     private Boolean desconexionAbrupta;
-    @Size(max = 255)
-    @Column(name = "IpOrigen")
+    @Size(max = 45)
+    @Column(name = "ip_origen")
     private String ipOrigen;
-    @JoinColumn(name = "EquipoID", referencedColumnName = "ID")
+    @JoinColumn(name = "id_equipo", referencedColumnName = "id_equipo")
     @ManyToOne(optional = false)
-    private Equipo equipoID;
+    private Equipo idEquipo;
 
     public SesionMonitoreo() {
     }
 
-    public SesionMonitoreo(Integer id) {
-        this.id = id;
+    public SesionMonitoreo(Integer idSesionMonitoreo) {
+        this.idSesionMonitoreo = idSesionMonitoreo;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdSesionMonitoreo() {
+        return idSesionMonitoreo;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdSesionMonitoreo(Integer idSesionMonitoreo) {
+        this.idSesionMonitoreo = idSesionMonitoreo;
     }
 
     public Date getInicioSesion() {
@@ -106,18 +106,18 @@ public class SesionMonitoreo implements Serializable {
         this.ipOrigen = ipOrigen;
     }
 
-    public Equipo getEquipoID() {
-        return equipoID;
+    public Equipo getIdEquipo() {
+        return idEquipo;
     }
 
-    public void setEquipoID(Equipo equipoID) {
-        this.equipoID = equipoID;
+    public void setIdEquipo(Equipo idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idSesionMonitoreo != null ? idSesionMonitoreo.hashCode() : 0);
         return hash;
     }
 
@@ -128,7 +128,7 @@ public class SesionMonitoreo implements Serializable {
             return false;
         }
         SesionMonitoreo other = (SesionMonitoreo) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idSesionMonitoreo == null && other.idSesionMonitoreo != null) || (this.idSesionMonitoreo != null && !this.idSesionMonitoreo.equals(other.idSesionMonitoreo))) {
             return false;
         }
         return true;
@@ -136,7 +136,7 @@ public class SesionMonitoreo implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.SesionMonitoreo[ id=" + id + " ]";
+        return "modelo.SesionMonitoreo[ idSesionMonitoreo=" + idSesionMonitoreo + " ]";
     }
     
 }

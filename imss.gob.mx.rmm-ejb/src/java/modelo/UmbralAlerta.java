@@ -27,11 +27,11 @@ import java.util.List;
  * @author kyriux
  */
 @Entity
-@Table(name = "UmbralAlerta")
+@Table(name = "umbral_alerta")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "UmbralAlerta.findAll", query = "SELECT u FROM UmbralAlerta u"),
-    @NamedQuery(name = "UmbralAlerta.findById", query = "SELECT u FROM UmbralAlerta u WHERE u.id = :id"),
+    @NamedQuery(name = "UmbralAlerta.findByIdUmbralAlerta", query = "SELECT u FROM UmbralAlerta u WHERE u.idUmbralAlerta = :idUmbralAlerta"),
     @NamedQuery(name = "UmbralAlerta.findByTipoRecurso", query = "SELECT u FROM UmbralAlerta u WHERE u.tipoRecurso = :tipoRecurso"),
     @NamedQuery(name = "UmbralAlerta.findByValorUmbral", query = "SELECT u FROM UmbralAlerta u WHERE u.valorUmbral = :valorUmbral"),
     @NamedQuery(name = "UmbralAlerta.findByAmbito", query = "SELECT u FROM UmbralAlerta u WHERE u.ambito = :ambito"),
@@ -43,50 +43,50 @@ public class UmbralAlerta implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_umbral_alerta")
+    private Integer idUmbralAlerta;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "TipoRecurso")
+    @Column(name = "tipo_recurso")
     private String tipoRecurso;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ValorUmbral")
+    @Column(name = "valor_umbral")
     private double valorUmbral;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Ambito")
+    @Column(name = "ambito")
     private String ambito;
     @Size(max = 255)
-    @Column(name = "ValorAmbito")
+    @Column(name = "valor_ambito")
     private String valorAmbito;
-    @Column(name = "Activo")
+    @Column(name = "activo")
     private Boolean activo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "umbralAlertaID")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUmbralAlerta")
     private List<Alerta> alertaList;
 
     public UmbralAlerta() {
     }
 
-    public UmbralAlerta(Integer id) {
-        this.id = id;
+    public UmbralAlerta(Integer idUmbralAlerta) {
+        this.idUmbralAlerta = idUmbralAlerta;
     }
 
-    public UmbralAlerta(Integer id, String tipoRecurso, double valorUmbral, String ambito) {
-        this.id = id;
+    public UmbralAlerta(Integer idUmbralAlerta, String tipoRecurso, double valorUmbral, String ambito) {
+        this.idUmbralAlerta = idUmbralAlerta;
         this.tipoRecurso = tipoRecurso;
         this.valorUmbral = valorUmbral;
         this.ambito = ambito;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdUmbralAlerta() {
+        return idUmbralAlerta;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdUmbralAlerta(Integer idUmbralAlerta) {
+        this.idUmbralAlerta = idUmbralAlerta;
     }
 
     public String getTipoRecurso() {
@@ -141,7 +141,7 @@ public class UmbralAlerta implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idUmbralAlerta != null ? idUmbralAlerta.hashCode() : 0);
         return hash;
     }
 
@@ -152,7 +152,7 @@ public class UmbralAlerta implements Serializable {
             return false;
         }
         UmbralAlerta other = (UmbralAlerta) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idUmbralAlerta == null && other.idUmbralAlerta != null) || (this.idUmbralAlerta != null && !this.idUmbralAlerta.equals(other.idUmbralAlerta))) {
             return false;
         }
         return true;
@@ -160,7 +160,7 @@ public class UmbralAlerta implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.UmbralAlerta[ id=" + id + " ]";
+        return "modelo.UmbralAlerta[ idUmbralAlerta=" + idUmbralAlerta + " ]";
     }
     
 }

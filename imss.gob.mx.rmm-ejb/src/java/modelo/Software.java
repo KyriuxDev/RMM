@@ -28,11 +28,11 @@ import java.util.Date;
  * @author kyriux
  */
 @Entity
-@Table(name = "Software")
+@Table(name = "software")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Software.findAll", query = "SELECT s FROM Software s"),
-    @NamedQuery(name = "Software.findById", query = "SELECT s FROM Software s WHERE s.id = :id"),
+    @NamedQuery(name = "Software.findByIdSoftware", query = "SELECT s FROM Software s WHERE s.idSoftware = :idSoftware"),
     @NamedQuery(name = "Software.findByNombre", query = "SELECT s FROM Software s WHERE s.nombre = :nombre"),
     @NamedQuery(name = "Software.findByVersion", query = "SELECT s FROM Software s WHERE s.version = :version"),
     @NamedQuery(name = "Software.findByFabricante", query = "SELECT s FROM Software s WHERE s.fabricante = :fabricante"),
@@ -45,48 +45,48 @@ public class Software implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_software")
+    private Integer idSoftware;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Nombre")
+    @Column(name = "nombre")
     private String nombre;
     @Size(max = 255)
-    @Column(name = "Version")
+    @Column(name = "version")
     private String version;
     @Size(max = 255)
-    @Column(name = "Fabricante")
+    @Column(name = "fabricante")
     private String fabricante;
-    @Column(name = "FechaInstalacion")
+    @Column(name = "fecha_instalacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInstalacion;
-    @Column(name = "Autorizado")
+    @Column(name = "autorizado")
     private Boolean autorizado;
-    @Column(name = "Actualizado")
+    @Column(name = "actualizado")
     private Boolean actualizado;
-    @JoinColumn(name = "EquipoID", referencedColumnName = "ID")
+    @JoinColumn(name = "id_equipo", referencedColumnName = "id_equipo")
     @ManyToOne(optional = false)
-    private Equipo equipoID;
+    private Equipo idEquipo;
 
     public Software() {
     }
 
-    public Software(Integer id) {
-        this.id = id;
+    public Software(Integer idSoftware) {
+        this.idSoftware = idSoftware;
     }
 
-    public Software(Integer id, String nombre) {
-        this.id = id;
+    public Software(Integer idSoftware, String nombre) {
+        this.idSoftware = idSoftware;
         this.nombre = nombre;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdSoftware() {
+        return idSoftware;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdSoftware(Integer idSoftware) {
+        this.idSoftware = idSoftware;
     }
 
     public String getNombre() {
@@ -137,18 +137,18 @@ public class Software implements Serializable {
         this.actualizado = actualizado;
     }
 
-    public Equipo getEquipoID() {
-        return equipoID;
+    public Equipo getIdEquipo() {
+        return idEquipo;
     }
 
-    public void setEquipoID(Equipo equipoID) {
-        this.equipoID = equipoID;
+    public void setIdEquipo(Equipo idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idSoftware != null ? idSoftware.hashCode() : 0);
         return hash;
     }
 
@@ -159,7 +159,7 @@ public class Software implements Serializable {
             return false;
         }
         Software other = (Software) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idSoftware == null && other.idSoftware != null) || (this.idSoftware != null && !this.idSoftware.equals(other.idSoftware))) {
             return false;
         }
         return true;
@@ -167,7 +167,7 @@ public class Software implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Software[ id=" + id + " ]";
+        return "modelo.Software[ idSoftware=" + idSoftware + " ]";
     }
     
 }

@@ -26,11 +26,11 @@ import java.util.List;
  * @author kyriux
  */
 @Entity
-@Table(name = "SLA")
+@Table(name = "sla")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Sla.findAll", query = "SELECT s FROM Sla s"),
-    @NamedQuery(name = "Sla.findById", query = "SELECT s FROM Sla s WHERE s.id = :id"),
+    @NamedQuery(name = "Sla.findByIdSla", query = "SELECT s FROM Sla s WHERE s.idSla = :idSla"),
     @NamedQuery(name = "Sla.findByNombreIndicador", query = "SELECT s FROM Sla s WHERE s.nombreIndicador = :nombreIndicador"),
     @NamedQuery(name = "Sla.findByMetaValor", query = "SELECT s FROM Sla s WHERE s.metaValor = :metaValor"),
     @NamedQuery(name = "Sla.findByUnidadMedida", query = "SELECT s FROM Sla s WHERE s.unidadMedida = :unidadMedida"),
@@ -42,29 +42,29 @@ public class Sla implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_sla")
+    private Integer idSla;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "NombreIndicador")
+    @Column(name = "nombre_indicador")
     private String nombreIndicador;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "MetaValor")
+    @Column(name = "meta_valor")
     private double metaValor;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "UnidadMedida")
+    @Column(name = "unidad_medida")
     private String unidadMedida;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Ambito")
+    @Column(name = "ambito")
     private String ambito;
     @Size(max = 255)
-    @Column(name = "ValorAmbito")
+    @Column(name = "valor_ambito")
     private String valorAmbito;
     @ManyToMany(mappedBy = "slaList")
     private List<ReporteEjecutivo> reporteEjecutivoList;
@@ -72,24 +72,24 @@ public class Sla implements Serializable {
     public Sla() {
     }
 
-    public Sla(Integer id) {
-        this.id = id;
+    public Sla(Integer idSla) {
+        this.idSla = idSla;
     }
 
-    public Sla(Integer id, String nombreIndicador, double metaValor, String unidadMedida, String ambito) {
-        this.id = id;
+    public Sla(Integer idSla, String nombreIndicador, double metaValor, String unidadMedida, String ambito) {
+        this.idSla = idSla;
         this.nombreIndicador = nombreIndicador;
         this.metaValor = metaValor;
         this.unidadMedida = unidadMedida;
         this.ambito = ambito;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdSla() {
+        return idSla;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdSla(Integer idSla) {
+        this.idSla = idSla;
     }
 
     public String getNombreIndicador() {
@@ -144,7 +144,7 @@ public class Sla implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idSla != null ? idSla.hashCode() : 0);
         return hash;
     }
 
@@ -155,7 +155,7 @@ public class Sla implements Serializable {
             return false;
         }
         Sla other = (Sla) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idSla == null && other.idSla != null) || (this.idSla != null && !this.idSla.equals(other.idSla))) {
             return false;
         }
         return true;
@@ -163,7 +163,7 @@ public class Sla implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Sla[ id=" + id + " ]";
+        return "modelo.Sla[ idSla=" + idSla + " ]";
     }
     
 }

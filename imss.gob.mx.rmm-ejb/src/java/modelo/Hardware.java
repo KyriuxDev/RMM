@@ -11,9 +11,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -24,11 +24,11 @@ import java.io.Serializable;
  * @author kyriux
  */
 @Entity
-@Table(name = "Hardware")
+@Table(name = "hardware")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Hardware.findAll", query = "SELECT h FROM Hardware h"),
-    @NamedQuery(name = "Hardware.findById", query = "SELECT h FROM Hardware h WHERE h.id = :id"),
+    @NamedQuery(name = "Hardware.findByIdHardware", query = "SELECT h FROM Hardware h WHERE h.idHardware = :idHardware"),
     @NamedQuery(name = "Hardware.findByModeloCpu", query = "SELECT h FROM Hardware h WHERE h.modeloCpu = :modeloCpu"),
     @NamedQuery(name = "Hardware.findByNucleosCpu", query = "SELECT h FROM Hardware h WHERE h.nucleosCpu = :nucleosCpu"),
     @NamedQuery(name = "Hardware.findByHilosCpu", query = "SELECT h FROM Hardware h WHERE h.hilosCpu = :hilosCpu"),
@@ -41,40 +41,40 @@ public class Hardware implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_hardware")
+    private Integer idHardware;
     @Size(max = 255)
-    @Column(name = "ModeloCpu")
+    @Column(name = "modelo_cpu")
     private String modeloCpu;
-    @Column(name = "NucleosCpu")
+    @Column(name = "nucleos_cpu")
     private Integer nucleosCpu;
-    @Column(name = "HilosCpu")
+    @Column(name = "hilos_cpu")
     private Integer hilosCpu;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "TotalRamGb")
+    @Column(name = "total_ram_gb")
     private Double totalRamGb;
     @Size(max = 255)
-    @Column(name = "ModeloPlacaBase")
+    @Column(name = "modelo_placa_base")
     private String modeloPlacaBase;
-    @Column(name = "CapacidadDiscoGb")
+    @Column(name = "capacidad_disco_gb")
     private Double capacidadDiscoGb;
-    @JoinColumn(name = "EquipoID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Equipo equipoID;
+    @JoinColumn(name = "id_equipo", referencedColumnName = "id_equipo")
+    @OneToOne(optional = false)
+    private Equipo idEquipo;
 
     public Hardware() {
     }
 
-    public Hardware(Integer id) {
-        this.id = id;
+    public Hardware(Integer idHardware) {
+        this.idHardware = idHardware;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdHardware() {
+        return idHardware;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdHardware(Integer idHardware) {
+        this.idHardware = idHardware;
     }
 
     public String getModeloCpu() {
@@ -125,18 +125,18 @@ public class Hardware implements Serializable {
         this.capacidadDiscoGb = capacidadDiscoGb;
     }
 
-    public Equipo getEquipoID() {
-        return equipoID;
+    public Equipo getIdEquipo() {
+        return idEquipo;
     }
 
-    public void setEquipoID(Equipo equipoID) {
-        this.equipoID = equipoID;
+    public void setIdEquipo(Equipo idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idHardware != null ? idHardware.hashCode() : 0);
         return hash;
     }
 
@@ -147,7 +147,7 @@ public class Hardware implements Serializable {
             return false;
         }
         Hardware other = (Hardware) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idHardware == null && other.idHardware != null) || (this.idHardware != null && !this.idHardware.equals(other.idHardware))) {
             return false;
         }
         return true;
@@ -155,7 +155,7 @@ public class Hardware implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Hardware[ id=" + id + " ]";
+        return "modelo.Hardware[ idHardware=" + idHardware + " ]";
     }
     
 }

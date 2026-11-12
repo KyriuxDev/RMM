@@ -27,11 +27,11 @@ import java.util.List;
  * @author kyriux
  */
 @Entity
-@Table(name = "Rol")
+@Table(name = "rol")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Rol.findAll", query = "SELECT r FROM Rol r"),
-    @NamedQuery(name = "Rol.findById", query = "SELECT r FROM Rol r WHERE r.id = :id"),
+    @NamedQuery(name = "Rol.findByIdRol", query = "SELECT r FROM Rol r WHERE r.idRol = :idRol"),
     @NamedQuery(name = "Rol.findByNombre", query = "SELECT r FROM Rol r WHERE r.nombre = :nombre"),
     @NamedQuery(name = "Rol.findByPermisos", query = "SELECT r FROM Rol r WHERE r.permisos = :permisos")})
 public class Rol implements Serializable {
@@ -40,40 +40,40 @@ public class Rol implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_rol")
+    private Integer idRol;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "Nombre")
+    @Size(min = 1, max = 50)
+    @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Permisos")
+    @Column(name = "permisos")
     private String permisos;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rolID")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRol")
     private List<Usuario> usuarioList;
 
     public Rol() {
     }
 
-    public Rol(Integer id) {
-        this.id = id;
+    public Rol(Integer idRol) {
+        this.idRol = idRol;
     }
 
-    public Rol(Integer id, String nombre, String permisos) {
-        this.id = id;
+    public Rol(Integer idRol, String nombre, String permisos) {
+        this.idRol = idRol;
         this.nombre = nombre;
         this.permisos = permisos;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdRol() {
+        return idRol;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdRol(Integer idRol) {
+        this.idRol = idRol;
     }
 
     public String getNombre() {
@@ -104,7 +104,7 @@ public class Rol implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idRol != null ? idRol.hashCode() : 0);
         return hash;
     }
 
@@ -115,7 +115,7 @@ public class Rol implements Serializable {
             return false;
         }
         Rol other = (Rol) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idRol == null && other.idRol != null) || (this.idRol != null && !this.idRol.equals(other.idRol))) {
             return false;
         }
         return true;
@@ -123,7 +123,7 @@ public class Rol implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Rol[ id=" + id + " ]";
+        return "modelo.Rol[ idRol=" + idRol + " ]";
     }
     
 }

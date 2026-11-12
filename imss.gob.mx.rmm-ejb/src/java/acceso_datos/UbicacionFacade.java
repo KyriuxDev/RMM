@@ -7,14 +7,14 @@ package acceso_datos;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import modelo.Unidad;
+import modelo.Ubicacion;
 
 /**
  *
  * @author kyriux
  */
 @Stateless
-public class UnidadFacade extends AbstractFacade<Unidad> {
+public class UbicacionFacade extends AbstractFacade<Ubicacion> {
 
     @PersistenceContext(unitName = "rmmPU")
     private EntityManager em;
@@ -24,8 +24,8 @@ public class UnidadFacade extends AbstractFacade<Unidad> {
         return em;
     }
 
-    public UnidadFacade() {
-        super(Unidad.class);
+    public UbicacionFacade() {
+        super(Ubicacion.class);
     }
     
 }

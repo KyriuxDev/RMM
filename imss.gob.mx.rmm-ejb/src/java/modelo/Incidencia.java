@@ -28,11 +28,11 @@ import java.util.Date;
  * @author kyriux
  */
 @Entity
-@Table(name = "Incidencia")
+@Table(name = "incidencia")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Incidencia.findAll", query = "SELECT i FROM Incidencia i"),
-    @NamedQuery(name = "Incidencia.findById", query = "SELECT i FROM Incidencia i WHERE i.id = :id"),
+    @NamedQuery(name = "Incidencia.findByIdIncidencia", query = "SELECT i FROM Incidencia i WHERE i.idIncidencia = :idIncidencia"),
     @NamedQuery(name = "Incidencia.findByDescripcion", query = "SELECT i FROM Incidencia i WHERE i.descripcion = :descripcion"),
     @NamedQuery(name = "Incidencia.findByPrioridad", query = "SELECT i FROM Incidencia i WHERE i.prioridad = :prioridad"),
     @NamedQuery(name = "Incidencia.findByEstado", query = "SELECT i FROM Incidencia i WHERE i.estado = :estado"),
@@ -45,65 +45,65 @@ public class Incidencia implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_incidencia")
+    private Integer idIncidencia;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Descripcion")
+    @Column(name = "descripcion")
     private String descripcion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Prioridad")
+    @Column(name = "prioridad")
     private String prioridad;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Estado")
+    @Column(name = "estado")
     private String estado;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Origen")
+    @Column(name = "origen")
     private String origen;
-    @Column(name = "FechaRegistro")
+    @Column(name = "fecha_registro")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRegistro;
-    @Column(name = "FechaResolucion")
+    @Column(name = "fecha_resolucion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaResolucion;
-    @JoinColumn(name = "AlertaID", referencedColumnName = "ID")
+    @JoinColumn(name = "id_alerta", referencedColumnName = "id_alerta")
     @ManyToOne
-    private Alerta alertaID;
-    @JoinColumn(name = "EquipoID", referencedColumnName = "ID")
+    private Alerta idAlerta;
+    @JoinColumn(name = "id_equipo", referencedColumnName = "id_equipo")
     @ManyToOne(optional = false)
-    private Equipo equipoID;
-    @JoinColumn(name = "UsuarioID", referencedColumnName = "ID")
+    private Equipo idEquipo;
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @ManyToOne(optional = false)
-    private Usuario usuarioID;
+    private Usuario idUsuario;
 
     public Incidencia() {
     }
 
-    public Incidencia(Integer id) {
-        this.id = id;
+    public Incidencia(Integer idIncidencia) {
+        this.idIncidencia = idIncidencia;
     }
 
-    public Incidencia(Integer id, String descripcion, String prioridad, String estado, String origen) {
-        this.id = id;
+    public Incidencia(Integer idIncidencia, String descripcion, String prioridad, String estado, String origen) {
+        this.idIncidencia = idIncidencia;
         this.descripcion = descripcion;
         this.prioridad = prioridad;
         this.estado = estado;
         this.origen = origen;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdIncidencia() {
+        return idIncidencia;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdIncidencia(Integer idIncidencia) {
+        this.idIncidencia = idIncidencia;
     }
 
     public String getDescripcion() {
@@ -154,34 +154,34 @@ public class Incidencia implements Serializable {
         this.fechaResolucion = fechaResolucion;
     }
 
-    public Alerta getAlertaID() {
-        return alertaID;
+    public Alerta getIdAlerta() {
+        return idAlerta;
     }
 
-    public void setAlertaID(Alerta alertaID) {
-        this.alertaID = alertaID;
+    public void setIdAlerta(Alerta idAlerta) {
+        this.idAlerta = idAlerta;
     }
 
-    public Equipo getEquipoID() {
-        return equipoID;
+    public Equipo getIdEquipo() {
+        return idEquipo;
     }
 
-    public void setEquipoID(Equipo equipoID) {
-        this.equipoID = equipoID;
+    public void setIdEquipo(Equipo idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
-    public Usuario getUsuarioID() {
-        return usuarioID;
+    public Usuario getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuarioID(Usuario usuarioID) {
-        this.usuarioID = usuarioID;
+    public void setIdUsuario(Usuario idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idIncidencia != null ? idIncidencia.hashCode() : 0);
         return hash;
     }
 
@@ -192,7 +192,7 @@ public class Incidencia implements Serializable {
             return false;
         }
         Incidencia other = (Incidencia) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idIncidencia == null && other.idIncidencia != null) || (this.idIncidencia != null && !this.idIncidencia.equals(other.idIncidencia))) {
             return false;
         }
         return true;
@@ -200,7 +200,7 @@ public class Incidencia implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Incidencia[ id=" + id + " ]";
+        return "modelo.Incidencia[ idIncidencia=" + idIncidencia + " ]";
     }
     
 }

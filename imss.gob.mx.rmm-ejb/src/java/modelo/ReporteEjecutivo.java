@@ -32,11 +32,11 @@ import java.util.List;
  * @author kyriux
  */
 @Entity
-@Table(name = "ReporteEjecutivo")
+@Table(name = "reporte_ejecutivo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ReporteEjecutivo.findAll", query = "SELECT r FROM ReporteEjecutivo r"),
-    @NamedQuery(name = "ReporteEjecutivo.findById", query = "SELECT r FROM ReporteEjecutivo r WHERE r.id = :id"),
+    @NamedQuery(name = "ReporteEjecutivo.findByIdReporteEjecutivo", query = "SELECT r FROM ReporteEjecutivo r WHERE r.idReporteEjecutivo = :idReporteEjecutivo"),
     @NamedQuery(name = "ReporteEjecutivo.findByTipoReporte", query = "SELECT r FROM ReporteEjecutivo r WHERE r.tipoReporte = :tipoReporte"),
     @NamedQuery(name = "ReporteEjecutivo.findByFechaInicio", query = "SELECT r FROM ReporteEjecutivo r WHERE r.fechaInicio = :fechaInicio"),
     @NamedQuery(name = "ReporteEjecutivo.findByFechaFin", query = "SELECT r FROM ReporteEjecutivo r WHERE r.fechaFin = :fechaFin"),
@@ -50,67 +50,67 @@ public class ReporteEjecutivo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_reporte_ejecutivo")
+    private Integer idReporteEjecutivo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "TipoReporte")
+    @Column(name = "tipo_reporte")
     private String tipoReporte;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "FechaInicio")
+    @Column(name = "fecha_inicio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "FechaFin")
+    @Column(name = "fecha_fin")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFin;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "FormatoExportacion")
+    @Column(name = "formato_exportacion")
     private String formatoExportacion;
-    @Column(name = "FechaGeneracion")
+    @Column(name = "fecha_generacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaGeneracion;
     @Size(max = 255)
-    @Column(name = "FiltroUnidad")
+    @Column(name = "filtro_unidad")
     private String filtroUnidad;
     @Size(max = 255)
-    @Column(name = "FiltroTecnico")
+    @Column(name = "filtro_tecnico")
     private String filtroTecnico;
-    @JoinTable(name = "ReporteEjecutivo_SLA", joinColumns = {
-        @JoinColumn(name = "ReporteEjecutivoID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "SLAID", referencedColumnName = "ID")})
+    @JoinTable(name = "reporte_ejecutivo_sla", joinColumns = {
+        @JoinColumn(name = "id_reporte_ejecutivo", referencedColumnName = "id_reporte_ejecutivo")}, inverseJoinColumns = {
+        @JoinColumn(name = "id_sla", referencedColumnName = "id_sla")})
     @ManyToMany
     private List<Sla> slaList;
-    @JoinColumn(name = "UsuarioID", referencedColumnName = "ID")
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @ManyToOne(optional = false)
-    private Usuario usuarioID;
+    private Usuario idUsuario;
 
     public ReporteEjecutivo() {
     }
 
-    public ReporteEjecutivo(Integer id) {
-        this.id = id;
+    public ReporteEjecutivo(Integer idReporteEjecutivo) {
+        this.idReporteEjecutivo = idReporteEjecutivo;
     }
 
-    public ReporteEjecutivo(Integer id, String tipoReporte, Date fechaInicio, Date fechaFin, String formatoExportacion) {
-        this.id = id;
+    public ReporteEjecutivo(Integer idReporteEjecutivo, String tipoReporte, Date fechaInicio, Date fechaFin, String formatoExportacion) {
+        this.idReporteEjecutivo = idReporteEjecutivo;
         this.tipoReporte = tipoReporte;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.formatoExportacion = formatoExportacion;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdReporteEjecutivo() {
+        return idReporteEjecutivo;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdReporteEjecutivo(Integer idReporteEjecutivo) {
+        this.idReporteEjecutivo = idReporteEjecutivo;
     }
 
     public String getTipoReporte() {
@@ -178,18 +178,18 @@ public class ReporteEjecutivo implements Serializable {
         this.slaList = slaList;
     }
 
-    public Usuario getUsuarioID() {
-        return usuarioID;
+    public Usuario getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuarioID(Usuario usuarioID) {
-        this.usuarioID = usuarioID;
+    public void setIdUsuario(Usuario idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idReporteEjecutivo != null ? idReporteEjecutivo.hashCode() : 0);
         return hash;
     }
 
@@ -200,7 +200,7 @@ public class ReporteEjecutivo implements Serializable {
             return false;
         }
         ReporteEjecutivo other = (ReporteEjecutivo) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idReporteEjecutivo == null && other.idReporteEjecutivo != null) || (this.idReporteEjecutivo != null && !this.idReporteEjecutivo.equals(other.idReporteEjecutivo))) {
             return false;
         }
         return true;
@@ -208,7 +208,7 @@ public class ReporteEjecutivo implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.ReporteEjecutivo[ id=" + id + " ]";
+        return "modelo.ReporteEjecutivo[ idReporteEjecutivo=" + idReporteEjecutivo + " ]";
     }
     
 }

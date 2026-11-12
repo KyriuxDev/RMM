@@ -30,11 +30,11 @@ import java.util.List;
  * @author kyriux
  */
 @Entity
-@Table(name = "Informe")
+@Table(name = "informe")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Informe.findAll", query = "SELECT i FROM Informe i"),
-    @NamedQuery(name = "Informe.findById", query = "SELECT i FROM Informe i WHERE i.id = :id"),
+    @NamedQuery(name = "Informe.findByIdInforme", query = "SELECT i FROM Informe i WHERE i.idInforme = :idInforme"),
     @NamedQuery(name = "Informe.findByPorcentajeUsoCpu", query = "SELECT i FROM Informe i WHERE i.porcentajeUsoCpu = :porcentajeUsoCpu"),
     @NamedQuery(name = "Informe.findByRamUsadaGb", query = "SELECT i FROM Informe i WHERE i.ramUsadaGb = :ramUsadaGb"),
     @NamedQuery(name = "Informe.findByTraficoRedRxMb", query = "SELECT i FROM Informe i WHERE i.traficoRedRxMb = :traficoRedRxMb"),
@@ -47,41 +47,41 @@ public class Informe implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_informe")
+    private Integer idInforme;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "PorcentajeUsoCpu")
+    @Column(name = "porcentaje_uso_cpu")
     private Double porcentajeUsoCpu;
-    @Column(name = "RamUsadaGb")
+    @Column(name = "ram_usada_gb")
     private Double ramUsadaGb;
-    @Column(name = "TraficoRedRxMb")
+    @Column(name = "trafico_red_rx_mb")
     private Double traficoRedRxMb;
-    @Column(name = "TraficoRedTxMb")
+    @Column(name = "trafico_red_tx_mb")
     private Double traficoRedTxMb;
-    @Column(name = "TotalProcesos")
+    @Column(name = "total_procesos")
     private Integer totalProcesos;
-    @Column(name = "FechaRegistro")
+    @Column(name = "fecha_registro")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRegistro;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "informeID")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idInforme")
     private List<Almacenamiento> almacenamientoList;
-    @JoinColumn(name = "EquipoID", referencedColumnName = "ID")
+    @JoinColumn(name = "id_equipo", referencedColumnName = "id_equipo")
     @ManyToOne(optional = false)
-    private Equipo equipoID;
+    private Equipo idEquipo;
 
     public Informe() {
     }
 
-    public Informe(Integer id) {
-        this.id = id;
+    public Informe(Integer idInforme) {
+        this.idInforme = idInforme;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdInforme() {
+        return idInforme;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdInforme(Integer idInforme) {
+        this.idInforme = idInforme;
     }
 
     public Double getPorcentajeUsoCpu() {
@@ -141,18 +141,18 @@ public class Informe implements Serializable {
         this.almacenamientoList = almacenamientoList;
     }
 
-    public Equipo getEquipoID() {
-        return equipoID;
+    public Equipo getIdEquipo() {
+        return idEquipo;
     }
 
-    public void setEquipoID(Equipo equipoID) {
-        this.equipoID = equipoID;
+    public void setIdEquipo(Equipo idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idInforme != null ? idInforme.hashCode() : 0);
         return hash;
     }
 
@@ -163,7 +163,7 @@ public class Informe implements Serializable {
             return false;
         }
         Informe other = (Informe) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idInforme == null && other.idInforme != null) || (this.idInforme != null && !this.idInforme.equals(other.idInforme))) {
             return false;
         }
         return true;
@@ -171,7 +171,7 @@ public class Informe implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Informe[ id=" + id + " ]";
+        return "modelo.Informe[ idInforme=" + idInforme + " ]";
     }
     
 }

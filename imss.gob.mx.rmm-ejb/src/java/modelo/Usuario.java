@@ -29,11 +29,12 @@ import java.util.List;
  * @author kyriux
  */
 @Entity
-@Table(name = "Usuario")
+@Table(name = "usuario")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
-    @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id"),
+    @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario"),
+    @NamedQuery(name = "Usuario.findByMatricula", query = "SELECT u FROM Usuario u WHERE u.matricula = :matricula"),
     @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre"),
     @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo"),
     @NamedQuery(name = "Usuario.findByContrasenaHash", query = "SELECT u FROM Usuario u WHERE u.contrasenaHash = :contrasenaHash"),
@@ -44,60 +45,74 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_usuario")
+    private Integer idUsuario;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 15)
+    @Column(name = "matricula")
+    private String matricula;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Nombre")
+    @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Correo")
+    @Column(name = "correo")
     private String correo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "ContrasenaHash")
+    @Column(name = "contrasena_hash")
     private String contrasenaHash;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "EstaActivo")
+    @Column(name = "esta_activo")
     private boolean estaActivo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioID")
-    private List<Notificacion> notificacionList;
-    @JoinColumn(name = "RolID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Rol rolID;
-    @OneToMany(mappedBy = "usuarioID")
-    private List<Equipo> equipoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioID")
-    private List<Incidencia> incidenciaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioID")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private List<ReporteEjecutivo> reporteEjecutivoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private List<Incidencia> incidenciaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private List<Notificacion> notificacionList;
+    @OneToMany(mappedBy = "idUsuario")
+    private List<Equipo> equipoList;
+    @JoinColumn(name = "id_rol", referencedColumnName = "id_rol")
+    @ManyToOne(optional = false)
+    private Rol idRol;
 
     public Usuario() {
     }
 
-    public Usuario(Integer id) {
-        this.id = id;
+    public Usuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public Usuario(Integer id, String nombre, String correo, String contrasenaHash, boolean estaActivo) {
-        this.id = id;
+    public Usuario(Integer idUsuario, String matricula, String nombre, String correo, String contrasenaHash, boolean estaActivo) {
+        this.idUsuario = idUsuario;
+        this.matricula = matricula;
         this.nombre = nombre;
         this.correo = correo;
         this.contrasenaHash = contrasenaHash;
         this.estaActivo = estaActivo;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 
     public String getNombre() {
@@ -133,29 +148,12 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Notificacion> getNotificacionList() {
-        return notificacionList;
+    public List<ReporteEjecutivo> getReporteEjecutivoList() {
+        return reporteEjecutivoList;
     }
 
-    public void setNotificacionList(List<Notificacion> notificacionList) {
-        this.notificacionList = notificacionList;
-    }
-
-    public Rol getRolID() {
-        return rolID;
-    }
-
-    public void setRolID(Rol rolID) {
-        this.rolID = rolID;
-    }
-
-    @XmlTransient
-    public List<Equipo> getEquipoList() {
-        return equipoList;
-    }
-
-    public void setEquipoList(List<Equipo> equipoList) {
-        this.equipoList = equipoList;
+    public void setReporteEjecutivoList(List<ReporteEjecutivo> reporteEjecutivoList) {
+        this.reporteEjecutivoList = reporteEjecutivoList;
     }
 
     @XmlTransient
@@ -168,18 +166,35 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<ReporteEjecutivo> getReporteEjecutivoList() {
-        return reporteEjecutivoList;
+    public List<Notificacion> getNotificacionList() {
+        return notificacionList;
     }
 
-    public void setReporteEjecutivoList(List<ReporteEjecutivo> reporteEjecutivoList) {
-        this.reporteEjecutivoList = reporteEjecutivoList;
+    public void setNotificacionList(List<Notificacion> notificacionList) {
+        this.notificacionList = notificacionList;
+    }
+
+    @XmlTransient
+    public List<Equipo> getEquipoList() {
+        return equipoList;
+    }
+
+    public void setEquipoList(List<Equipo> equipoList) {
+        this.equipoList = equipoList;
+    }
+
+    public Rol getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(Rol idRol) {
+        this.idRol = idRol;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idUsuario != null ? idUsuario.hashCode() : 0);
         return hash;
     }
 
@@ -190,7 +205,7 @@ public class Usuario implements Serializable {
             return false;
         }
         Usuario other = (Usuario) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario))) {
             return false;
         }
         return true;
@@ -198,7 +213,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Usuario[ id=" + id + " ]";
+        return "modelo.Usuario[ idUsuario=" + idUsuario + " ]";
     }
     
 }

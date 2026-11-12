@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -32,17 +33,17 @@ import java.util.List;
  * @author kyriux
  */
 @Entity
-@Table(name = "Equipo")
+@Table(name = "equipo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Equipo.findAll", query = "SELECT e FROM Equipo e"),
-    @NamedQuery(name = "Equipo.findById", query = "SELECT e FROM Equipo e WHERE e.id = :id"),
+    @NamedQuery(name = "Equipo.findByIdEquipo", query = "SELECT e FROM Equipo e WHERE e.idEquipo = :idEquipo"),
     @NamedQuery(name = "Equipo.findByHostname", query = "SELECT e FROM Equipo e WHERE e.hostname = :hostname"),
     @NamedQuery(name = "Equipo.findByDireccionMac", query = "SELECT e FROM Equipo e WHERE e.direccionMac = :direccionMac"),
     @NamedQuery(name = "Equipo.findByIpLocal", query = "SELECT e FROM Equipo e WHERE e.ipLocal = :ipLocal"),
     @NamedQuery(name = "Equipo.findByIpPublica", query = "SELECT e FROM Equipo e WHERE e.ipPublica = :ipPublica"),
-    @NamedQuery(name = "Equipo.findByNombreSO", query = "SELECT e FROM Equipo e WHERE e.nombreSO = :nombreSO"),
-    @NamedQuery(name = "Equipo.findByVersionSO", query = "SELECT e FROM Equipo e WHERE e.versionSO = :versionSO"),
+    @NamedQuery(name = "Equipo.findByNombreSo", query = "SELECT e FROM Equipo e WHERE e.nombreSo = :nombreSo"),
+    @NamedQuery(name = "Equipo.findByVersionSo", query = "SELECT e FROM Equipo e WHERE e.versionSo = :versionSo"),
     @NamedQuery(name = "Equipo.findByEstadoConexion", query = "SELECT e FROM Equipo e WHERE e.estadoConexion = :estadoConexion"),
     @NamedQuery(name = "Equipo.findByUltimaSenal", query = "SELECT e FROM Equipo e WHERE e.ultimaSenal = :ultimaSenal"),
     @NamedQuery(name = "Equipo.findByFechaRegistro", query = "SELECT e FROM Equipo e WHERE e.fechaRegistro = :fechaRegistro"),
@@ -54,87 +55,87 @@ public class Equipo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_equipo")
+    private Integer idEquipo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Hostname")
+    @Column(name = "hostname")
     private String hostname;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "DireccionMac")
+    @Size(min = 1, max = 17)
+    @Column(name = "direccion_mac")
     private String direccionMac;
-    @Size(max = 255)
-    @Column(name = "IpLocal")
+    @Size(max = 45)
+    @Column(name = "ip_local")
     private String ipLocal;
-    @Size(max = 255)
-    @Column(name = "IpPublica")
+    @Size(max = 45)
+    @Column(name = "ip_publica")
     private String ipPublica;
     @Size(max = 255)
-    @Column(name = "NombreSO")
-    private String nombreSO;
+    @Column(name = "nombre_so")
+    private String nombreSo;
     @Size(max = 255)
-    @Column(name = "VersionSO")
-    private String versionSO;
-    @Size(max = 255)
-    @Column(name = "EstadoConexion")
+    @Column(name = "version_so")
+    private String versionSo;
+    @Size(max = 20)
+    @Column(name = "estado_conexion")
     private String estadoConexion;
-    @Column(name = "UltimaSenal")
+    @Column(name = "ultima_senal")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ultimaSenal;
-    @Column(name = "FechaRegistro")
+    @Column(name = "fecha_registro")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRegistro;
     @Size(max = 255)
-    @Column(name = "UbicacionFisica")
+    @Column(name = "ubicacion_fisica")
     private String ubicacionFisica;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "EstaActivo")
+    @Column(name = "esta_activo")
     private boolean estaActivo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoID")
-    private List<SesionMonitoreo> sesionMonitoreoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoID")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
     private List<Alerta> alertaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoID")
-    private List<Informe> informeList;
-    @JoinColumn(name = "UnidadID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Unidad unidadID;
-    @JoinColumn(name = "UsuarioID", referencedColumnName = "ID")
-    @ManyToOne
-    private Usuario usuarioID;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoID")
-    private List<Periferico> perifericoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoID")
-    private List<Hardware> hardwareList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoID")
-    private List<Incidencia> incidenciaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoID")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
     private List<Software> softwareList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
+    private List<Periferico> perifericoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
+    private List<Incidencia> incidenciaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
+    private List<Informe> informeList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
+    private List<SesionMonitoreo> sesionMonitoreoList;
+    @JoinColumn(name = "id_area", referencedColumnName = "id_area")
+    @ManyToOne
+    private Area idArea;
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @ManyToOne
+    private Usuario idUsuario;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idEquipo")
+    private Hardware hardware;
 
     public Equipo() {
     }
 
-    public Equipo(Integer id) {
-        this.id = id;
+    public Equipo(Integer idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
-    public Equipo(Integer id, String hostname, String direccionMac, boolean estaActivo) {
-        this.id = id;
+    public Equipo(Integer idEquipo, String hostname, String direccionMac, boolean estaActivo) {
+        this.idEquipo = idEquipo;
         this.hostname = hostname;
         this.direccionMac = direccionMac;
         this.estaActivo = estaActivo;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdEquipo() {
+        return idEquipo;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdEquipo(Integer idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
     public String getHostname() {
@@ -169,20 +170,20 @@ public class Equipo implements Serializable {
         this.ipPublica = ipPublica;
     }
 
-    public String getNombreSO() {
-        return nombreSO;
+    public String getNombreSo() {
+        return nombreSo;
     }
 
-    public void setNombreSO(String nombreSO) {
-        this.nombreSO = nombreSO;
+    public void setNombreSo(String nombreSo) {
+        this.nombreSo = nombreSo;
     }
 
-    public String getVersionSO() {
-        return versionSO;
+    public String getVersionSo() {
+        return versionSo;
     }
 
-    public void setVersionSO(String versionSO) {
-        this.versionSO = versionSO;
+    public void setVersionSo(String versionSo) {
+        this.versionSo = versionSo;
     }
 
     public String getEstadoConexion() {
@@ -226,15 +227,6 @@ public class Equipo implements Serializable {
     }
 
     @XmlTransient
-    public List<SesionMonitoreo> getSesionMonitoreoList() {
-        return sesionMonitoreoList;
-    }
-
-    public void setSesionMonitoreoList(List<SesionMonitoreo> sesionMonitoreoList) {
-        this.sesionMonitoreoList = sesionMonitoreoList;
-    }
-
-    @XmlTransient
     public List<Alerta> getAlertaList() {
         return alertaList;
     }
@@ -244,28 +236,12 @@ public class Equipo implements Serializable {
     }
 
     @XmlTransient
-    public List<Informe> getInformeList() {
-        return informeList;
+    public List<Software> getSoftwareList() {
+        return softwareList;
     }
 
-    public void setInformeList(List<Informe> informeList) {
-        this.informeList = informeList;
-    }
-
-    public Unidad getUnidadID() {
-        return unidadID;
-    }
-
-    public void setUnidadID(Unidad unidadID) {
-        this.unidadID = unidadID;
-    }
-
-    public Usuario getUsuarioID() {
-        return usuarioID;
-    }
-
-    public void setUsuarioID(Usuario usuarioID) {
-        this.usuarioID = usuarioID;
+    public void setSoftwareList(List<Software> softwareList) {
+        this.softwareList = softwareList;
     }
 
     @XmlTransient
@@ -278,15 +254,6 @@ public class Equipo implements Serializable {
     }
 
     @XmlTransient
-    public List<Hardware> getHardwareList() {
-        return hardwareList;
-    }
-
-    public void setHardwareList(List<Hardware> hardwareList) {
-        this.hardwareList = hardwareList;
-    }
-
-    @XmlTransient
     public List<Incidencia> getIncidenciaList() {
         return incidenciaList;
     }
@@ -296,18 +263,51 @@ public class Equipo implements Serializable {
     }
 
     @XmlTransient
-    public List<Software> getSoftwareList() {
-        return softwareList;
+    public List<Informe> getInformeList() {
+        return informeList;
     }
 
-    public void setSoftwareList(List<Software> softwareList) {
-        this.softwareList = softwareList;
+    public void setInformeList(List<Informe> informeList) {
+        this.informeList = informeList;
+    }
+
+    @XmlTransient
+    public List<SesionMonitoreo> getSesionMonitoreoList() {
+        return sesionMonitoreoList;
+    }
+
+    public void setSesionMonitoreoList(List<SesionMonitoreo> sesionMonitoreoList) {
+        this.sesionMonitoreoList = sesionMonitoreoList;
+    }
+
+    public Area getIdArea() {
+        return idArea;
+    }
+
+    public void setIdArea(Area idArea) {
+        this.idArea = idArea;
+    }
+
+    public Usuario getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuario idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public Hardware getHardware() {
+        return hardware;
+    }
+
+    public void setHardware(Hardware hardware) {
+        this.hardware = hardware;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idEquipo != null ? idEquipo.hashCode() : 0);
         return hash;
     }
 
@@ -318,7 +318,7 @@ public class Equipo implements Serializable {
             return false;
         }
         Equipo other = (Equipo) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idEquipo == null && other.idEquipo != null) || (this.idEquipo != null && !this.idEquipo.equals(other.idEquipo))) {
             return false;
         }
         return true;
@@ -326,7 +326,7 @@ public class Equipo implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Equipo[ id=" + id + " ]";
+        return "modelo.Equipo[ idEquipo=" + idEquipo + " ]";
     }
     
 }

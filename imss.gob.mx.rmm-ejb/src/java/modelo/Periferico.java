@@ -25,11 +25,11 @@ import java.io.Serializable;
  * @author kyriux
  */
 @Entity
-@Table(name = "Periferico")
+@Table(name = "periferico")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Periferico.findAll", query = "SELECT p FROM Periferico p"),
-    @NamedQuery(name = "Periferico.findById", query = "SELECT p FROM Periferico p WHERE p.id = :id"),
+    @NamedQuery(name = "Periferico.findByIdPeriferico", query = "SELECT p FROM Periferico p WHERE p.idPeriferico = :idPeriferico"),
     @NamedQuery(name = "Periferico.findByTipo", query = "SELECT p FROM Periferico p WHERE p.tipo = :tipo"),
     @NamedQuery(name = "Periferico.findByModelo", query = "SELECT p FROM Periferico p WHERE p.modelo = :modelo"),
     @NamedQuery(name = "Periferico.findByNumeroSerie", query = "SELECT p FROM Periferico p WHERE p.numeroSerie = :numeroSerie")})
@@ -39,41 +39,41 @@ public class Periferico implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_periferico")
+    private Integer idPeriferico;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Tipo")
+    @Column(name = "tipo")
     private String tipo;
     @Size(max = 255)
-    @Column(name = "Modelo")
+    @Column(name = "modelo")
     private String modelo;
     @Size(max = 255)
-    @Column(name = "NumeroSerie")
+    @Column(name = "numero_serie")
     private String numeroSerie;
-    @JoinColumn(name = "EquipoID", referencedColumnName = "ID")
+    @JoinColumn(name = "id_equipo", referencedColumnName = "id_equipo")
     @ManyToOne(optional = false)
-    private Equipo equipoID;
+    private Equipo idEquipo;
 
     public Periferico() {
     }
 
-    public Periferico(Integer id) {
-        this.id = id;
+    public Periferico(Integer idPeriferico) {
+        this.idPeriferico = idPeriferico;
     }
 
-    public Periferico(Integer id, String tipo) {
-        this.id = id;
+    public Periferico(Integer idPeriferico, String tipo) {
+        this.idPeriferico = idPeriferico;
         this.tipo = tipo;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdPeriferico() {
+        return idPeriferico;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdPeriferico(Integer idPeriferico) {
+        this.idPeriferico = idPeriferico;
     }
 
     public String getTipo() {
@@ -100,18 +100,18 @@ public class Periferico implements Serializable {
         this.numeroSerie = numeroSerie;
     }
 
-    public Equipo getEquipoID() {
-        return equipoID;
+    public Equipo getIdEquipo() {
+        return idEquipo;
     }
 
-    public void setEquipoID(Equipo equipoID) {
-        this.equipoID = equipoID;
+    public void setIdEquipo(Equipo idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idPeriferico != null ? idPeriferico.hashCode() : 0);
         return hash;
     }
 
@@ -122,7 +122,7 @@ public class Periferico implements Serializable {
             return false;
         }
         Periferico other = (Periferico) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idPeriferico == null && other.idPeriferico != null) || (this.idPeriferico != null && !this.idPeriferico.equals(other.idPeriferico))) {
             return false;
         }
         return true;
@@ -130,7 +130,7 @@ public class Periferico implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Periferico[ id=" + id + " ]";
+        return "modelo.Periferico[ idPeriferico=" + idPeriferico + " ]";
     }
     
 }

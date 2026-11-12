@@ -28,11 +28,11 @@ import java.util.Date;
  * @author kyriux
  */
 @Entity
-@Table(name = "Notificacion")
+@Table(name = "notificacion")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Notificacion.findAll", query = "SELECT n FROM Notificacion n"),
-    @NamedQuery(name = "Notificacion.findById", query = "SELECT n FROM Notificacion n WHERE n.id = :id"),
+    @NamedQuery(name = "Notificacion.findByIdNotificacion", query = "SELECT n FROM Notificacion n WHERE n.idNotificacion = :idNotificacion"),
     @NamedQuery(name = "Notificacion.findByMedio", query = "SELECT n FROM Notificacion n WHERE n.medio = :medio"),
     @NamedQuery(name = "Notificacion.findByFechaEnvio", query = "SELECT n FROM Notificacion n WHERE n.fechaEnvio = :fechaEnvio"),
     @NamedQuery(name = "Notificacion.findByEstadoEnvio", query = "SELECT n FROM Notificacion n WHERE n.estadoEnvio = :estadoEnvio")})
@@ -42,47 +42,47 @@ public class Notificacion implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id_notificacion")
+    private Integer idNotificacion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "Medio")
+    @Column(name = "medio")
     private String medio;
-    @Column(name = "FechaEnvio")
+    @Column(name = "fecha_envio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaEnvio;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "EstadoEnvio")
+    @Column(name = "estado_envio")
     private String estadoEnvio;
-    @JoinColumn(name = "AlertaID", referencedColumnName = "ID")
+    @JoinColumn(name = "id_alerta", referencedColumnName = "id_alerta")
     @ManyToOne(optional = false)
-    private Alerta alertaID;
-    @JoinColumn(name = "UsuarioID", referencedColumnName = "ID")
+    private Alerta idAlerta;
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @ManyToOne(optional = false)
-    private Usuario usuarioID;
+    private Usuario idUsuario;
 
     public Notificacion() {
     }
 
-    public Notificacion(Integer id) {
-        this.id = id;
+    public Notificacion(Integer idNotificacion) {
+        this.idNotificacion = idNotificacion;
     }
 
-    public Notificacion(Integer id, String medio, String estadoEnvio) {
-        this.id = id;
+    public Notificacion(Integer idNotificacion, String medio, String estadoEnvio) {
+        this.idNotificacion = idNotificacion;
         this.medio = medio;
         this.estadoEnvio = estadoEnvio;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdNotificacion() {
+        return idNotificacion;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdNotificacion(Integer idNotificacion) {
+        this.idNotificacion = idNotificacion;
     }
 
     public String getMedio() {
@@ -109,26 +109,26 @@ public class Notificacion implements Serializable {
         this.estadoEnvio = estadoEnvio;
     }
 
-    public Alerta getAlertaID() {
-        return alertaID;
+    public Alerta getIdAlerta() {
+        return idAlerta;
     }
 
-    public void setAlertaID(Alerta alertaID) {
-        this.alertaID = alertaID;
+    public void setIdAlerta(Alerta idAlerta) {
+        this.idAlerta = idAlerta;
     }
 
-    public Usuario getUsuarioID() {
-        return usuarioID;
+    public Usuario getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuarioID(Usuario usuarioID) {
-        this.usuarioID = usuarioID;
+    public void setIdUsuario(Usuario idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idNotificacion != null ? idNotificacion.hashCode() : 0);
         return hash;
     }
 
@@ -139,7 +139,7 @@ public class Notificacion implements Serializable {
             return false;
         }
         Notificacion other = (Notificacion) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idNotificacion == null && other.idNotificacion != null) || (this.idNotificacion != null && !this.idNotificacion.equals(other.idNotificacion))) {
             return false;
         }
         return true;
@@ -147,7 +147,7 @@ public class Notificacion implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Notificacion[ id=" + id + " ]";
+        return "modelo.Notificacion[ idNotificacion=" + idNotificacion + " ]";
     }
     
 }

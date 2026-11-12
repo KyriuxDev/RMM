@@ -17,7 +17,7 @@
                 none   = no toca la BD (usar si las tablas ya existen)
                 create = crea las tablas que falten al desplegar
             -->
-            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+            <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
 
             <!-- Muestra en el log de GlassFish el SQL que ejecuta EclipseLink -->
             <property name="eclipselink.logging.level.sql" value="FINE"/>
