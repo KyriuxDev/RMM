@@ -8,8 +8,8 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import excepciones.Excepciones;
 import logica_negocio.AdministracionBean;
-import logica_negocio.ReglaNegocioException;
 import modelo.Rol;
 import modelo.Usuario;
 
@@ -60,7 +60,7 @@ public class AdministracionController implements Serializable {
             usuarios = administracionBean.listarUsuarios();
             limpiarFormulario();
 
-        } catch (ReglaNegocioException e) {
+        } catch (Excepciones e) {
             // Marca en rojo el campo con el problema
             if (e.getCampo() != null) {
                 ctx.addMessage("formUsuarios:" + e.getCampo(),

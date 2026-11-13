@@ -2,6 +2,7 @@ package logica_negocio;
 
 import acceso_datos.RolFacade;
 import acceso_datos.UsuarioFacade;
+import excepciones.Excepciones;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.LocalBean;
@@ -75,7 +76,7 @@ public class AdministracionBean {
         // asignarRol(rol)
         Rol rol = rolFacade.find(idRol);
         if (rol == null) {
-            throw new ReglaNegocioException("rol", "El rol seleccionado no existe");
+            throw new Excepciones("rol", "El rol seleccionado no existe");
         }
         usuario.setIdRol(rol);
 
@@ -96,14 +97,14 @@ public class AdministracionBean {
     /** Lanza un error si la matrícula ya pertenece a otro usuario. */
     public void verificarMatriculaDisponible(String matricula) {
         if (usuarioFacade.buscarPorMatricula(matricula) != null) {
-            throw new ReglaNegocioException("matricula", "La matrícula " + matricula + " ya está registrada");
+            throw new Excepciones("matricula", "La matrícula " + matricula + " ya está registrada");
         }
     }
 
     /** Lanza un error si el correo ya pertenece a otro usuario. */
     public void verificarCorreoDisponible(String correo) {
         if (usuarioFacade.buscarPorCorreo(correo) != null) {
-            throw new ReglaNegocioException("correo", "El correo " + correo + " ya está registrado");
+            throw new Excepciones("correo", "El correo " + correo + " ya está registrado");
         }
     }
 
@@ -132,7 +133,7 @@ public class AdministracionBean {
     /** Quita espacios; el correo se guarda en minúsculas. */
     private void normalizar(Usuario u) {
         if (u == null) {
-            throw new ReglaNegocioException("Los datos del usuario son obligatorios");
+            throw new Excepciones("Los datos del usuario son obligatorios");
         }
         u.setMatricula(limpiar(u.getMatricula()));
         u.setNombre(limpiar(u.getNombre()));
@@ -143,19 +144,19 @@ public class AdministracionBean {
     /** Validación del lado del servidor (la página también valida). */
     private void validarObligatorios(Usuario u, Integer idRol, String contrasena) {
         if (u.getMatricula() == null || !u.getMatricula().matches("\\d{6,10}")) {
-            throw new ReglaNegocioException("matricula", "La matrícula debe tener de 6 a 10 dígitos");
+            throw new Excepciones("matricula", "La matrícula debe tener de 6 a 10 dígitos");
         }
         if (u.getNombre() == null) {
-            throw new ReglaNegocioException("nombre", "El nombre es obligatorio");
+            throw new Excepciones("nombre", "El nombre es obligatorio");
         }
         if (u.getCorreo() == null || !u.getCorreo().matches("[a-z0-9._%+-]+@imss\\.gob\\.mx")) {
-            throw new ReglaNegocioException("correo", "El correo debe ser institucional (@imss.gob.mx)");
+            throw new Excepciones("correo", "El correo debe ser institucional (@imss.gob.mx)");
         }
         if (idRol == null) {
-            throw new ReglaNegocioException("rol", "Seleccione el rol del usuario");
+            throw new Excepciones("rol", "Seleccione el rol del usuario");
         }
         if (contrasena == null || contrasena.length() < LONGITUD_MINIMA_CONTRASENA) {
-            throw new ReglaNegocioException("contrasena",
+            throw new Excepciones("contrasena",
                     "La contraseña debe tener al menos " + LONGITUD_MINIMA_CONTRASENA + " caracteres");
         }
     }
