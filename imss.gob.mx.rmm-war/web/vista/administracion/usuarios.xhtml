@@ -1,22 +1,132 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/plantillas/plantillaPrincipal.xhtml">
 
-    <ui:param name="seccion" value="usuarios"/>
+    <!-- PR-18 Administración → Usuarios (registro de usuarios, SD-07a) -->
+    <ui:param name="seccion" value="administracion"/>
     <ui:param name="subseccion" value="usuarios"/>
-    <ui:param name="migaSeccion" value="Usuarios"/>
-    <ui:param name="migaEnlace" value="/vista/administracion/usuarios"/>
+    <ui:param name="migaSeccion" value="Administración"/>
     <ui:param name="migaPagina" value="Usuarios"/>
     <ui:param name="titulo" value="Usuarios"/>
-    
+
     <ui:define name="estilos">
-       
+        <h:outputStylesheet library="css" name="administracion/usuarios.css"/>
     </ui:define>
 
     <ui:define name="content">
-        content
+        <h:form id="formUsuarios" styleClass="usuarios">
+
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <!-- Nuevo usuario -->
+            <p:outputPanel id="panelNuevo" styleClass="tarjeta" layout="block">
+                <div class="tarjeta-titulo">
+                    <h2>Nuevo usuario</h2>
+                    <span class="tenue">Todos los campos son obligatorios</span>
+                </div>
+
+                <div class="rejilla">
+                    <div class="campo">
+                        <p:outputLabel for="matricula" value="Matrícula"/>
+                        <p:inputText id="matricula" value="#{adminCtrl.nuevo.matricula}" maxlength="10"
+                                     required="true" requiredMessage="La matrícula es obligatoria"
+                                     validatorMessage="La matrícula debe tener de 6 a 10 dígitos"
+                                     placeholder="Ej. 99214812" styleClass="mono">
+                            <f:validateRegex pattern="^\s*\d{6,10}\s*$"/>
+                        </p:inputText>
+                        <p:message for="matricula"/>
+                    </div>
+
+                    <div class="campo campo-ancho">
+                        <p:outputLabel for="nombre" value="Nombre completo"/>
+                        <p:inputText id="nombre" value="#{adminCtrl.nuevo.nombre}" maxlength="255"
+                                     required="true" requiredMessage="El nombre es obligatorio"
+                                     placeholder="Ej. Tania Mishell Castillo Serna"/>
+                        <p:message for="nombre"/>
+                    </div>
+
+                    <div class="campo campo-ancho">
+                        <p:outputLabel for="correo" value="Correo institucional"/>
+                        <p:inputText id="correo" value="#{adminCtrl.nuevo.correo}" maxlength="255"
+                                     required="true" requiredMessage="El correo es obligatorio"
+                                     validatorMessage="El correo debe terminar en @imss.gob.mx"
+                                     placeholder="nombre.apellido@imss.gob.mx">
+                            <f:validateRegex pattern="(?i)^\s*[a-z0-9._%+-]+@imss\.gob\.mx\s*$"/>
+                        </p:inputText>
+                        <p:message for="correo"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="rol" value="Rol"/>
+                        <p:selectOneMenu id="rol" value="#{adminCtrl.idRol}"
+                                         required="true" requiredMessage="Seleccione el rol">
+                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{adminCtrl.roles}" var="r"
+                                           itemValue="#{r.idRol}" itemLabel="#{r.nombre}"/>
+                        </p:selectOneMenu>
+                        <p:message for="rol"/>
+                    </div>
+
+                    <div class="campo campo-ancho">
+                        <p:outputLabel for="contrasena" value="Contraseña temporal"/>
+                        <p:password id="contrasena" value="#{adminCtrl.contrasena}" feedback="false"
+                                    toggleMask="true" autocomplete="new-password"
+                                    required="true" requiredMessage="La contraseña es obligatoria"
+                                    validatorMessage="La contraseña debe tener al menos 8 caracteres">
+                            <f:validateLength minimum="8"/>
+                        </p:password>
+                        <p:message for="contrasena"/>
+                    </div>
+                </div>
+
+                <div class="acciones">
+                    <p:commandButton value="Limpiar" icon="pi pi-times"
+                                     action="#{adminCtrl.cancelar}"
+                                     process="@this" update="panelNuevo" resetValues="true"
+                                     styleClass="btn btn-secundario"/>
+                    <p:commandButton value="Guardar usuario" icon="pi pi-user-plus"
+                                     action="#{adminCtrl.guardarUsuario}"
+                                     process="panelNuevo" update="panelNuevo mensajes tablaUsuarios"
+                                     styleClass="btn btn-primario"/>
+                </div>
+            </p:outputPanel>
+
+            <!-- Usuarios registrados -->
+            <section class="tarjeta">
+                <div class="tarjeta-titulo">
+                    <h2>Usuarios registrados</h2>
+                </div>
+
+                <p:dataTable id="tablaUsuarios" value="#{adminCtrl.usuarios}" var="u"
+                             rows="10" paginator="true" paginatorPosition="bottom"
+                             paginatorAlwaysVisible="false"
+                             emptyMessage="Todavía no hay usuarios registrados."
+                             styleClass="tabla-usuarios">
+                    <p:column headerText="Matrícula" sortBy="#{u.matricula}" width="120">
+                        <h:outputText value="#{u.matricula}" styleClass="mono"/>
+                    </p:column>
+                    <p:column headerText="Nombre" sortBy="#{u.nombre}" filterBy="#{u.nombre}" filterMatchMode="contains">
+                        <h:outputText value="#{u.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Correo" sortBy="#{u.correo}">
+                        <h:outputText value="#{u.correo}"/>
+                    </p:column>
+                    <p:column headerText="Rol" sortBy="#{u.idRol.nombre}" width="130">
+                        <h:outputText value="#{u.idRol.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Estado" width="110">
+                        <h:outputText value="#{u.estaActivo ? 'Activo' : 'Inactivo'}"
+                                      styleClass="estado #{u.estaActivo ? 'estado-activo' : 'estado-inactivo'}"/>
+                    </p:column>
+                </p:dataTable>
+            </section>
+
+        </h:form>
     </ui:define>
 
 </ui:composition>

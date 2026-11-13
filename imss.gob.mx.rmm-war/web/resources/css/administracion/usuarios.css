@@ -1,0 +1,73 @@
+/* PR-18 Administración → Usuarios */
+.usuarios {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 1100px;
+}
+
+.usuarios .rejilla {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 18px;
+}
+
+.usuarios .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.usuarios .campo-ancho { grid-column: span 2; }
+
+.usuarios .campo label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texto-sec);
+}
+
+.usuarios .campo .ui-inputfield,
+.usuarios .campo .ui-selectonemenu,
+.usuarios .campo .ui-password,
+.usuarios .campo .ui-password input {
+    width: 100%;
+}
+
+.usuarios .campo .ui-selectonemenu { min-width: 0 !important; }
+
+.usuarios .campo .ui-state-error { border-color: var(--rojo); }
+
+.usuarios .acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Tabla */
+.usuarios .tabla-usuarios .ui-datatable-data td { vertical-align: middle; }
+
+.usuarios .estado {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.usuarios .estado-activo {
+    background-color: var(--verde-claro);
+    color: var(--verde);
+    border: 1px solid var(--verde-borde);
+}
+
+.usuarios .estado-inactivo {
+    background-color: #F1F3F5;
+    color: var(--texto-sec);
+    border: 1px solid var(--gris-borde);
+}
+
+@media (max-width: 900px) {
+    .usuarios .rejilla { grid-template-columns: 1fr; }
+    .usuarios .campo-ancho { grid-column: auto; }
+}

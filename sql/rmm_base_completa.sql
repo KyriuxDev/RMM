@@ -499,6 +499,7 @@ INSERT INTO `rol` (`nombre`, `permisos`) VALUES
  ('Supervisor', 'VER_TABLEROS,VER_MONITOREO,GESTIONAR_ALERTAS,GESTIONAR_INCIDENCIAS,GESTIONAR_INVENTARIO,VER_REPORTES'),
  ('Auxiliar', 'VER_MONITOREO,GESTIONAR_ALERTAS,GESTIONAR_INCIDENCIAS');
 
+
 -- =====================================================================
 -- 5. Vistas
 -- =====================================================================
