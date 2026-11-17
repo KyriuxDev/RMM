@@ -11,24 +11,29 @@ import jakarta.inject.Inject;
 import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import modelo.Rol;
 import modelo.Usuario;
 
 /**
- * Lógica de negocio de la administración de usuarios (SD-07a Usuarios y roles).
- * Por ahora cubre el registro de usuarios y las consultas para la pantalla.
+ * Lógica de negocio de SD-07a Usuarios y roles: registro de usuarios y
+ * edición de los permisos de cada rol.
+ *
+ * Las validaciones de formato (matrícula, correo, contraseña, etc.) las hace
+ * la vista con los validadores del paquete "validadores" del WAR. Aquí sólo
+ * queda una validación de respaldo: que lleguen los datos obligatorios y que
+ * no se repitan matrícula ni correo (dos personas pueden guardar al mismo tiempo).
  *
  * @author kyriux
  */
 @Stateless
 @LocalBean
 public class AdministracionBean {
-
-    /** Longitud mínima de la contraseña temporal. */
-    public static final int LONGITUD_MINIMA_CONTRASENA = 8;
 
     @EJB
     private UsuarioFacade usuarioFacade;
@@ -56,6 +61,9 @@ public class AdministracionBean {
                 "Pbkdf2PasswordHash.KeySizeBytes", "32"));
     }
 
+    // ------------------------------------------------------------------
+    // Usuarios
+    // ------------------------------------------------------------------
 
     /**
      * Registra un usuario nuevo con un rol y una contraseña temporal.
@@ -66,8 +74,17 @@ public class AdministracionBean {
      * @return el usuario registrado, con su id asignado
      */
     public Usuario guardarUsuario(Usuario usuario, Integer idRol, String contrasenaTemporal) {
+        if (usuario == null) {
+            throw new Excepciones("Los datos del usuario son obligatorios");
+        }
         normalizar(usuario);
-        validarObligatorios(usuario, idRol, contrasenaTemporal);
+
+        // Respaldo: datos obligatorios
+        Validacion.requerido(usuario.getMatricula(), "matricula", "La matrícula es obligatoria");
+        Validacion.requerido(usuario.getNombre(), "nombre", "El nombre es obligatorio");
+        Validacion.requerido(usuario.getCorreo(), "correo", "El correo es obligatorio");
+        Validacion.requerido(idRol, "rol", "Seleccione el rol del usuario");
+        Validacion.requerido(Validacion.limpiar(contrasenaTemporal), "contrasena", "La contraseña es obligatoria");
 
         // verificarCorreoDisponible(correo) (también la matrícula)
         verificarMatriculaDisponible(usuario.getMatricula());
@@ -94,18 +111,105 @@ public class AdministracionBean {
         return usuario;
     }
 
-    /** Lanza un error si la matrícula ya pertenece a otro usuario. */
+    /**
+     * Lanza un error si la matrícula ya pertenece a otro usuario.
+     * También la usa la vista (validador MatriculaDisponibleValidator).
+     */
     public void verificarMatriculaDisponible(String matricula) {
-        if (usuarioFacade.buscarPorMatricula(matricula) != null) {
-            throw new Excepciones("matricula", "La matrícula " + matricula + " ya está registrada");
+        String m = Validacion.limpiar(matricula);
+        if (m != null && usuarioFacade.buscarPorMatricula(m) != null) {
+            throw new Excepciones("matricula", "La matrícula " + m + " ya está registrada");
         }
     }
 
-    /** Lanza un error si el correo ya pertenece a otro usuario. */
+    /**
+     * Lanza un error si el correo ya pertenece a otro usuario.
+     * También la usa la vista (validador CorreoDisponibleValidator).
+     */
     public void verificarCorreoDisponible(String correo) {
-        if (usuarioFacade.buscarPorCorreo(correo) != null) {
-            throw new Excepciones("correo", "El correo " + correo + " ya está registrado");
+        String c = Validacion.limpiar(correo);
+        if (c != null && usuarioFacade.buscarPorCorreo(c.toLowerCase()) != null) {
+            throw new Excepciones("correo", "El correo " + c.toLowerCase() + " ya está registrado");
         }
+    }
+
+    // ------------------------------------------------------------------
+    // Roles y permisos (opt "el jefe edita permisos de un rol")
+    // ------------------------------------------------------------------
+
+    /**
+     * Guarda los permisos de varios roles a la vez (botón "Guardar cambios
+     * de permisos"). Para cada rol llama a actualizarPermisos(idRol, permisos).
+     * Si alguno falla, la transacción se deshace completa.
+     *
+     * @param permisosPorRol idRol → códigos de Permiso marcados
+     */
+    public void actualizarPermisos(Map<Integer, ? extends Collection<String>> permisosPorRol) {
+        Validacion.requerido(permisosPorRol, null, "No llegaron los permisos a guardar");
+        for (Map.Entry<Integer, ? extends Collection<String>> e : permisosPorRol.entrySet()) {
+            aplicarPermisos(e.getKey(), e.getValue());
+        }
+        // Se revisa al final: así se puede pasar Administración de un rol a otro en el mismo guardado
+        verificarQueHayaAdministrador();
+    }
+
+    /**
+     * actualizarPermisos(idRol, permisos) de SD-07a.
+     *
+     * Respaldo: el rol existe, los códigos son permisos conocidos, el rol
+     * conserva al menos un permiso y algún rol conserva ADMINISTRAR (si no,
+     * nadie podría volver a entrar a Administración).
+     */
+    public void actualizarPermisos(Integer idRol, Collection<String> permisos) {
+        aplicarPermisos(idRol, permisos);
+        verificarQueHayaAdministrador();
+    }
+
+    /** Valida y guarda los permisos de un rol (sin revisar el resto de los roles). */
+    private void aplicarPermisos(Integer idRol, Collection<String> permisos) {
+        Rol rol = idRol == null ? null : rolFacade.find(idRol);
+        if (rol == null) {
+            throw new Excepciones("El rol seleccionado no existe");
+        }
+
+        Set<String> codigos = new LinkedHashSet<>();
+        if (permisos != null) {
+            for (String p : permisos) {
+                if (!Permiso.existe(p)) {
+                    throw new Excepciones("El permiso " + p + " no existe");
+                }
+                codigos.add(p);
+            }
+        }
+        if (codigos.isEmpty()) {
+            throw new Excepciones("El rol " + rol.getNombre() + " debe tener al menos un permiso");
+        }
+
+        // actualizarPermisosRol(idRol, permisos)
+        rol.setPermisos(String.join(",", ordenar(codigos)));
+        rolFacade.edit(rol);
+    }
+
+    /** Lanza un error si ningún rol tiene el permiso ADMINISTRAR. */
+    private void verificarQueHayaAdministrador() {
+        boolean hayAdministrador = rolFacade.findAll().stream()
+                .anyMatch(r -> permisosDe(r).contains(Permiso.ADMINISTRAR.name()));
+        if (!hayAdministrador) {
+            throw new Excepciones("Al menos un rol debe conservar el permiso de Administración");
+        }
+    }
+
+    /** Códigos de permiso guardados en un rol. */
+    public static Set<String> permisosDe(Rol rol) {
+        Set<String> r = new LinkedHashSet<>();
+        if (rol != null && rol.getPermisos() != null) {
+            for (String p : rol.getPermisos().split(",")) {
+                if (!p.isBlank()) {
+                    r.add(p.trim());
+                }
+            }
+        }
+        return r;
     }
 
     // ------------------------------------------------------------------
@@ -119,10 +223,17 @@ public class AdministracionBean {
         return lista;
     }
 
-    /** Roles disponibles para asignar. */
+    /** Usuarios activos (para elegir el responsable de un equipo). */
+    public List<Usuario> listarUsuariosActivos() {
+        List<Usuario> lista = listarUsuarios();
+        lista.removeIf(u -> !u.getEstaActivo());
+        return lista;
+    }
+
+    /** Roles en el orden en que se crearon (Jefe, Supervisor, Auxiliar). */
     public List<Rol> listarRoles() {
         List<Rol> lista = new ArrayList<>(rolFacade.findAll());
-        lista.sort(Comparator.comparing(Rol::getNombre, String.CASE_INSENSITIVE_ORDER));
+        lista.sort(Comparator.comparing(Rol::getIdRol));
         return lista;
     }
 
@@ -132,36 +243,20 @@ public class AdministracionBean {
 
     /** Quita espacios; el correo se guarda en minúsculas. */
     private void normalizar(Usuario u) {
-        if (u == null) {
-            throw new Excepciones("Los datos del usuario son obligatorios");
-        }
-        u.setMatricula(limpiar(u.getMatricula()));
-        u.setNombre(limpiar(u.getNombre()));
-        String correo = limpiar(u.getCorreo());
+        u.setMatricula(Validacion.limpiar(u.getMatricula()));
+        u.setNombre(Validacion.limpiar(u.getNombre()));
+        String correo = Validacion.limpiar(u.getCorreo());
         u.setCorreo(correo == null ? null : correo.toLowerCase());
     }
 
-    /** Validación del lado del servidor (la página también valida). */
-    private void validarObligatorios(Usuario u, Integer idRol, String contrasena) {
-        if (u.getMatricula() == null || !u.getMatricula().matches("\\d{6,10}")) {
-            throw new Excepciones("matricula", "La matrícula debe tener de 6 a 10 dígitos");
+    /** Permisos en el orden del enum, para que la columna quede siempre igual. */
+    private List<String> ordenar(Set<String> codigos) {
+        List<String> r = new ArrayList<>();
+        for (Permiso p : Permiso.values()) {
+            if (codigos.contains(p.name())) {
+                r.add(p.name());
+            }
         }
-        if (u.getNombre() == null) {
-            throw new Excepciones("nombre", "El nombre es obligatorio");
-        }
-        if (u.getCorreo() == null || !u.getCorreo().matches("[a-z0-9._%+-]+@imss\\.gob\\.mx")) {
-            throw new Excepciones("correo", "El correo debe ser institucional (@imss.gob.mx)");
-        }
-        if (idRol == null) {
-            throw new Excepciones("rol", "Seleccione el rol del usuario");
-        }
-        if (contrasena == null || contrasena.length() < LONGITUD_MINIMA_CONTRASENA) {
-            throw new Excepciones("contrasena",
-                    "La contraseña debe tener al menos " + LONGITUD_MINIMA_CONTRASENA + " caracteres");
-        }
-    }
-
-    private String limpiar(String texto) {
-        return (texto == null || texto.isBlank()) ? null : texto.trim();
+        return r;
     }
 }

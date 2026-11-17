@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/plantillas/plantillaPrincipal.xhtml">
+
+    <!-- Administración → Metas SLA (SD-07c)
+         Si ya hay una meta para el mismo indicador y ámbito, se actualiza (metaExistente == true). -->
+    <ui:param name="seccion" value="administracion"/>
+    <ui:param name="subseccion" value="metas-sla"/>
+    <ui:param name="migaSeccion" value="Administración"/>
+    <ui:param name="migaPagina" value="Metas SLA"/>
+    <ui:param name="titulo" value="Metas SLA"/>
+
+    <ui:define name="estilos">
+        <h:outputStylesheet library="css" name="comun/formularios.css"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMetas" styleClass="vista-formulario">
+
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <p:outputPanel id="panelMeta" styleClass="tarjeta" layout="block">
+                <div class="tarjeta-titulo">
+                    <h2>Meta de nivel de servicio</h2>
+                    <span class="tenue">Si la meta ya existe para ese ámbito, se actualiza su valor</span>
+                </div>
+
+                <div class="rejilla">
+                    <div class="campo campo-ancho">
+                        <p:outputLabel for="indicador" value="Indicador"/>
+                        <p:selectOneMenu id="indicador" value="#{metasSlaCtrl.indicador}" binding="#{indicadorComp}"
+                                         required="true" requiredMessage="Seleccione el indicador">
+                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{metasSlaCtrl.indicadores}" var="i"
+                                           itemValue="#{i.codigo}" itemLabel="#{i.nombre} (#{i.unidadMedida})"/>
+                            <p:ajax event="change" process="@this" update="@this msgIndicador unidadMedida"/>
+                        </p:selectOneMenu>
+                        <p:message id="msgIndicador" for="indicador"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="valorMeta" value="Meta"/>
+                        <p:inputNumber id="valorMeta" value="#{metasSlaCtrl.valorMeta}"
+                                       decimalPlaces="2" minValue="0" maxValue="100000"
+                                       required="true" requiredMessage="Escriba el valor de la meta"
+                                       placeholder="Ej. 98.5">
+                            <f:validator validatorId="metaSlaValidator"/>
+                            <f:attribute name="indicador" value="#{indicadorComp}"/>
+                        </p:inputNumber>
+                        <h:outputText id="unidadMedida" value="#{metasSlaCtrl.unidadMedida}" styleClass="ayuda"/>
+                        <p:message for="valorMeta"/>
+                    </div>
+
+                    <div class="campo campo-completo">
+                        <p:outputLabel for="ambito" value="Ámbito"/>
+                        <p:selectOneRadio id="ambito" value="#{metasSlaCtrl.ambito}"
+                                          required="true" requiredMessage="Seleccione el ámbito">
+                            <f:selectItem itemValue="#{metasSlaCtrl.ambitoGlobal}" itemLabel="Global (todo el OOAD)"/>
+                            <f:selectItem itemValue="#{metasSlaCtrl.ambitoRegion}" itemLabel="Por región"/>
+                            <f:selectItem itemValue="#{metasSlaCtrl.ambitoUnidad}" itemLabel="Por hospital / sede"/>
+                            <p:ajax event="change" process="@this" update="panelAmbito"/>
+                        </p:selectOneRadio>
+                        <p:message for="ambito"/>
+                    </div>
+                </div>
+
+                <p:outputPanel id="panelAmbito" layout="block" styleClass="rejilla">
+                    <h:panelGroup layout="block" styleClass="campo campo-ancho" rendered="#{metasSlaCtrl.ambitoRegion}">
+                        <p:outputLabel for="region" value="Región"/>
+                        <p:selectOneMenu id="region" value="#{metasSlaCtrl.idRegion}"
+                                         required="true" requiredMessage="Seleccione la región">
+                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{metasSlaCtrl.regiones}" var="r"
+                                           itemValue="#{r.idRegion}" itemLabel="#{r.nombre}"/>
+                        </p:selectOneMenu>
+                        <p:message for="region"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" styleClass="campo campo-ancho" rendered="#{metasSlaCtrl.ambitoUnidad}">
+                        <p:outputLabel for="unidad" value="Hospital / sede"/>
+                        <p:selectOneMenu id="unidad" value="#{metasSlaCtrl.idUnidadHomologada}"
+                                         filter="true" filterMatchMode="contains"
+                                         required="true" requiredMessage="Seleccione el hospital o sede">
+                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{metasSlaCtrl.unidades}" var="u"
+                                           itemValue="#{u.idUnidadHomologada}" itemLabel="#{u.nombre}"/>
+                        </p:selectOneMenu>
+                        <p:message for="unidad"/>
+                    </h:panelGroup>
+                </p:outputPanel>
+
+                <div class="acciones">
+                    <p:commandButton value="Limpiar" icon="pi pi-times"
+                                     action="#{metasSlaCtrl.cancelar}"
+                                     process="@this" update="panelMeta" resetValues="true"
+                                     styleClass="btn btn-secundario"/>
+                    <p:commandButton value="Guardar meta" icon="pi pi-check"
+                                     action="#{metasSlaCtrl.guardarMetaSLA}"
+                                     process="panelMeta" update="panelMeta mensajes tablaMetas"
+                                     styleClass="btn btn-primario"/>
+                </div>
+            </p:outputPanel>
+
+            <section class="tarjeta">
+                <div class="tarjeta-titulo">
+                    <h2>Metas registradas</h2>
+                </div>
+
+                <p:dataTable id="tablaMetas" value="#{metasSlaCtrl.metas}" var="s"
+                             rows="10" paginator="true" paginatorPosition="bottom"
+                             paginatorAlwaysVisible="false"
+                             emptyMessage="Todavía no hay metas SLA registradas.">
+                    <p:column headerText="Indicador" sortBy="#{s.nombreIndicador}">
+                        <h:outputText value="#{s.nombreIndicador}"/>
+                    </p:column>
+                    <p:column headerText="Meta" width="130">
+                        <h:outputText value="#{s.metaValor}" styleClass="mono">
+                            <f:convertNumber minFractionDigits="0" maxFractionDigits="2"/>
+                        </h:outputText>
+                        <h:outputText value=" #{s.unidadMedida}"/>
+                    </p:column>
+                    <p:column headerText="Ámbito">
+                        <h:outputText value="#{metasSlaCtrl.nombreAmbito(s.ambito, s.valorAmbito)}"/>
+                    </p:column>
+                    <p:column headerText="" width="90">
+                        <p:commandButton value="Editar" icon="pi pi-pencil"
+                                         action="#{metasSlaCtrl.editar(s)}"
+                                         process="@this" update="formMetas:panelMeta" resetValues="true"
+                                         styleClass="btn btn-secundario"/>
+                    </p:column>
+                </p:dataTable>
+            </section>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

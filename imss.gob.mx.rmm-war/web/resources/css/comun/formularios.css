@@ -1,0 +1,144 @@
+/* Estilos compartidos por las vistas con formulario y tabla
+   (Roles y permisos, Unidades, Metas SLA, Alta de equipo).
+   Siguen el mismo diseño que administracion/usuarios.css. */
+.vista-formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 1100px;
+}
+
+.vista-formulario .rejilla {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 18px;
+}
+
+.vista-formulario .rejilla-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.vista-formulario .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.vista-formulario .campo-ancho { grid-column: span 2; }
+.vista-formulario .campo-completo { grid-column: 1 / -1; }
+
+.vista-formulario .campo label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texto-sec);
+}
+
+.vista-formulario .campo .ui-inputfield,
+.vista-formulario .campo .ui-selectonemenu,
+.vista-formulario .campo .ui-inputnumber,
+.vista-formulario .campo .ui-inputnumber input {
+    width: 100%;
+}
+
+.vista-formulario .campo .ui-selectonemenu { min-width: 0 !important; }
+.vista-formulario .campo .ui-state-error { border-color: var(--rojo); }
+
+.vista-formulario .ayuda { font-size: 12px; color: #8C99A6; }
+
+.vista-formulario .valor-auto {
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    background-color: #F4F6F8;
+    border: 1px dashed var(--gris-borde);
+    font-size: 13px;
+    color: var(--texto-sec);
+}
+
+.vista-formulario .subtitulo {
+    margin: 4px 0 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--texto);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+}
+
+.vista-formulario .acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.vista-formulario .filtros {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+    gap: 14px 18px;
+    align-items: end;
+}
+
+.vista-formulario .ui-datatable-data td { vertical-align: middle; }
+
+.vista-formulario .estado {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #F1F3F5;
+    color: var(--texto-sec);
+    border: 1px solid var(--gris-borde);
+}
+
+.vista-formulario .estado-activo {
+    background-color: var(--verde-claro);
+    color: var(--verde);
+    border-color: var(--verde-borde);
+}
+
+/* Matriz de permisos (Roles y permisos) */
+.vista-formulario .tabla-scroll { overflow-x: auto; }
+
+.vista-formulario .matriz-permisos {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.vista-formulario .matriz-permisos th,
+.vista-formulario .matriz-permisos td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gris-borde);
+    text-align: left;
+}
+
+.vista-formulario .matriz-permisos thead th {
+    background-color: #F4F6F8;
+    font-weight: 700;
+}
+
+.vista-formulario .matriz-permisos .col-rol {
+    width: 130px;
+    text-align: center;
+}
+
+.vista-formulario .matriz-permisos th.col-rol .tenue {
+    display: block;
+    font-weight: 400;
+    font-size: 11px;
+}
+
+.vista-formulario .matriz-permisos .descripcion {
+    display: block;
+    font-size: 12px;
+    color: var(--texto-sec);
+}
+
+.vista-formulario .matriz-permisos tbody tr:hover { background-color: #F9FAFB; }
+
+@media (max-width: 900px) {
+    .vista-formulario .rejilla,
+    .vista-formulario .rejilla-4,
+    .vista-formulario .filtros { grid-template-columns: 1fr; }
+    .vista-formulario .campo-ancho { grid-column: auto; }
+}

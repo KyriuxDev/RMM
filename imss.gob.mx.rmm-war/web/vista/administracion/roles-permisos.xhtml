@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/plantillas/plantillaPrincipal.xhtml">
+
+    <!-- Administración → Roles y permisos (PR-18 "Permisos por rol", SD-07a opt editarPermisosRol)
+         Filas: módulos (permisos). Columnas: roles. Se guarda toda la matriz a la vez. -->
+    <ui:param name="seccion" value="administracion"/>
+    <ui:param name="subseccion" value="roles-permisos"/>
+    <ui:param name="migaSeccion" value="Administración"/>
+    <ui:param name="migaPagina" value="Roles y permisos"/>
+    <ui:param name="titulo" value="Roles y permisos"/>
+
+    <ui:define name="estilos">
+        <h:outputStylesheet library="css" name="comun/formularios.css"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formRoles" styleClass="vista-formulario">
+
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <p:outputPanel id="panelMatriz" styleClass="tarjeta" layout="block">
+                <div class="tarjeta-titulo">
+                    <h2>Permisos por rol</h2>
+                    <span class="tenue">Marque los módulos a los que tiene acceso cada rol</span>
+                </div>
+
+                <div class="tabla-scroll">
+                    <table class="matriz-permisos">
+                        <thead>
+                            <tr>
+                                <th class="col-modulo">Módulo</th>
+                                <ui:repeat value="#{rolesCtrl.roles}" var="r">
+                                    <th class="col-rol">
+                                        #{r.nombre}
+                                        <span class="tenue">#{rolesCtrl.contarPermisos(r.idRol)} permisos</span>
+                                    </th>
+                                </ui:repeat>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{rolesCtrl.permisos}" var="p">
+                                <tr>
+                                    <td class="col-modulo">
+                                        <strong>#{p.modulo}</strong>
+                                        <span class="descripcion">#{p.descripcion}</span>
+                                    </td>
+                                    <ui:repeat value="#{rolesCtrl.roles}" var="r">
+                                        <td class="col-rol">
+                                            <p:selectBooleanCheckbox value="#{rolesCtrl.matriz[r.idRol][p.codigo]}"
+                                                                     title="#{p.modulo} – #{r.nombre}"/>
+                                        </td>
+                                    </ui:repeat>
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="acciones">
+                    <p:commandButton value="Descartar cambios" icon="pi pi-undo"
+                                     action="#{rolesCtrl.descartar}"
+                                     process="@this" update="panelMatriz mensajes" resetValues="true"
+                                     styleClass="btn btn-secundario"/>
+                    <p:commandButton value="Guardar cambios de permisos" icon="pi pi-save"
+                                     action="#{rolesCtrl.guardarPermisos}"
+                                     process="panelMatriz" update="panelMatriz mensajes"
+                                     styleClass="btn btn-primario"/>
+                </div>
+            </p:outputPanel>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

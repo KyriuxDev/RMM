@@ -2,8 +2,6 @@ package controlador;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import java.io.Serializable;
@@ -15,10 +13,11 @@ import modelo.Usuario;
 
 /**
  * Controlador de la pantalla Administración → Usuarios (PR-18).
- * Es adminCtrl en el diagrama SD-07a. Por ahora cubre el registro de usuarios.
+ * Es adminCtrl en el diagrama SD-07a (rama usuarioNuevo == true).
  *
- * Recibe lo que captura la página, llama a AdministracionBean (lógica de
- * negocio) y muestra el resultado. No contiene reglas de negocio.
+ * validarCampos() del diagrama lo hacen los validadores del paquete
+ * "validadores" que usa usuarios.xhtml; aquí sólo se llama a
+ * AdministracionBean y se muestra el resultado.
  *
  * @author kyriux
  */
@@ -49,26 +48,18 @@ public class AdministracionController implements Serializable {
 
     /** guardarUsuario(datos, idRol) **/
     public void guardarUsuario() {
-        FacesContext ctx = FacesContext.getCurrentInstance();
         try {
             Usuario registrado = administracionBean.guardarUsuario(nuevo, idRol, contrasena);
 
             // mostrarConfirmacion()
-            ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                    "Usuario registrado",
-                    registrado.getNombre() + " (" + registrado.getMatricula() + ") ya puede iniciar sesión."));
+            Mensajes.info("Usuario registrado",
+                    registrado.getNombre() + " (" + registrado.getMatricula() + ") ya puede iniciar sesión.");
             usuarios = administracionBean.listarUsuarios();
             limpiarFormulario();
 
         } catch (Excepciones e) {
-            // Marca en rojo el campo con el problema
-            if (e.getCampo() != null) {
-                ctx.addMessage("formUsuarios:" + e.getCampo(),
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
-            }
-            ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "No se pudo registrar el usuario", e.getMessage()));
-            ctx.validationFailed();
+            // Respaldo del EJB (por ejemplo, otra persona registró la misma matrícula al mismo tiempo)
+            Mensajes.error("formUsuarios", e, "No se pudo registrar el usuario");
         } finally {
             contrasena = null;
         }

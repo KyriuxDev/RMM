@@ -49,6 +49,7 @@
        > .ui-panelmenu-content > ul > li > a.ui-menuitem-link (styleClass del p:menuitem)
 */
 .menu { flex: 1; }
+.menu-form { flex: 1; }   /* h:form que envuelve el p:panelMenu (sidebar.xhtml) */
 
 .sidebar .ui-panelmenu .ui-panelmenu-panel { margin-bottom: 2px; }
 

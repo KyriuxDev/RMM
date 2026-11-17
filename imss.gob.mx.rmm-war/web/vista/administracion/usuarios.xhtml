@@ -7,7 +7,9 @@
                 xmlns:p="primefaces"
                 template="/plantillas/plantillaPrincipal.xhtml">
 
-    <!-- PR-18 Administración → Usuarios (registro de usuarios, SD-07a) -->
+    <!-- Administración → Usuarios (SD-07a)
+         validarCampos(): required + validadores del paquete "validadores" del WAR.
+         Matrícula y correo se revisan contra la base al salir del campo (p:ajax change). -->
     <ui:param name="seccion" value="administracion"/>
     <ui:param name="subseccion" value="usuarios"/>
     <ui:param name="migaSeccion" value="Administración"/>
@@ -35,18 +37,21 @@
                         <p:outputLabel for="matricula" value="Matrícula"/>
                         <p:inputText id="matricula" value="#{adminCtrl.nuevo.matricula}" maxlength="10"
                                      required="true" requiredMessage="La matrícula es obligatoria"
-                                     validatorMessage="La matrícula debe tener de 6 a 10 dígitos"
                                      placeholder="Ej. 99214812" styleClass="mono">
-                            <f:validateRegex pattern="^\s*\d{6,10}\s*$"/>
+                            <f:validator validatorId="matriculaValidator"/>
+                            <f:validator validatorId="matriculaDisponibleValidator"/>
+                            <p:ajax event="change" process="@this" update="@this msgMatricula"/>
                         </p:inputText>
-                        <p:message for="matricula"/>
+                        <p:message id="msgMatricula" for="matricula"/>
                     </div>
 
                     <div class="campo campo-ancho">
                         <p:outputLabel for="nombre" value="Nombre completo"/>
                         <p:inputText id="nombre" value="#{adminCtrl.nuevo.nombre}" maxlength="255"
                                      required="true" requiredMessage="El nombre es obligatorio"
-                                     placeholder="Ej. Tania Mishell Castillo Serna"/>
+                                     placeholder="Ej. Tania Mishell Castillo Serna">
+                            <f:validateLength minimum="3" maximum="255"/>
+                        </p:inputText>
                         <p:message for="nombre"/>
                     </div>
 
@@ -54,11 +59,12 @@
                         <p:outputLabel for="correo" value="Correo institucional"/>
                         <p:inputText id="correo" value="#{adminCtrl.nuevo.correo}" maxlength="255"
                                      required="true" requiredMessage="El correo es obligatorio"
-                                     validatorMessage="El correo debe terminar en @imss.gob.mx"
                                      placeholder="nombre.apellido@imss.gob.mx">
-                            <f:validateRegex pattern="(?i)^\s*[a-z0-9._%+-]+@imss\.gob\.mx\s*$"/>
+                            <f:validator validatorId="correoInstitucionalValidator"/>
+                            <f:validator validatorId="correoDisponibleValidator"/>
+                            <p:ajax event="change" process="@this" update="@this msgCorreo"/>
                         </p:inputText>
-                        <p:message for="correo"/>
+                        <p:message id="msgCorreo" for="correo"/>
                     </div>
 
                     <div class="campo">
@@ -76,9 +82,8 @@
                         <p:outputLabel for="contrasena" value="Contraseña temporal"/>
                         <p:password id="contrasena" value="#{adminCtrl.contrasena}" feedback="false"
                                     toggleMask="true" autocomplete="new-password"
-                                    required="true" requiredMessage="La contraseña es obligatoria"
-                                    validatorMessage="La contraseña debe tener al menos 8 caracteres">
-                            <f:validateLength minimum="8"/>
+                                    required="true" requiredMessage="La contraseña es obligatoria">
+                            <f:validator validatorId="contrasenaValidator"/>
                         </p:password>
                         <p:message for="contrasena"/>
                     </div>

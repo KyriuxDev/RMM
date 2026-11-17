@@ -22,7 +22,10 @@
             <h:link outcome="/vista/tableros/vista-general" styleClass="logo-rmm" value="RMM"/>
         </div>
 
-        <p:panelMenu styleClass="menu" multiple="false" stateful="false">
+        <!-- Los p:menuitem son comandos en PrimeFaces: deben estar dentro de un h:form
+             (si no, en modo Development Faces muestra el aviso "needs to have a Form in its ancestry"). -->
+        <h:form id="formMenu" styleClass="menu-form">
+            <p:panelMenu styleClass="menu" multiple="false" stateful="false">
             <!-- Tableros -->
             <p:submenu label="Tableros" icon="pi pi-objects-column" expanded="#{seccion eq 'tableros'}"
                        styleClass="seccion-tableros #{seccion eq 'tableros' ? 'activa' : ''}">
@@ -66,6 +69,8 @@
                        styleClass="seccion-inventario #{seccion eq 'inventario' ? 'activa' : ''}">
                 <p:menuitem value="Equipos" url="#"
                             styleClass="#{subseccion eq 'equipos' ? 'activo' : ''}"/>
+                <p:menuitem value="Alta de equipo" outcome="/vista/inventario/alta-equipo.xhtml"
+                            styleClass="#{subseccion eq 'alta-equipo' ? 'activo' : ''}"/>
                 <p:menuitem value="Software no autorizado" url="#"
                             styleClass="#{subseccion eq 'software-no-autorizado' ? 'activo' : ''}"/>
                 <p:menuitem value="Agentes" url="#"
@@ -84,16 +89,17 @@
                        styleClass="seccion-administracion #{seccion eq 'administracion' ? 'activa' : ''}">
                 <p:menuitem value="Usuarios" outcome="/vista/administracion/usuarios.xhtml"
                             styleClass="#{subseccion eq 'usuarios' ? 'activo' : ''}"/>
-                <p:menuitem value="Roles y permisos" url="#"
+                <p:menuitem value="Roles y permisos" outcome="/vista/administracion/roles-permisos.xhtml"
                             styleClass="#{subseccion eq 'roles-permisos' ? 'activo' : ''}"/>
-                <p:menuitem value="Unidades" url="#"
+                <p:menuitem value="Unidades" outcome="/vista/administracion/unidades.xhtml"
                             styleClass="#{subseccion eq 'unidades' ? 'activo' : ''}"/>
-                <p:menuitem value="Metas SLA" url="#"
+                <p:menuitem value="Metas SLA" outcome="/vista/administracion/metas-sla.xhtml"
                             styleClass="#{subseccion eq 'metas-sla' ? 'activo' : ''}"/>
                 <p:menuitem value="Correo y conectores" url="#"
                             styleClass="#{subseccion eq 'correo-conectores' ? 'activo' : ''}"/>
             </p:submenu>
-        </p:panelMenu>
+            </p:panelMenu>
+        </h:form>
 
         <!-- Al dar clic en una subsección, el resaltado (clase "activo") pasa a esa subsección.
              Si la subsección tiene vista, la página nueva la vuelve a marcar con el parámetro "subseccion". -->

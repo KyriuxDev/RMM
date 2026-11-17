@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/plantillas/plantillaPrincipal.xhtml">
+
+    <!-- Inventario → Alta de equipo (PR-14, SD-05c operacion == "alta")
+         validarCamposObligatorios(): required + validadores del paquete "validadores".
+         Hostname y MAC se revisan contra la base al salir del campo (aviso de MAC duplicada). -->
+    <ui:param name="seccion" value="inventario"/>
+    <ui:param name="subseccion" value="alta-equipo"/>
+    <ui:param name="migaSeccion" value="Inventario"/>
+    <ui:param name="migaPagina" value="Alta de equipo"/>
+    <ui:param name="titulo" value="Alta de equipo"/>
+
+    <ui:define name="estilos">
+        <h:outputStylesheet library="css" name="comun/formularios.css"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formEquipo" styleClass="vista-formulario">
+
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <p:outputPanel id="panelEquipo" styleClass="tarjeta" layout="block">
+                <div class="tarjeta-titulo">
+                    <h2>Nuevo equipo</h2>
+                    <span class="tenue">Los campos con * son obligatorios</span>
+                </div>
+
+                <!-- Identificación en red -->
+                <h3 class="subtitulo">Identificación en red</h3>
+                <div class="rejilla">
+                    <div class="campo">
+                        <p:outputLabel for="hostname" value="Hostname"/>
+                        <p:inputText id="hostname" value="#{inventarioCtrl.nuevo.hostname}" maxlength="63"
+                                     required="true" requiredMessage="El hostname es obligatorio"
+                                     placeholder="Ej. OAX-HGZ1-PC014" styleClass="mono">
+                            <f:validator validatorId="hostnameValidator"/>
+                            <f:validator validatorId="hostnameDisponibleValidator"/>
+                            <p:ajax event="change" process="@this" update="@this msgHostname"/>
+                        </p:inputText>
+                        <p:message id="msgHostname" for="hostname"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="mac" value="Dirección MAC"/>
+                        <p:inputText id="mac" value="#{inventarioCtrl.nuevo.direccionMac}" maxlength="17"
+                                     required="true" requiredMessage="La dirección MAC es obligatoria"
+                                     placeholder="AA:BB:CC:DD:EE:FF" styleClass="mono">
+                            <f:validator validatorId="macValidator"/>
+                            <f:validator validatorId="macDisponibleValidator"/>
+                            <p:ajax event="change" process="@this" update="@this msgMac"/>
+                        </p:inputText>
+                        <p:message id="msgMac" for="mac"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="ip" value="Dirección IP"/>
+                        <p:inputText id="ip" value="#{inventarioCtrl.nuevo.ipLocal}" maxlength="15"
+                                     placeholder="Ej. 10.21.0.15" styleClass="mono">
+                            <f:validator validatorId="ipValidator"/>
+                        </p:inputText>
+                        <p:message for="ip"/>
+                    </div>
+                </div>
+
+                <!-- Ubicación y área: seleccionarHospital(idUnidadHomologada) → listarAreas(idUnidadHomologada)
+                     Hospital / sede = tabla unidad_homologada -->
+                <h3 class="subtitulo">Ubicación y área</h3>
+                <div class="rejilla">
+                    <div class="campo">
+                        <p:outputLabel for="hospital" value="Hospital / sede"/>
+                        <p:selectOneMenu id="hospital" value="#{inventarioCtrl.idUnidadHomologada}"
+                                         filter="true" filterMatchMode="contains"
+                                         required="true" requiredMessage="Seleccione el hospital o sede">
+                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{inventarioCtrl.hospitales}" var="h"
+                                           itemValue="#{h.idUnidadHomologada}" itemLabel="#{h.nombre}"/>
+                            <p:ajax event="change" process="@this" listener="#{inventarioCtrl.seleccionarHospital}"
+                                    update="@this msgHospital area msgArea inmueble"/>
+                        </p:selectOneMenu>
+                        <p:message id="msgHospital" for="hospital"/>
+                    </div>
+
+                    <div class="campo campo-ancho">
+                        <p:outputLabel for="area" value="Unidad / servicio (área)"/>
+                        <p:selectOneMenu id="area" value="#{inventarioCtrl.idArea}"
+                                         filter="true" filterMatchMode="contains"
+                                         disabled="#{empty inventarioCtrl.areas}"
+                                         required="true" requiredMessage="Seleccione la unidad / servicio">
+                            <f:selectItem itemLabel="#{empty inventarioCtrl.areas ? 'Primero elija el hospital' : 'Seleccione...'}"
+                                          itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{inventarioCtrl.areas}" var="a"
+                                           itemValue="#{a.idArea}" itemLabel="#{inventarioCtrl.etiquetaArea(a)}"/>
+                            <p:ajax event="change" process="@this" update="@this msgArea inmueble"/>
+                        </p:selectOneMenu>
+                        <p:message id="msgArea" for="area"/>
+                    </div>
+
+                    <div class="campo campo-ancho">
+                        <p:outputLabel for="ubicacion" value="Ubicación física"/>
+                        <p:inputText id="ubicacion" value="#{inventarioCtrl.nuevo.ubicacionFisica}" maxlength="255"
+                                     placeholder="Ej. Planta baja, consultorio 4"
+                                     validatorMessage="La ubicación física no puede pasar de 255 caracteres">
+                            <f:validateLength maximum="255"/>
+                        </p:inputText>
+                        <p:message for="ubicacion"/>
+                    </div>
+
+                    <div class="campo">
+                        <label>Inmueble (automático)</label>
+                        <h:outputText id="inmueble" styleClass="valor-auto"
+                                      value="#{empty inventarioCtrl.inmueble ? 'Se llena al elegir el área' : inventarioCtrl.inmueble}"/>
+                    </div>
+                </div>
+
+                <!-- Responsable y especificaciones -->
+                <h3 class="subtitulo">Responsable y especificaciones</h3>
+                <div class="rejilla">
+                    <div class="campo">
+                        <p:outputLabel for="responsable" value="Usuario responsable"/>
+                        <p:selectOneMenu id="responsable" value="#{inventarioCtrl.idResponsable}"
+                                         filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="Sin responsable" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{inventarioCtrl.responsables}" var="u"
+                                           itemValue="#{u.idUsuario}" itemLabel="#{u.nombre} (#{u.matricula})"/>
+                        </p:selectOneMenu>
+                        <p:message for="responsable"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="so" value="Sistema operativo"/>
+                        <p:inputText id="so" value="#{inventarioCtrl.nuevo.nombreSo}" maxlength="255"
+                                     placeholder="Ej. Windows 11 Pro"/>
+                        <p:message for="so"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="versionSo" value="Versión del SO"/>
+                        <p:inputText id="versionSo" value="#{inventarioCtrl.nuevo.versionSo}" maxlength="255"
+                                     placeholder="Ej. 23H2"/>
+                        <p:message for="versionSo"/>
+                    </div>
+                </div>
+
+                <div class="rejilla rejilla-4">
+                    <div class="campo">
+                        <p:outputLabel for="cpu" value="Procesador"/>
+                        <p:inputText id="cpu" value="#{inventarioCtrl.hardware.modeloCpu}" maxlength="255"
+                                     placeholder="Ej. Intel Core i5-12500"/>
+                        <p:message for="cpu"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="nucleos" value="Núcleos"/>
+                        <p:inputNumber id="nucleos" value="#{inventarioCtrl.hardware.nucleosCpu}"
+                                       decimalPlaces="0" minValue="0" maxValue="999" placeholder="Ej. 6"
+                                       validatorMessage="Los núcleos deben estar entre 1 y 256">
+                            <f:validateLongRange minimum="1" maximum="256"/>
+                        </p:inputNumber>
+                        <p:message for="nucleos"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="ram" value="RAM (GB)"/>
+                        <p:inputNumber id="ram" value="#{inventarioCtrl.hardware.totalRamGb}"
+                                       decimalPlaces="1" minValue="0" maxValue="9999" placeholder="Ej. 16"
+                                       validatorMessage="La RAM debe estar entre 1 y 1024 GB">
+                            <f:validateDoubleRange minimum="1" maximum="1024"/>
+                        </p:inputNumber>
+                        <p:message for="ram"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="disco" value="Disco (GB)"/>
+                        <p:inputNumber id="disco" value="#{inventarioCtrl.hardware.capacidadDiscoGb}"
+                                       decimalPlaces="0" minValue="0" maxValue="999999" placeholder="Ej. 512"
+                                       validatorMessage="El disco debe estar entre 16 y 100000 GB">
+                            <f:validateDoubleRange minimum="16" maximum="100000"/>
+                        </p:inputNumber>
+                        <p:message for="disco"/>
+                    </div>
+                </div>
+
+                <div class="acciones">
+                    <p:commandButton value="Cancelar" icon="pi pi-times"
+                                     action="#{inventarioCtrl.cancelar}"
+                                     process="@this" update="panelEquipo" resetValues="true"
+                                     styleClass="btn btn-secundario"/>
+                    <p:commandButton value="Guardar equipo" icon="pi pi-save"
+                                     action="#{inventarioCtrl.guardarNuevoEquipo}"
+                                     process="panelEquipo" update="panelEquipo mensajes"
+                                     styleClass="btn btn-primario"/>
+                </div>
+            </p:outputPanel>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>
