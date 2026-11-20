@@ -124,11 +124,11 @@ public class MetasSlaController implements Serializable {
         return i == null ? "" : i.getUnidadMedida();
     }
 
-    public boolean isAmbitoRegion() {
+    public boolean isPorRegion() {
         return MetasSlaBean.AMBITO_REGION.equals(ambito);
     }
 
-    public boolean isAmbitoUnidad() {
+    public boolean isPorUnidad() {
         return MetasSlaBean.AMBITO_UNIDAD.equals(ambito);
     }
 

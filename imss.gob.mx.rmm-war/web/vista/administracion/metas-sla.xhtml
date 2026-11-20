@@ -70,7 +70,7 @@
                 </div>
 
                 <p:outputPanel id="panelAmbito" layout="block" styleClass="rejilla">
-                    <h:panelGroup layout="block" styleClass="campo campo-ancho" rendered="#{metasSlaCtrl.ambitoRegion}">
+                    <h:panelGroup layout="block" styleClass="campo campo-ancho" rendered="#{metasSlaCtrl.porRegion}">
                         <p:outputLabel for="region" value="Región"/>
                         <p:selectOneMenu id="region" value="#{metasSlaCtrl.idRegion}"
                                          required="true" requiredMessage="Seleccione la región">
@@ -81,7 +81,7 @@
                         <p:message for="region"/>
                     </h:panelGroup>
 
-                    <h:panelGroup layout="block" styleClass="campo campo-ancho" rendered="#{metasSlaCtrl.ambitoUnidad}">
+                    <h:panelGroup layout="block" styleClass="campo campo-ancho" rendered="#{metasSlaCtrl.porUnidad}">
                         <p:outputLabel for="unidad" value="Hospital / sede"/>
                         <p:selectOneMenu id="unidad" value="#{metasSlaCtrl.idUnidadHomologada}"
                                          filter="true" filterMatchMode="contains"

@@ -1,0 +1,791 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Project Author="kyriux" CommentTableSortAscending="false" CommentTableSortColumn="Date Time" Description="&lt;html&gt;&#13;&#10;  &lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;  &lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;" DocumentationType="html" ExportedFromDifferentName="false" ExporterVersion="16.1.1" Name="rmm_imss" TextualAnalysisHighlightOptionCaseSensitive="false" UmlVersion="2.x" Xml_structure="simple">
+	<ProjectInfo>
+		<OrmInfo DefaultDatabase="1" SupportDatabases="0" />
+		<LogicalView />
+		<ProjectOptions>
+			<DiagramOptions ActivityDiagramControlFlowDisplayOption="\u0000" ActivityDiagramShowActionCallBehaviorOption="\u0000" ActivityDiagramShowActivityEdgeWeight="true" ActivityDiagramShowDiagramFrame="true" ActivityDiagramShowObjectNodeType="true" ActivityDiagramShowPartitionHandle="\u0000" AddDataStoresExtEntitiesToDecomposedDFD="\u0002" AlignColumnProperties="true" AllowConfigShowInOutFlowButtonsInDataFlowDiagram="false" AutoGenerateRoleName="false" AutoSetAttributeType="true" AutoSetColumnType="true" AutoSyncRoleName="true" BlockDefinitionDiagramShowDiagramFrame="true" BpPoolLaneDefaultOrientation="\u0000" BpdAutoStretchPools="true" BpdConnectGatewayWithFlowObjectInDifferentPool="\u0000" BpdDefaultConnectionPointStyle="\u0001" BpdDefaultConnectorStyle="\u0005" BpdDhowIdOption="\u0000" BpdShowActivitiesTypeIcon="true" BusinessProcessDiagramDefaultLanguage="English" ClassVisibilityStyle="\u0001" ConnectorLabelOrientation="\u0000" CreateOneMessagePerDirection="true" DecisionMergeNodeConnectionPointStyle="\u0000" DefaultAssociationEndNavigable="\u0001" DefaultAssociationEndVisibility="\u0000" DefaultAssociationShowFromMultiplicity="true" DefaultAssociationShowFromRoleName="true" DefaultAssociationShowFromRoleVisibility="true" DefaultAssociationShowStereotypes="true" DefaultAssociationShowToMultiplicity="true" DefaultAssociationShowToRoleName="true" DefaultAssociationShowToRoleVisibility="true" DefaultAttributeMultiplicity="false" DefaultAttributeType="" DefaultAttributeVisibility="\u0001" DefaultClassAttributeMultiplicity="" DefaultClassAttributeMultiplicityOrdered="false" DefaultClassAttributeMultiplicityUnique="true" DefaultClassInterfaceBall="false" DefaultClassVisibility="\u0004" DefaultColumnType="integer(10)" DefaultConnectionPointStyle="\u0000" DefaultConnectorStyle="\u0001" DefaultDiagramBackground="rgb(255, 255, 255)" DefaultDisplayAsRobustnessAnalysisIcon="true" DefaultDisplayAsRobustnessAnalysisIconInSequenceDiagram="true" DefaultDisplayAsStereotypeIcon="false" DefaultFontColor="rgb(0, 0, 0)" DefaultGenDiagramTypeFromScenario="\u0000" DefaultHtmlDocFontColor="rgb(0, 0, 0)" DefaultLineJumps="\u0000" DefaultOperationVisibility="\u0004" DefaultParameterDirection="\u0002" DefaultShowAttributeInitialValue="true" DefaultShowAttributeOption="\u0001" DefaultShowClassMemberStereotype="true" DefaultShowDirection="false" DefaultShowMultiplicityConstraints="false" DefaultShowOperationOption="\u0001" DefaultShowOperationSignature="true" DefaultShowOrderedMultiplicityConstraint="true" DefaultShowOwnedAssociationEndAsAttribute="true" DefaultShowOwner="false" DefaultShowOwnerSkipModelInFullyQualifiedOwnerSignature="true" DefaultShowReceptionOption="\u0001" DefaultShowTemplateParameter="true" DefaultShowTypeOption="\u0001" DefaultShowUniqueMultiplicityConstraint="true" DefaultTypeOfSubProcess="\u0000" DefaultWrapClassMember="false" DrawTextAnnotationOpenRectangleFollowConnectorEnd="true" EnableMinimumSize="true" EntityColumnConstraintsPresentation="\u0002" ErdIndexNumOfDigits="-1" ErdIndexPattern="{table_name}" ErdIndexPatternSyncAutomatically="true" ErdManyToManyJoinTableDelimiter="_" EtlTableDiagramFontSize="14" ExpandedSubProcessDiagramContent="\u0001" ForeignKeyArrowHeadSize="\u0002" ForeignKeyConnectorEndPointAssociatedColumn="false" ForeignKeyNamePattern="{reference_table_name}{reference_column_name}" ForeignKeyNamePatternCaseHandling="0" ForeignKeyRelationshipPattern="{association_name}" FractionalMetrics="true" GeneralizationSetNotation="\u0001" GraphicAntiAliasing="true" GridDiagramFontSize="14" InteractionDiagramShowDiagramFrame="true" InternalBlockDiagramShowDiagramFrame="true" LineJumpSize="\u0000" ModelElementNameAlignment="\u0004" MultipleLineClassName="\u0001" PackageDiagramShowDiagramFrame="true" PaintConnectorThroughLabel="false" ParametricDiagramShowDiagramFrame="true" PointConnectorEndToCompartmentMember="true" PrimaryKeyConstraintPattern="" PrimaryKeyNamePattern="ID" RenameConstructorAfterRenameClass="\u0000" RenameExtensionPointToFollowExtendUseCase="\u0000" RequirementDiagramShowDiagramFrame="true" ShapeAutoFitSize="false" ShowActivationsInSequenceDiagram="true" ShowActivityStateNodeCaption="524287" ShowArtifactOption="\u0002" ShowAssociatedDiagramNameOfInteraction="false" ShowAssociationRoleStereotypes="true" ShowAttributeGetterSetter="false" ShowBSElementCode="true" ShowClassEmptyCompartments="false" ShowColumnDefaultValue="false" ShowColumnNullable="true" ShowColumnType="true" ShowColumnUniqueConstraintName="false" ShowColumnUserType="false" ShowComponentOption="\u0002" ShowExtraColumnProperties="true" ShowInOutFlowButtonsInDataFlowDiagram="false" ShowInOutFlowsInSubLevelDiagram="true" ShowMessageOperationSignatureForSequenceAndCommunicationDiagram="true" ShowMessageStereotypeInSequenceAndCommunicationDiagram="true" ShowNumberInCollaborationDiagram="true" ShowNumberInSequenceDiagram="true" ShowPackageNameStyle="\u0000" ShowParameterNameInOperationSignature="true" ShowRowGridLineWithinCompClassDiagram="false" ShowRowGridLineWithinCompERD="true" ShowRowGridLineWithinORMDiagram="true" ShowSchemaNameInERD="true" ShowTransitionTrigger="\u0000" ShowUseCaseExtensionPoint="true" ShowUseCaseID="false" SnapConnectorsAfterZoom="false" StateDiagramShowDiagramFrame="true" StateShowParametersOfInternalActivities="false" StateShowPrePostConditionAndBodyOfInternalActivities="true" StopTargetLifelineOnCreateDestroyMessage="\u0002" SupportHtmlTaggedValue="true" SupportMultipleLineAttribute="true" SuppressImpliedMultiplicityForAttributeAssociationEnd="false" SyncAssociationNameWithAssociationClass="\u0000" SyncAssociationRoleNameWithReferencedAttributeName="true" SyncDocOfInterfaceToSubClass="\u0000" TextAntiAliasing="true" TextualAnalysisGenerateRequirementTextOption="\u0001" TextualAnalysisHighlightOption="\u0000" UnnamedIndexPattern="{table_name}_{column_name}" UseCaseDiagramShowDiagramFrame="true" UseStateNameTab="false" WireflowDiagramDevice="0" WireflowDiagramShowActiveFlowLabel="true" WireflowDiagramTheme="0" WireflowDiagramWireflowShowPreview="false" WireflowDiagramWireflowShowScreenId="true">
+				<DefaultHtmlDocFont Family="Dialog" Size="12" Style="0" />
+			</DiagramOptions>
+			<GeneralOptions ConfirmSubLevelIdWithDot="true" QuickAddGlossaryTermParentModelId="default" />
+			<InstantReverseOptions CalculateGeneralizationAndRealization="false" CreateShapeForParentModelOfDraggedClassPackage="false" ReverseGetterSetter="\u0000" ReverseOperationImplementation="false" ShowPackageForNewDiagram="\u0001" ShowPackageOwner="\u0000" />
+			<ModelQualityOptions EnableModelQualityChecking="false" />
+			<ORMOptions AlterColumnUserType="true" DecimalPrecision="19" DecimalScale="0" ExportCommentToDatabase="true" FormattedSQL="false" GenerateAssociationWithAttribute="false" GenerateDiagramFromORMWizards="true" GetterSetterVisibility="\u0000" IdGeneratorType="native" MappingFileColumnOrder="\u0000" NumericToClassType="\u0000" QuoteSQLIdentifier="\u0000" RecreateShapeWhenSync="false" SyncToClassDiagramAttributeName="\u0001" SyncToClassDiagramAttributeNamePrefix="" SyncToClassDiagramAttributeNameSuffix="" SyncToClassDiagramClassName="\u0000" SyncToClassDiagramClassNamePrefix="" SyncToClassDiagramClassNameSuffix="" SyncToERDColumnName="\u0000" SyncToERDColumnNamePrefix="" SyncToERDColumnNameSuffix="" SyncToERDTableName="\u0004" SyncToERDTableNamePrefix="" SyncToERDTableNameSuffix="" SynchronizeDefaultValueToColumn="false" SynchronizeName="\u0002" TablePerSubclassFKMapping="\u0000" UpperCaseSQL="true" UseDefaultDecimal="true" WrappingServletRequest="\u0001" />
+			<RequirementDiagramOptions DefaultWrapMember="true" ShowAttributes="\u0001" SupportHTMLAttribute="false" />
+			<StateCodeEngineOptions AutoCreateInitialStateInStateDiagram="true" AutoCreateTransitionMethods="true" DefaultInitialStateLocationX="-1" DefaultInitialStateLocationY="-1" GenerateDebugMessage="false" GenerateSample="true" GenerateTryCatch="true" Language="\u0000" RegenerateTransitionMethods="false" SyncTransitionMethods="true" />
+			<WarningOptions CreateORMClassInDefaultPackage="true" />
+			<PORepository>
+				<POUserIDFormats>
+					<POUserIDFormat Digits="2" Guid="false" Id="iUmjE4WD.AACARvh" LastNumericValue="0" ModelType="BPMNElement" Prefix="BP" Suffix="" />
+					<POUserIDFormat Digits="2" Guid="false" Id="iUmjE4WD.AACARvi" LastNumericValue="0" ModelType="Actor" Prefix="AC" Suffix="" />
+					<POUserIDFormat Digits="2" Guid="false" Id="iUmjE4WD.AACARvj" LastNumericValue="0" ModelType="UseCase" Prefix="UC" Suffix="" />
+					<POUserIDFormat Digits="3" Guid="false" Id="SUmjE4WD.AACARvk" LastNumericValue="0" ModelType="Requirement" Prefix="REQ" Suffix="" />
+					<POUserIDFormat Digits="3" Guid="false" Id="SUmjE4WD.AACARvl" LastNumericValue="0" ModelType="BusinessRule" Prefix="BR" Suffix="" />
+					<POUserIDFormat Digits="-1" Guid="false" Id="SUmjE4WD.AACARvm" LastNumericValue="0" ModelType="BusinessProcessDiagram" Prefix="" Suffix="" />
+				</POUserIDFormats>
+			</PORepository>
+		</ProjectOptions>
+	</ProjectInfo>
+	<Models>
+		<DataType BacklogActivityId="0" Id="CwmjE4WD.AACARgd" Name="boolean" PmAuthor="aceve" PmCreateDateTime="2026-10-06T20:24:35.528" PmLastModified="2026-11-10T22:02:50.822" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="iwmjE4WD.AACARge" Name="byte" PmAuthor="aceve" PmCreateDateTime="2026-10-06T20:24:35.538" PmLastModified="2026-11-10T22:02:51.020" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="SwmjE4WD.AACARgf" Name="char" PmAuthor="aceve" PmCreateDateTime="2026-10-06T20:24:35.539" PmLastModified="2026-11-10T22:02:50.953" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="SwmjE4WD.AACARgg" Name="double" PmAuthor="aceve" PmCreateDateTime="2026-10-06T20:24:35.539" PmLastModified="2026-11-10T22:02:50.953" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="SwmjE4WD.AACARgh" Name="float" PmAuthor="aceve" PmCreateDateTime="2026-10-06T20:24:35.540" PmLastModified="2026-11-10T22:02:50.953" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<DataType BacklogActivityId="0" Id="SwmjE4WD.AACARgi" Name="int" PmAuthor="aceve" PmCreateDateTime="2026-10-06T20:24:35.540" PmLastModified="2026-11-10T22:02:50.953" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="SwmjE4WD.AACARgj" Name="long" PmAuthor="aceve" PmCreateDateTime="2026-10-06T20:24:35.540" PmLastModified="2026-11-10T22:02:50.953" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="ywmjE4WD.AACARgk" Name="short" PmAuthor="aceve" PmCreateDateTime="2026-10-06T20:24:35.541" PmLastModified="2026-11-10T22:02:50.921" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="ywmjE4WD.AACARgl" Name="void" PmAuthor="aceve" PmCreateDateTime="2026-10-06T20:24:35.541" PmLastModified="2026-11-10T22:02:50.921" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<DataType BacklogActivityId="0" Id="ywmjE4WD.AACARgm" Name="string" PmAuthor="aceve" PmCreateDateTime="2026-10-06T20:24:35.541" PmLastModified="2026-11-10T22:02:50.921" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<ModelRelationshipContainer BacklogActivityId="0" Id="WUEgrwWD.AACAQ0v" Name="relationships" PmAuthor="kyriux" PmCreateDateTime="2026-09-30T20:11:48.634" PmLastModified="2026-11-10T22:02:50.864" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+			<ModelChildren>
+				<ModelRelationshipContainer BacklogActivityId="0" Documentation_plain="" Id="yEPeyIWD.AACAQj." Name="Message" PmAuthor="kyriux" PmCreateDateTime="2026-10-06T18:10:40.147" PmLastModified="2026-11-20T13:17:37.432" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+					<ModelChildren>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="Menú lateral → Tableros → Vista general (p:menuitem). La opción &quot;Indicadores por unidad&quot; del menú aún no tiene página (url=&quot;#&quot;): los indicadores por unidad se muestran en la Vista general." DurationHeight="30" EndRelationshipFromMetaModelElement="6XWeg4WD.AACAWJb" EndRelationshipToMetaModelElement="mXWeg4WD.AACAWJe" Id="PdWeg4WD.AACAV4L" Name="navegar(vistaGeneral)" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="1" ToActivation="mXWeg4WD.AACAWJf" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;Menú lateral → Tableros → Vista general (p:menuitem). La opción &quot;Indicadores por unidad&quot; del menú aún no tiene página (url=&quot;#&quot;): los indicadores por unidad se muestran en la Vista general.&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="6XWeg4WD.AACAWJb" Id="vdWeg4WD.AACAV4O" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="mXWeg4WD.AACAWJe" Id="vdWeg4WD.AACAV4P" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="bV.eg4WD.AACAWcb" Name="navegar(vistaGeneral)" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="" DurationHeight="30" EndRelationshipFromMetaModelElement="mXWeg4WD.AACAWJe" EndRelationshipToMetaModelElement="GXWeg4WD.AACAWJc" FromActivation="mXWeg4WD.AACAWJf" Id="vdWeg4WD.AACAV4Q" Name="navegar" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="2" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true" ToActivation="GXWeg4WD.AACAWJd">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="mXWeg4WD.AACAWJe" Id="fdWeg4WD.AACAV4U" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="GXWeg4WD.AACAWJc" Id="fdWeg4WD.AACAV4V" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="bV.eg4WD.AACAWcd" Name="navegar" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="Botón &quot;Actualizar&quot; (p:commandButton → tableroCtrl.actualizar())." DurationHeight="30" EndRelationshipFromMetaModelElement="6XWeg4WD.AACAWJb" EndRelationshipToMetaModelElement="GXWeg4WD.AACAWJc" Id="fdWeg4WD.AACAV4W" Name="actualizar" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="8" ToActivation="q03Sn4WD.AACAZ03" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;Botón &quot;Actualizar&quot; (p:commandButton → tableroCtrl.actualizar()).&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="6XWeg4WD.AACAWJb" Id="_dWeg4WD.AACAV4Z" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="GXWeg4WD.AACAWJc" Id="_dWeg4WD.AACAV4a" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="bV.eg4WD.AACAWcf" Name="actualizar" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="tableroCtrl.actualizar(): resumen, equiposPorUnidad y sinSenal." DurationHeight="30" EndRelationshipFromMetaModelElement="GXWeg4WD.AACAWJc" EndRelationshipToMetaModelElement="WXWeg4WD.AACAWJg" FromActivation="GXWeg4WD.AACAWJd" Id="_dWeg4WD.AACAV4b" Name="explorar" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="3" ToActivation="WXWeg4WD.AACAWJh" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;tableroCtrl.actualizar(): resumen, equiposPorUnidad y sinSenal.&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="GXWeg4WD.AACAWJc" Id="A9Weg4WD.AACAV4e" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="WXWeg4WD.AACAWJg" Id="A9Weg4WD.AACAV4f" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="bV.eg4WD.AACAWch" Name="explorar" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="" DurationHeight="30" EndRelationshipFromMetaModelElement="WXWeg4WD.AACAWJg" EndRelationshipToMetaModelElement="WXWeg4WD.AACAWJj" FromActivation="WXWeg4WD.AACAWJh" Id="A9Weg4WD.AACAV4g" Name="seleccionar" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" ReturnMessage="g9Weg4WD.AACAV4l" SequenceNumber="4" ToActivation="2XWeg4WD.AACAWJk" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="WXWeg4WD.AACAWJg" Id="A9Weg4WD.AACAV4j" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="WXWeg4WD.AACAWJj" Id="g9Weg4WD.AACAV4k" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="bV.eg4WD.AACAWcj" Name="seleccionar" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="" DurationHeight="30" EndRelationshipFromMetaModelElement="WXWeg4WD.AACAWJj" EndRelationshipToMetaModelElement="WXWeg4WD.AACAWJg" FromActivation="2XWeg4WD.AACAWJk" Id="g9Weg4WD.AACAV4l" Name="filaUnidad" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="5" ToActivation="WXWeg4WD.AACAWJh" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<ActionType>
+								<ActionTypeReturn Asynchronous="false" BacklogActivityId="0" Documentation_plain="" Id="g9Weg4WD.AACAV4o" Iteration="false" Name="Return" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" RecurrenceCondition_IsNull="true" Script_IsNull="true" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ActionType>
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="WXWeg4WD.AACAWJj" Id="g9Weg4WD.AACAV4p" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="WXWeg4WD.AACAWJg" Id="Q9Weg4WD.AACAV4q" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="7V.eg4WD.AACAWcl" Name="filaUnidad" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="" DurationHeight="30" EndRelationshipFromMetaModelElement="WXWeg4WD.AACAWJg" EndRelationshipToMetaModelElement="OXWeg4WD.AACAWJp" FromActivation="WXWeg4WD.AACAWJh" Id="Q9Weg4WD.AACAV4r" Name="crear(listaUnidades)" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="6" Type="Create Message" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="WXWeg4WD.AACAWJg" Id="Q9Weg4WD.AACAV4u" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="OXWeg4WD.AACAWJp" Id="Q9Weg4WD.AACAV4v" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="7V.eg4WD.AACAWcn" Name="crear(listaUnidades)" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="Muestra la tabla &quot;Equipos por unidad&quot; con la barra de disponibilidad." DurationHeight="30" EndRelationshipFromMetaModelElement="GXWeg4WD.AACAWJc" EndRelationshipToMetaModelElement="6XWeg4WD.AACAWJb" FromActivation="GXWeg4WD.AACAWJd" Id="w9Weg4WD.AACAV4w" Name="mostrar" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="7" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;Muestra la tabla &quot;Equipos por unidad&quot; con la barra de disponibilidad.&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="GXWeg4WD.AACAWJc" Id="w9Weg4WD.AACAV4z" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="6XWeg4WD.AACAWJb" Id="w9Weg4WD.AACAV40" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="7V.eg4WD.AACAWcp" Name="mostrar" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="Clic en el nombre de la unidad." DurationHeight="30" EndRelationshipFromMetaModelElement="6XWeg4WD.AACAWJb" EndRelationshipToMetaModelElement="OXWeg4WD.AACAWJp" Id="w9Weg4WD.AACAV41" Name="seleccionar(unidad)" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="11" ToActivation="uXWeg4WD.AACAWJq" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;Clic en el nombre de la unidad.&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="6XWeg4WD.AACAWJb" Id="I9Weg4WD.AACAV44" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="OXWeg4WD.AACAWJp" Id="I9Weg4WD.AACAV45" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="7V.eg4WD.AACAWcr" Name="seleccionar(unidad)" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="" DurationHeight="30" EndRelationshipFromMetaModelElement="GXWeg4WD.AACAWJc" EndRelationshipToMetaModelElement="WXWeg4WD.AACAWJg" FromActivation="q03Sn4WD.AACAZ03" Id="o9Weg4WD.AACAV46" Name="explorar" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="9" ToActivation="WXWeg4WD.AACAWJi" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="GXWeg4WD.AACAWJc" Id="o9Weg4WD.AACAV49" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="WXWeg4WD.AACAWJg" Id="Y9Weg4WD.AACAV4." PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="7V.eg4WD.AACAWct" Name="explorar" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="" DurationHeight="30" EndRelationshipFromMetaModelElement="GXWeg4WD.AACAWJc" EndRelationshipToMetaModelElement="6XWeg4WD.AACAWJb" FromActivation="q03Sn4WD.AACAZ03" Id="Y9Weg4WD.AACAV4_" Name="mostrar" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="10" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="GXWeg4WD.AACAWJc" Id="Y9Weg4WD.AACAV5C" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="6XWeg4WD.AACAWJb" Id="49Weg4WD.AACAV5D" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="7V.eg4WD.AACAWcv" Name="mostrar" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="h:link outcome /vista/inventario/equipos con f:param unidad = idUnidadHomologada." DurationHeight="30" EndRelationshipFromMetaModelElement="OXWeg4WD.AACAWJp" EndRelationshipToMetaModelElement="2XWeg4WD.AACAWJm" Id="49Weg4WD.AACAV5E" Name="navegar(idUnidad)" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="12" ToActivation="OXWeg4WD.AACAWJn" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true" FromActivation="uXWeg4WD.AACAWJq" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;h:link outcome /vista/inventario/equipos con f:param unidad = idUnidadHomologada.&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="OXWeg4WD.AACAWJp" Id="49Weg4WD.AACAV5H" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="2XWeg4WD.AACAWJm" Id="49Weg4WD.AACAV5I" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="7V.eg4WD.AACAWcx" Name="navegar(idUnidad)" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="" DurationHeight="30" EndRelationshipFromMetaModelElement="2XWeg4WD.AACAWJm" EndRelationshipToMetaModelElement="q01Sn4WD.AACAZ01" FromActivation="OXWeg4WD.AACAWJn" Id="49Weg4WD.AACAV5J" Name="navegar" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="13" ToActivation="q05Sn4WD.AACAZ05" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="2XWeg4WD.AACAWJm" Id="E9Weg4WD.AACAV5M" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="q01Sn4WD.AACAZ01" Id="E9Weg4WD.AACAV5N" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="7V.eg4WD.AACAWcz" Name="navegar" />
+							</MasterView>
+						</Message>
+						<Message Asynchronous="false" BacklogActivityId="0" Documentation_plain="Inventario de equipos filtrado por la unidad (PR-12)." DurationHeight="30" EndRelationshipFromMetaModelElement="q01Sn4WD.AACAZ01" EndRelationshipToMetaModelElement="6XWeg4WD.AACAWJb" FromActivation="q05Sn4WD.AACAZ05" Id="E9Weg4WD.AACAV5O" Name="mostrar" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" SequenceNumber="14" Type="Message" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;Inventario de equipos filtrado por la unidad (PR-12).&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<FromEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="q01Sn4WD.AACAZ01" Id="k9Weg4WD.AACAV5R" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</FromEnd>
+							<ToEnd>
+								<MessageEnd BacklogActivityId="0" Documentation_plain="" EndModelElement="6XWeg4WD.AACAWJb" Id="k9Weg4WD.AACAV5S" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+							</ToEnd>
+							<MasterView>
+								<Message Idref="7V.eg4WD.AACAWc1" Name="mostrar" />
+							</MasterView>
+						</Message>
+					</ModelChildren>
+				</ModelRelationshipContainer>
+			</ModelChildren>
+		</ModelRelationshipContainer>
+		<Stereotype Abstract="false" BacklogActivityId="0" BaseType="InteractionLifeLine" Documentation_plain="" IconPath="" Id="v7Weg4WD.AACAWEq" Leaf="false" Name="page" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-10T22:02:50.822" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<Stereotype Abstract="false" BacklogActivityId="0" BaseType="InteractionLifeLine" Documentation_plain="" IconPath="" Id="gHWeg4WD.AACAWEs" Leaf="false" Name="presentation unit" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-10T22:02:50.874" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<Stereotype Abstract="false" BacklogActivityId="0" BaseType="InteractionLifeLine" Documentation_plain="" IconPath="" Id="4HWeg4WD.AACAWEw" Leaf="false" Name="index" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-10T22:02:50.862" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<Stereotype Abstract="false" BacklogActivityId="0" BaseType="InteractionLifeLine" Documentation_plain="" IconPath="" Id="UHWeg4WD.AACAWEy" Leaf="false" Name="query" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-10T22:02:50.841" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<Stereotype Abstract="false" BacklogActivityId="0" BaseType="InteractionLifeLine" Documentation_plain="" IconPath="" Id="MHWeg4WD.AACAWE0" Leaf="false" Name="anchor collection" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-10T22:02:51.006" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" />
+		<Package Abstract="false" BacklogActivityId="0" ConnectToCodeModel="1" DefaultDiagramId_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;Secuencias de navegación (SN-00a a SN-07d) según Kappel, Web Engineering §3.7.3: relacionan las interacciones del usuario con los elementos del modelo de acceso. Cada una indica su diagrama de secuencia de integración.&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;" Documentation_plain="Secuencias de navegación (SN-00a a SN-07d) según Kappel, Web Engineering §3.7.3: relacionan las interacciones del usuario con los elementos del modelo de acceso. Cada una indica su diagrama de secuencia de integración." Id="8HWeg4WD.AACAWE2" Leaf="false" Name="Comportamiento de Navegación - Secuencias" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T13:30:26.028" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="Unspecified">
+			<ModelChildren>
+				<Frame BacklogActivityId="0" BaseY="40" Documentation_plain="" Id="6XWeg4WD.AACAWJa" Name="SN-04a Indicadores por unidad (It4)" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-10T22:02:50.969" QualityReason_IsNull="true" QualityScore="-1" Type="sd" UserIDLastNumericValue="0" UserID_IsNull="true">
+					<ModelChildren>
+						<InteractionActor Abstract="false" Active="false" BacklogActivityId="0" BusinessModel="false" Documentation_plain="" FinalSpecialization="false" Id="6XWeg4WD.AACAWJb" Leaf="false" Name=":Jefe" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T10:29:20.814" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<InteractionActor Idref="LV.eg4WD.AACAWcL" Name=":Jefe" />
+							</MasterView>
+						</InteractionActor>
+						<InteractionLifeLine Active="false" BacklogActivityId="0" BaseClassifier="" Class="false" ClassLevelStereotype="false" Documentation_plain="vista/tableros/vista-general.xhtml (PR-03) · TableroController (tableroCtrl)." Id="GXWeg4WD.AACAWJc" MultiObject="false" Multiplicity="Unspecified" Name="VistaGeneralPage" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T10:29:20.789" QualityReason_IsNull="true" QualityScore="-1" Stopped="false" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;vista/tableros/vista-general.xhtml (PR-03) · TableroController (tableroCtrl).&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<Stereotypes>
+								<Stereotype Idref="v7Weg4WD.AACAWEq" Name="page" />
+							</Stereotypes>
+							<Activations>
+								<Activation BacklogActivityId="0" Documentation_plain="" Id="GXWeg4WD.AACAWJd" Name="Activation" OverlappingExecutionOccurrence="false" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<MasterView>
+										<Activation Idref="zV.eg4WD.AACAWb5" Name="Activation" />
+									</MasterView>
+								</Activation>
+							<Activation BacklogActivityId="0" Documentation_plain="" Id="q03Sn4WD.AACAZ03" Name="Activation" OverlappingExecutionOccurrence="false" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<MasterView>
+										<Activation Idref="q04Sn4WD.AACAZ04" Name="Activation" />
+									</MasterView>
+								</Activation>
+							</Activations>
+							<MasterView>
+								<InteractionLifeLine Idref="rV.eg4WD.AACAWcN" Name="VistaGeneralPage" />
+							</MasterView>
+						</InteractionLifeLine>
+						<InteractionLifeLine Active="false" BacklogActivityId="0" BaseClassifier="MenuLateral" Class="false" ClassLevelStereotype="false" Documentation_plain="" Id="mXWeg4WD.AACAWJe" MultiObject="false" Multiplicity="Unspecified" Name="" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T10:29:20.683" QualityReason_IsNull="true" QualityScore="-1" Stopped="false" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<Stereotypes>
+								<Stereotype Idref="gHWeg4WD.AACAWEs" Name="presentation unit" />
+							</Stereotypes>
+							<Activations>
+								<Activation BacklogActivityId="0" Documentation_plain="" Id="mXWeg4WD.AACAWJf" Name="Activation" OverlappingExecutionOccurrence="false" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<MasterView>
+										<Activation Idref="zV.eg4WD.AACAWb7" Name="Activation" />
+									</MasterView>
+								</Activation>
+							</Activations>
+							<MasterView>
+								<InteractionLifeLine Idref="rV.eg4WD.AACAWcP" Name="" />
+							</MasterView>
+						</InteractionLifeLine>
+						<InteractionLifeLine Active="false" BacklogActivityId="0" BaseClassifier="EquiposPorUnidad" Class="false" ClassLevelStereotype="false" Documentation_plain="Tabla &quot;Equipos por unidad&quot; de la Vista general: tablerosBean.equiposPorUnidad()." Id="WXWeg4WD.AACAWJg" MultiObject="false" Multiplicity="Unspecified" Name="" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" Stopped="false" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;Tabla &quot;Equipos por unidad&quot; de la Vista general: tablerosBean.equiposPorUnidad().&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<Stereotypes>
+								<Stereotype Idref="4HWeg4WD.AACAWEw" Name="index" />
+							</Stereotypes>
+							<Activations>
+								<Activation BacklogActivityId="0" Documentation_plain="" Id="WXWeg4WD.AACAWJh" Name="Activation" OverlappingExecutionOccurrence="false" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<MasterView>
+										<Activation Idref="zV.eg4WD.AACAWb9" Name="Activation" />
+									</MasterView>
+								</Activation>
+								<Activation BacklogActivityId="0" Documentation_plain="" Id="WXWeg4WD.AACAWJi" Name="Activation" OverlappingExecutionOccurrence="false" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<MasterView>
+										<Activation Idref="zV.eg4WD.AACAWb_" Name="Activation" />
+									</MasterView>
+								</Activation>
+							</Activations>
+							<MasterView>
+								<InteractionLifeLine Idref="rV.eg4WD.AACAWcR" Name="" />
+							</MasterView>
+						</InteractionLifeLine>
+						<InteractionLifeLine Active="false" BacklogActivityId="0" BaseClassifier="FilaUnidad" Class="false" ClassLevelStereotype="false" Documentation_plain="TablerosBean.FilaUnidad: unidad, equipos, en línea, sin conexión, con alerta y % de disponibilidad." Id="WXWeg4WD.AACAWJj" MultiObject="false" Multiplicity="Unspecified" Name="" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" Stopped="false" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;TablerosBean.FilaUnidad: unidad, equipos, en línea, sin conexión, con alerta y % de disponibilidad.&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<Activations>
+								<Activation BacklogActivityId="0" Documentation_plain="" Id="2XWeg4WD.AACAWJk" Name="Activation" OverlappingExecutionOccurrence="false" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<MasterView>
+										<Activation Idref="LV.eg4WD.AACAWcB" Name="Activation" />
+									</MasterView>
+								</Activation>
+								</Activations>
+							<MasterView>
+								<InteractionLifeLine Idref="rV.eg4WD.AACAWcT" Name="" />
+							</MasterView>
+						</InteractionLifeLine>
+						<InteractionLifeLine Active="false" BacklogActivityId="0" BaseClassifier="ConsultarInventario" Class="false" ClassLevelStereotype="false" Documentation_plain="EquiposController.aplicarParametros() → consultarInventario() con el filtro de unidad (SN-05a)." Id="2XWeg4WD.AACAWJm" MultiObject="false" Multiplicity="Unspecified" Name="" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" Stopped="false" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;EquiposController.aplicarParametros() → consultarInventario() con el filtro de unidad (SN-05a).&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<Stereotypes>
+								<Stereotype Idref="UHWeg4WD.AACAWEy" Name="query" />
+							</Stereotypes>
+							<Activations>
+								<Activation BacklogActivityId="0" Documentation_plain="" Id="OXWeg4WD.AACAWJn" Name="Activation" OverlappingExecutionOccurrence="false" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<MasterView>
+										<Activation Idref="LV.eg4WD.AACAWcF" Name="Activation" />
+									</MasterView>
+								</Activation>
+								</Activations>
+							<MasterView>
+								<InteractionLifeLine Idref="rV.eg4WD.AACAWcV" Name="" />
+							</MasterView>
+						</InteractionLifeLine>
+						<InteractionLifeLine Active="false" BacklogActivityId="0" BaseClassifier="EnlacesUnidad" Class="false" ClassLevelStereotype="false" Documentation_plain="Nombre de cada unidad como h:link a equipos.xhtml?unidad=idUnidadHomologada." Id="OXWeg4WD.AACAWJp" MultiObject="false" Multiplicity="Unspecified" Name="" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" QualityReason_IsNull="true" QualityScore="-1" Stopped="false" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;Nombre de cada unidad como h:link a equipos.xhtml?unidad=idUnidadHomologada.&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<Stereotypes>
+								<Stereotype Idref="MHWeg4WD.AACAWE0" Name="anchor collection" />
+							</Stereotypes>
+							<Activations>
+								<Activation BacklogActivityId="0" Documentation_plain="" Id="uXWeg4WD.AACAWJq" Name="Activation" OverlappingExecutionOccurrence="false" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<MasterView>
+										<Activation Idref="LV.eg4WD.AACAWcJ" Name="Activation" />
+									</MasterView>
+								</Activation>
+							</Activations>
+							<MasterView>
+								<InteractionLifeLine Idref="bV.eg4WD.AACAWcX" Name="" />
+							</MasterView>
+						</InteractionLifeLine>
+						<InteractionLifeLine Active="false" BacklogActivityId="0" BaseClassifier="" Class="false" ClassLevelStereotype="false" Documentation_plain="vista/inventario/equipos.xhtml (PR-12) filtrada por unidad." Id="q01Sn4WD.AACAZ01" MultiObject="false" Multiplicity="Unspecified" Name="EquiposPage" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T10:29:20.789" QualityReason_IsNull="true" QualityScore="-1" Stopped="false" UserIDLastNumericValue="0" UserID_IsNull="true" Documentation="&lt;HTML&gt;&lt;BODY&gt;&lt;p style=&quot;margin-top: 0&quot;&gt;vista/inventario/equipos.xhtml (PR-12) filtrada por unidad.&lt;/p&gt;&lt;/BODY&gt;&lt;/HTML&gt;">
+							<Stereotypes>
+								<Stereotype Idref="v7Weg4WD.AACAWEq" Name="page" />
+							</Stereotypes>
+							<Activations><Activation BacklogActivityId="0" Documentation_plain="" Id="q05Sn4WD.AACAZ05" Name="Activation" OverlappingExecutionOccurrence="false" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<MasterView>
+										<Activation Idref="q06Sn4WD.AACAZ06" Name="Activation" />
+									</MasterView>
+								</Activation>
+							</Activations><MasterView>
+								<InteractionLifeLine Idref="q02Sn4WD.AACAZ02" Name="EquiposPage" />
+							</MasterView>
+						</InteractionLifeLine>
+						<CombinedFragment BacklogActivityId="0" Documentation_plain="" Id="uXWeg4WD.AACAWJr" Name="loop" OperatorKind="loop" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T10:29:20.573" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<CoveredLifeLines>
+								<InteractionActor Idref="6XWeg4WD.AACAWJb" Name=":Jefe" />
+								<InteractionLifeLine Idref="GXWeg4WD.AACAWJc" Name="VistaGeneralPage" />
+								<InteractionLifeLine Idref="mXWeg4WD.AACAWJe" Name="" />
+								<InteractionLifeLine Idref="WXWeg4WD.AACAWJg" Name="" />
+								<InteractionLifeLine Idref="WXWeg4WD.AACAWJj" Name="" />
+								<InteractionLifeLine Idref="2XWeg4WD.AACAWJm" Name="" />
+								<InteractionLifeLine Idref="OXWeg4WD.AACAWJp" Name="" />
+							<InteractionLifeLine Idref="q01Sn4WD.AACAZ01" Name="EquiposPage" /></CoveredLifeLines>
+							<MasterView>
+								<CombinedFragment Idref="jV.eg4WD.AACAWbw" Name="loop" />
+							</MasterView>
+							<ModelChildren>
+								<InteractionOperand BacklogActivityId="0" Documentation_plain="" Id="eXWeg4WD.AACAWJs" Name="Operand" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T10:29:20.752" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<Messages>
+										<Message Idref="A9Weg4WD.AACAV4g" Name="seleccionar" />
+										<Message Idref="g9Weg4WD.AACAV4l" Name="filaUnidad" />
+									</Messages>
+									<Guard>
+										<InteractionConstraint BacklogActivityId="0" Constraint="0, nUnidades" Documentation_plain="" Id="eXWeg4WD.AACAWJu" Maxint_IsNull="true" Minint_IsNull="true" Name="InteractionConstraint" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+									</Guard>
+									<MasterView>
+										<InteractionOperand Idref="jV.eg4WD.AACAWbu" Name="Operand" />
+									</MasterView>
+								</InteractionOperand>
+							</ModelChildren>
+						</CombinedFragment>
+						<CombinedFragment BacklogActivityId="0" Documentation_plain="" Id="q07Sn4WD.AACAZ07" Name="opt" OperatorKind="opt" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T10:29:20.752" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<CoveredLifeLines>
+								<InteractionActor Idref="6XWeg4WD.AACAWJb" Name=":Jefe" />
+								<InteractionLifeLine Idref="GXWeg4WD.AACAWJc" Name="VistaGeneralPage" />
+								<InteractionLifeLine Idref="mXWeg4WD.AACAWJe" Name="" />
+								<InteractionLifeLine Idref="WXWeg4WD.AACAWJg" Name="" />
+								<InteractionLifeLine Idref="WXWeg4WD.AACAWJj" Name="" />
+								<InteractionLifeLine Idref="2XWeg4WD.AACAWJm" Name="" />
+								<InteractionLifeLine Idref="OXWeg4WD.AACAWJp" Name="" />
+							<InteractionLifeLine Idref="q01Sn4WD.AACAZ01" Name="EquiposPage" /></CoveredLifeLines>
+							<MasterView>
+								<CombinedFragment Idref="q10Sn4WD.AACAZ10" Name="opt" />
+							</MasterView>
+							<ModelChildren>
+								<InteractionOperand BacklogActivityId="0" Documentation_plain="" Id="q08Sn4WD.AACAZ08" Name="Operand" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T10:29:20.842" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<Messages><Message Idref="fdWeg4WD.AACAV4W" Name="actualizar" /><Message Idref="o9Weg4WD.AACAV46" Name="explorar" /><Message Idref="Y9Weg4WD.AACAV4_" Name="mostrar" /></Messages><Guard>
+										<InteractionConstraint BacklogActivityId="0" Constraint="actualizar" Documentation_plain="" Id="q09Sn4WD.AACAZ09" Maxint_IsNull="true" Minint_IsNull="true" Name="InteractionConstraint" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+									</Guard>
+									<MasterView>
+										<InteractionOperand Idref="q11Sn4WD.AACAZ11" Name="Operand" />
+									</MasterView>
+								</InteractionOperand>
+							</ModelChildren>
+						</CombinedFragment>
+					<CombinedFragment BacklogActivityId="0" Documentation_plain="" Id="eXWeg4WD.AACAWJv" Name="opt" OperatorKind="opt" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T10:29:20.752" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<CoveredLifeLines>
+								<InteractionActor Idref="6XWeg4WD.AACAWJb" Name=":Jefe" />
+								<InteractionLifeLine Idref="GXWeg4WD.AACAWJc" Name="VistaGeneralPage" />
+								<InteractionLifeLine Idref="mXWeg4WD.AACAWJe" Name="" />
+								<InteractionLifeLine Idref="WXWeg4WD.AACAWJg" Name="" />
+								<InteractionLifeLine Idref="WXWeg4WD.AACAWJj" Name="" />
+								<InteractionLifeLine Idref="2XWeg4WD.AACAWJm" Name="" />
+								<InteractionLifeLine Idref="OXWeg4WD.AACAWJp" Name="" />
+							<InteractionLifeLine Idref="q01Sn4WD.AACAZ01" Name="EquiposPage" /></CoveredLifeLines>
+							<MasterView>
+								<CombinedFragment Idref="TV.eg4WD.AACAWb0" Name="opt" />
+							</MasterView>
+							<ModelChildren>
+								<InteractionOperand BacklogActivityId="0" Documentation_plain="" Id=".XWeg4WD.AACAWJw" Name="Operand" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T10:29:20.842" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<Messages><Message Idref="w9Weg4WD.AACAV41" Name="seleccionar(unidad)" /><Message Idref="49Weg4WD.AACAV5E" Name="navegar(idUnidad)" /><Message Idref="49Weg4WD.AACAV5J" Name="navegar" /><Message Idref="E9Weg4WD.AACAV5O" Name="mostrar" /></Messages><Guard>
+										<InteractionConstraint BacklogActivityId="0" Constraint="filtra por unidad" Documentation_plain="" Id=".XWeg4WD.AACAWJy" Maxint_IsNull="true" Minint_IsNull="true" Name="InteractionConstraint" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified_IsNull="true" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true" />
+									</Guard>
+									<MasterView>
+										<InteractionOperand Idref="jV.eg4WD.AACAWby" Name="Operand" />
+									</MasterView>
+								</InteractionOperand>
+							</ModelChildren>
+						</CombinedFragment>
+					</ModelChildren>
+				</Frame>
+				<NOTE BacklogActivityId="0" Documentation="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Secuencia de navegación de IO-04 Tableros. Detalle de integración: SD-04a.&lt;/p&gt;&lt;p&gt;Los indicadores por unidad se muestran en la tabla &quot;Equipos por unidad&quot; de la Vista general (PR-03).&lt;/p&gt;&lt;p&gt;La opción del menú &quot;Indicadores por unidad&quot; aún no tiene página propia.&lt;/p&gt;&lt;p&gt;Clic en una unidad → Inventario de equipos filtrado (PR-12, SN-05a).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;" Documentation_plain="Secuencia de navegación de IO-04 Tableros. Detalle de integración: SD-04a.&#10;Los indicadores por unidad se muestran en la tabla &quot;Equipos por unidad&quot; de la Vista general (PR-03).&#10;La opción del menú &quot;Indicadores por unidad&quot; aún no tiene página propia.&#10;Clic en una unidad → Inventario de equipos filtrado (PR-12, SN-05a)." Id=".XWeg4WD.AACAWJz" Name="" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T10:29:20.842" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+					<MasterView>
+						<NOTE Idref="bV.eg4WD.AACAWcZ" Name="" />
+					</MasterView>
+				</NOTE>
+			</ModelChildren>
+		</Package>
+		<ReferenceContainer Id="7eApg4WD.AACAXNi" Name="References">
+			<References>
+				<Reference Description="" Id="7eApg4WD.AACAXNj" Name="Sequence Diagram/SD-04a Vista general con indicadores por unidad (It4)" Type="Diagram" Url="tGm3HYWD.AACATUj" />
+			</References>
+		</ReferenceContainer>
+	</Models>
+	<Diagrams>
+		<InteractionDiagram AlignToGrid="false" AutoExtendActivations="true" AutoFitShapesSize="false" ConnectionPointStyle="0" ConnectorLabelOrientation="0" ConnectorLineJumps="0" ConnectorLineJumpsSize="0" ConnectorModelElementNameAlignment="4" ConnectorStyle="1" DiagramBackground="rgb(255, 255, 255)" DisplayLifeLinesAsRobustnessAnalysisIcon="0" Editable="true" FilterByViewpointLegend="true" FollowDiagramParentElement="true" GridColor="rgb(192, 192, 192)" GridHeight="10" GridVisible="false" GridWidth="10" Height="715" HideConnectorIfFromToIsHidden="0" HideEmptyTaggedValues="false" Id="DV.eg4WD.AACAWbs" ImageHeight="0" ImageScale="1.0" ImageWidth="0" InitializeDiagramForCreate="true" InteractionLifeLinePresentationOption="0" Maximized="true" ModelElementNameAlignment="4" Name="SN-04a Indicadores por unidad (It4)" PaintConnectorThroughLabel="1" ParentModel="Ta5to4WD.AACATer" PmAuthor="kyriux" PmCreateDateTime="2026-11-07T19:45:00.000" PmLastModified="2026-11-20T14:00:00.000" PointConnectorEndToCompartmentMember="true" QualityScore="-1" ReferenceContainerId="7eApg4WD.AACAXNi" RequestFitSizeWithPromptUser="false" RequestValidateSnapToGrid="false" SequenceNumberHandling="0" SequenceNumbering="1" ShapePresentationOption="0" ShowActivations="true" ShowActivityStateNodeCaption="524287" ShowAllocatedFrom="true" ShowAllocatedTo="true" ShowArgumentsInMessagesOperationSignature="true" ShowColorLegend="false" ShowConnectorLegend="false" ShowConnectorName="0" ShowConstraints="false" ShowDefaultPackage="false" ShowDiagramFrame="true" ShowInformationItemOption="2" ShowMessageName="true" ShowMessageStereotype="true" ShowMessagesOperationSignature="true" ShowPMAuthor="false" ShowPMDifficulty="false" ShowPMDiscipline="false" ShowPMIteration="false" ShowPMPhase="false" ShowPMPriority="false" ShowPMStatus="false" ShowPMVersion="false" ShowPackageNameStyle="0" ShowParameterNamesInMessageOperationSignature="true" ShowParameterTypesInMessageOperationSignature="true" ShowRelationshipConstraintExpression="false" ShowReturnTypeInMessagesOperationSignature="true" ShowSequenceNumbers="true" ShowShapeLegend="false" ShowShapeStereotypeIconName="true" ShowStereotypes="true" ShowTaggedValues="false" TeamworkCreateDateTime="0" TrimmedHeight="0" TrimmedWidth="0" Width="1000" X="0" Y="0" ZoomRatio="0.6" _globalPaletteOption="true" _requestFixDiagramForRoseImport="false" _requestRecalculateSequenceNumbers="false" _rootFrame="6XWeg4WD.AACAWJa" documentation="&lt;html&gt;&#13;&#10;  &lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;    &lt;p&gt;&#13;&#10;      &#13;&#10;    &lt;/p&gt;&#13;&#10;  &lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;">
+			<ReferencedByDiagramIds>
+				<Value Value="tGm3HYWD.AACATUj" />
+				<Value Value="tGm3HYWD.AACATUj" />
+				<Value Value="tGm3HYWD.AACATUj" />
+				<Value Value="tGm3HYWD.AACATUj" />
+			</ReferencedByDiagramIds>
+			<ReferencedByModelAddresses>
+				<Value Value="eeApg4WD.AACAXJ5" />
+				<Value Value="heApg4WD.AACAXKa" />
+				<Value Value="eeApg4WD.AACAXJ5" />
+				<Value Value="heApg4WD.AACAXKa" />
+				<Value Value="eeApg4WD.AACAXJ5" />
+				<Value Value="heApg4WD.AACAXKa" />
+				<Value Value="eeApg4WD.AACAXJ5" />
+				<Value Value="veApg4WD.AACAXOQ" />
+				<Value Value="heApg4WD.AACAXKa" />
+			</ReferencedByModelAddresses>
+			<Shapes>
+				<InteractionOperand Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="81" Id="q11Sn4WD.AACAZ11" MetaModelElement="q08Sn4WD.AACAZ08" Model="q08Sn4WD.AACAZ08" ModelElementNameAlignment="9" Name="Operand" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="1556" X="24" Y="389" ZOrder="2">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="81" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="1556" X="24" Y="389" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</InteractionOperand>
+				<CombinedFragment Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="100" Id="q10Sn4WD.AACAZ10" MetaModelElement="q07Sn4WD.AACAZ07" Model="q07Sn4WD.AACAZ07" ModelElementNameAlignment="9" Name="opt" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="1556" X="24" Y="370" ZOrder="4">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="19" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="29" X="0" Y="0" />
+					<FillColor Color="rgba(122, 207, 245, 0.0)" Style="1" Transparency="100" Type="1" />
+				</CombinedFragment>
+				<InteractionOperand Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="71" Id="jV.eg4WD.AACAWbu" MetaModelElement="eXWeg4WD.AACAWJs" Model="eXWeg4WD.AACAWJs" ModelElementNameAlignment="9" Name="Operand" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="1556" X="24" Y="224" ZOrder="6">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="71" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="1556" X="24" Y="224" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</InteractionOperand>
+				<CombinedFragment Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="90" Id="jV.eg4WD.AACAWbw" MetaModelElement="uXWeg4WD.AACAWJr" Model="uXWeg4WD.AACAWJr" ModelElementNameAlignment="9" Name="loop" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="1556" X="24" Y="205" ZOrder="8">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="19" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="29" X="0" Y="0" />
+					<FillColor Color="rgba(122, 207, 245, 0.0)" Style="1" Transparency="100" Type="1" />
+				</CombinedFragment>
+				<InteractionOperand Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="126" Id="jV.eg4WD.AACAWby" MetaModelElement=".XWeg4WD.AACAWJw" Model=".XWeg4WD.AACAWJw" ModelElementNameAlignment="9" Name="Operand" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="1556" X="24" Y="504" ZOrder="10">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="126" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="1556" X="24" Y="504" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</InteractionOperand>
+				<CombinedFragment Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="145" Id="TV.eg4WD.AACAWb0" MetaModelElement="eXWeg4WD.AACAWJv" Model="eXWeg4WD.AACAWJv" ModelElementNameAlignment="9" Name="opt" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="1556" X="24" Y="485" ZOrder="12">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="19" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="29" X="0" Y="0" />
+					<FillColor Color="rgba(122, 207, 245, 0.0)" Style="1" Transparency="100" Type="1" />
+				</CombinedFragment>
+				<Activation Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="190" Id="zV.eg4WD.AACAWb5" MetaModelElement="GXWeg4WD.AACAWJd" Model="GXWeg4WD.AACAWJd" ModelElementNameAlignment="9" Name="Activation" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="8" X="218" Y="160" ZOrder="14">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="20" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="8" X="0" Y="0" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</Activation>
+				<Activation Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="30" Id="zV.eg4WD.AACAWb7" MetaModelElement="mXWeg4WD.AACAWJf" Model="mXWeg4WD.AACAWJf" ModelElementNameAlignment="9" Name="Activation" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="8" X="421" Y="130" ZOrder="16">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="20" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="8" X="0" Y="0" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</Activation>
+				<Activation Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="120" Id="zV.eg4WD.AACAWb9" MetaModelElement="WXWeg4WD.AACAWJh" Model="WXWeg4WD.AACAWJh" ModelElementNameAlignment="9" Name="Activation" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="8" X="627" Y="190" ZOrder="18">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="20" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="8" X="0" Y="0" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</Activation>
+				<Activation Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="17" Id="zV.eg4WD.AACAWb_" MetaModelElement="WXWeg4WD.AACAWJi" Model="WXWeg4WD.AACAWJi" ModelElementNameAlignment="9" Name="Activation" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="8" X="627" Y="435" ZOrder="20">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="20" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="8" X="0" Y="0" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</Activation>
+				<Activation Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="30" Id="LV.eg4WD.AACAWcB" MetaModelElement="2XWeg4WD.AACAWJk" Model="2XWeg4WD.AACAWJk" ModelElementNameAlignment="9" Name="Activation" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="8" X="834" Y="240" ZOrder="22">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="20" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="8" X="0" Y="0" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</Activation>
+				<Activation Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="30" Id="LV.eg4WD.AACAWcF" MetaModelElement="OXWeg4WD.AACAWJn" Model="OXWeg4WD.AACAWJn" ModelElementNameAlignment="9" Name="Activation" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="8" X="1045" Y="550" ZOrder="24">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="20" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="8" X="0" Y="0" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</Activation>
+				<Activation Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="30" Id="LV.eg4WD.AACAWcJ" MetaModelElement="uXWeg4WD.AACAWJq" Model="uXWeg4WD.AACAWJq" ModelElementNameAlignment="9" Name="Activation" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="8" X="1270" Y="520" ZOrder="26">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="20" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="8" X="0" Y="0" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</Activation>
+				<InteractionActor Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="620" Id="LV.eg4WD.AACAWcL" MetaModelElement="6XWeg4WD.AACAWJb" Model="6XWeg4WD.AACAWJb" ModelElementNameAlignment="9" Name=":Jefe" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" ParentFrame="6XWeg4WD.AACAWJa" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="60" X="40" Y="40" ZOrder="28">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="17" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="44" X="48" Y="75" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</InteractionActor>
+				<InteractionLifeLine Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="620" Id="rV.eg4WD.AACAWcN" MetaModelElement="GXWeg4WD.AACAWJc" Model="GXWeg4WD.AACAWJc" ModelElementNameAlignment="1" Name="VistaGeneralPage" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" ParentFrame="6XWeg4WD.AACAWJa" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowClassifier="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="164" X="140" Y="40" ZOrder="30">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="32" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="164" X="140" Y="40" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</InteractionLifeLine>
+				<InteractionLifeLine Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="620" Id="rV.eg4WD.AACAWcP" MetaModelElement="mXWeg4WD.AACAWJe" Model="mXWeg4WD.AACAWJe" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" ParentFrame="6XWeg4WD.AACAWJa" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowClassifier="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="162" X="344" Y="40" ZOrder="32">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="32" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="164" X="343" Y="40" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</InteractionLifeLine>
+				<InteractionLifeLine Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="620" Id="rV.eg4WD.AACAWcR" MetaModelElement="WXWeg4WD.AACAWJg" Model="WXWeg4WD.AACAWJg" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" ParentFrame="6XWeg4WD.AACAWJa" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowClassifier="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="170" X="546" Y="40" ZOrder="34">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="32" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="170" X="546" Y="40" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</InteractionLifeLine>
+				<InteractionLifeLine Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="620" Id="rV.eg4WD.AACAWcT" MetaModelElement="WXWeg4WD.AACAWJj" Model="WXWeg4WD.AACAWJj" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" ParentFrame="6XWeg4WD.AACAWJa" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowClassifier="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="164" X="756" Y="40" ZOrder="36">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="17" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="164" X="756" Y="40" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</InteractionLifeLine>
+				<InteractionLifeLine Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="620" Id="rV.eg4WD.AACAWcV" MetaModelElement="2XWeg4WD.AACAWJm" Model="2XWeg4WD.AACAWJm" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" ParentFrame="6XWeg4WD.AACAWJa" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowClassifier="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="178" X="960" Y="40" ZOrder="38">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="32" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="179" X="960" Y="40" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</InteractionLifeLine>
+				<InteractionLifeLine Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="368" Id="bV.eg4WD.AACAWcX" MetaModelElement="OXWeg4WD.AACAWJp" Model="OXWeg4WD.AACAWJp" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" ParentFrame="6XWeg4WD.AACAWJa" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowClassifier="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="192" X="1178" Y="292" ZOrder="40">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="32" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="192" X="1178" Y="292" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</InteractionLifeLine>
+				<NOTE Angle="0" Background="rgb(255, 255, 204)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="120" Id="bV.eg4WD.AACAWcZ" MetaModelElement=".XWeg4WD.AACAWJz" Model=".XWeg4WD.AACAWJz" ModelElementNameAlignment="9" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="360" X="1610" Y="40" ZOrder="42">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="0" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="65" X="0" Y="0" />
+					<FillColor Color="rgb(255, 255, 204)" Style="1" Transparency="0" Type="1" />
+				</NOTE>
+			<Activation Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="55" Id="q04Sn4WD.AACAZ04" MetaModelElement="q03Sn4WD.AACAZ03" Model="q03Sn4WD.AACAZ03" ModelElementNameAlignment="9" Name="Activation" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="8" X="218" Y="405" ZOrder="44">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="20" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="8" X="0" Y="0" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</Activation>
+				<Activation Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="30" Id="q06Sn4WD.AACAZ06" MetaModelElement="q05Sn4WD.AACAZ05" Model="q05Sn4WD.AACAZ05" ModelElementNameAlignment="9" Name="Activation" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="8" X="1481" Y="580" ZOrder="46">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="20" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="8" X="0" Y="0" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</Activation>
+				<InteractionLifeLine Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="620" Id="q02Sn4WD.AACAZ02" MetaModelElement="q01Sn4WD.AACAZ01" Model="q01Sn4WD.AACAZ01" ModelElementNameAlignment="1" Name="EquiposPage" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" ParentFrame="6XWeg4WD.AACAWJa" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowClassifier="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="150" X="1410" Y="40" ZOrder="48">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="32" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="150" X="1410" Y="40" />
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1" />
+				</InteractionLifeLine>
+				</Shapes>
+			<Connectors>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="LV.eg4WD.AACAWcL" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="bV.eg4WD.AACAWcb" MetaModelElement="PdWeg4WD.AACAV4L" Model="PdWeg4WD.AACAV4L" ModelElementNameAlignment="9" Name="navegar(vistaGeneral)" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="rV.eg4WD.AACAWcP" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="451" X="20" Y="62" ZOrder="50">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="109" X="76" Y="112" />
+					<Points>
+						<Point X="70.0" Y="130.0" />
+						<Point X="421.0" Y="130.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="rV.eg4WD.AACAWcP" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="bV.eg4WD.AACAWcd" MetaModelElement="vdWeg4WD.AACAV4Q" Model="vdWeg4WD.AACAV4Q" ModelElementNameAlignment="9" Name="navegar" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="rV.eg4WD.AACAWcN" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="295" X="176" Y="92" ZOrder="52">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="80" X="232" Y="142" />
+					<Points>
+						<Point X="421.0" Y="160.0" />
+						<Point X="226.0" Y="160.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="LV.eg4WD.AACAWcL" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="bV.eg4WD.AACAWcf" MetaModelElement="fdWeg4WD.AACAV4W" Model="fdWeg4WD.AACAV4W" ModelElementNameAlignment="9" Name="actualizar" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="rV.eg4WD.AACAWcN" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="248" X="20" Y="337" ZOrder="54">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="181" X="76" Y="387" />
+					<Points>
+						<Point X="70.0" Y="405.0" />
+						<Point X="218.0" Y="405.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="rV.eg4WD.AACAWcN" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="bV.eg4WD.AACAWch" MetaModelElement="_dWeg4WD.AACAV4b" Model="_dWeg4WD.AACAV4b" ModelElementNameAlignment="9" Name="explorar" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="rV.eg4WD.AACAWcR" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="501" X="176" Y="122" ZOrder="56">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="95" X="232" Y="172" />
+					<Points>
+						<Point X="226.0" Y="190.0" />
+						<Point X="627.0" Y="190.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="rV.eg4WD.AACAWcR" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="bV.eg4WD.AACAWcj" MetaModelElement="A9Weg4WD.AACAV4g" Model="A9Weg4WD.AACAV4g" ModelElementNameAlignment="9" Name="seleccionar" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="rV.eg4WD.AACAWcT" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="299" X="585" Y="172" ZOrder="58">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="95" X="641" Y="222" />
+					<Points>
+						<Point X="635.0" Y="240.0" />
+						<Point X="834.0" Y="240.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="rV.eg4WD.AACAWcT" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="7V.eg4WD.AACAWcl" MetaModelElement="g9Weg4WD.AACAV4l" Model="g9Weg4WD.AACAV4l" ModelElementNameAlignment="9" Name="filaUnidad" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="rV.eg4WD.AACAWcR" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="299" X="585" Y="202" ZOrder="60">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="116" X="641" Y="252" />
+					<Points>
+						<Point X="834.0" Y="270.0" />
+						<Point X="635.0" Y="270.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="rV.eg4WD.AACAWcR" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="7V.eg4WD.AACAWcn" MetaModelElement="Q9Weg4WD.AACAV4r" Model="Q9Weg4WD.AACAV4r" ModelElementNameAlignment="9" Name="crear(listaUnidades)" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="bV.eg4WD.AACAWcX" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="643" X="585" Y="242" ZOrder="62">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="95" X="641" Y="292" />
+					<Points>
+						<Point X="635.0" Y="310.0" />
+						<Point X="1178.0" Y="310.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="rV.eg4WD.AACAWcN" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="7V.eg4WD.AACAWcp" MetaModelElement="w9Weg4WD.AACAV4w" Model="w9Weg4WD.AACAV4w" ModelElementNameAlignment="9" Name="mostrar" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="LV.eg4WD.AACAWcL" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="248" X="20" Y="282" ZOrder="64">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="80" X="76" Y="332" />
+					<Points>
+						<Point X="218.0" Y="350.0" />
+						<Point X="70.0" Y="350.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="LV.eg4WD.AACAWcL" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="7V.eg4WD.AACAWcr" MetaModelElement="w9Weg4WD.AACAV41" Model="w9Weg4WD.AACAV41" ModelElementNameAlignment="9" Name="seleccionar(unidad)" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="bV.eg4WD.AACAWcX" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="1300" X="20" Y="452" ZOrder="66">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="246" X="76" Y="502" />
+					<Points>
+						<Point X="70.0" Y="520.0" />
+						<Point X="1270.0" Y="520.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="rV.eg4WD.AACAWcN" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="7V.eg4WD.AACAWct" MetaModelElement="o9Weg4WD.AACAV46" Model="o9Weg4WD.AACAV46" ModelElementNameAlignment="9" Name="explorar" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="rV.eg4WD.AACAWcR" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="501" X="176" Y="367" ZOrder="68">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="95" X="232" Y="417" />
+					<Points>
+						<Point X="226.0" Y="435.0" />
+						<Point X="627.0" Y="435.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="rV.eg4WD.AACAWcN" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="7V.eg4WD.AACAWcv" MetaModelElement="Y9Weg4WD.AACAV4_" Model="Y9Weg4WD.AACAV4_" ModelElementNameAlignment="9" Name="mostrar" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="LV.eg4WD.AACAWcL" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="248" X="20" Y="392" ZOrder="70">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="80" X="76" Y="442" />
+					<Points>
+						<Point X="218.0" Y="460.0" />
+						<Point X="70.0" Y="460.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="bV.eg4WD.AACAWcX" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="7V.eg4WD.AACAWcx" MetaModelElement="49Weg4WD.AACAV5E" Model="49Weg4WD.AACAV5E" ModelElementNameAlignment="9" Name="navegar(idUnidad)" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="rV.eg4WD.AACAWcV" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="317" X="1003" Y="482" ZOrder="72">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="167" X="1059" Y="532" />
+					<Points>
+						<Point X="1270.0" Y="550.0" />
+						<Point X="1053.0" Y="550.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="rV.eg4WD.AACAWcV" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="7V.eg4WD.AACAWcz" MetaModelElement="49Weg4WD.AACAV5J" Model="49Weg4WD.AACAV5J" ModelElementNameAlignment="9" Name="navegar" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="q02Sn4WD.AACAZ02" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="528" X="1003" Y="512" ZOrder="74">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="109" X="1059" Y="562" />
+					<Points>
+						<Point X="1053.0" Y="580.0" />
+						<Point X="1481.0" Y="580.0" />
+					</Points>
+				</Message>
+				<Message Background="rgb(0, 0, 0)" ConnectorLabelOrientation="4" ConnectorLineJumps="4" ConnectorStyle="Follow Diagram" Folded="false" Foreground="rgb(0, 0, 0)" From="q02Sn4WD.AACAZ02" FromConnectType="0" FromPinType="1" FromShapeXDiff="0" FromShapeYDiff="0" Height="118" Id="7V.eg4WD.AACAWc1" MetaModelElement="E9Weg4WD.AACAV5O" Model="E9Weg4WD.AACAV5O" ModelElementNameAlignment="9" Name="mostrar" PaintThroughLabel="2" RequestRebuild="false" RequestRebuildFromEnd="false" RequestRebuildToEnd="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" Selectable="true" ShowArgumentsInMessageOperationSignature="0" ShowConnectorName="2" ShowMessageName="0" ShowMessageOperationSignature="0" ShowParameterNamesInMessageOperationSignature="0" ShowParameterTypesInMessageOperationSignature="0" ShowReturnTypeInMessageOperationSignature="0" To="LV.eg4WD.AACAWcL" ToConnectType="0" ToPinType="1" ToShapeXDiff="0" ToShapeYDiff="0" UseFromShapeCenter="true" UseToShapeCenter="true" Width="1511" X="20" Y="542" ZOrder="76">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0" />
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke />
+					</Line>
+					<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="None" Visible="true" Width="80" X="76" Y="592" />
+					<Points>
+						<Point X="1481.0" Y="610.0" />
+						<Point X="70.0" Y="610.0" />
+					</Points>
+				</Message>
+			</Connectors>
+		</InteractionDiagram>
+	</Diagrams>
+</Project>
