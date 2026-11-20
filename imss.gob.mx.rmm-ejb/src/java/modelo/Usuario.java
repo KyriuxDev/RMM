@@ -17,11 +17,14 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.TemporalType;
+import jakarta.persistence.Temporal;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,6 +74,12 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "esta_activo")
     private boolean estaActivo;
+    @Basic(optional = false)
+    @Column(name = "intentos_fallidos")
+    private int intentosFallidos;
+    @Column(name = "bloqueado_hasta")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date bloqueadoHasta;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private List<ReporteEjecutivo> reporteEjecutivoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
@@ -189,6 +198,70 @@ public class Usuario implements Serializable {
 
     public void setIdRol(Rol idRol) {
         this.idRol = idRol;
+    }
+
+    // ------------------------------------------------------------------
+    // Inicio de sesión (SD-00a): intentos fallidos y bloqueo temporal
+    // ------------------------------------------------------------------
+
+    /** Suma un intento fallido y regresa cuántos lleva seguidos. */
+    public int registrarIntentoFallido() {
+        intentosFallidos++;
+        return intentosFallidos;
+    }
+
+    /** Bloquea la cuenta los minutos indicados a partir de "ahora". */
+    public void bloquearTemporalmente(int minutos, Date ahora) {
+        bloqueadoHasta = new Date(ahora.getTime() + minutos * 60_000L);
+        intentosFallidos = 0;
+    }
+
+    /** Vuelve a cero los intentos fallidos y quita el bloqueo. */
+    public void reiniciarIntentos() {
+        intentosFallidos = 0;
+        bloqueadoHasta = null;
+    }
+
+    /** true si la cuenta sigue bloqueada en el momento "ahora". */
+    public boolean estaBloqueado(Date ahora) {
+        return bloqueadoHasta != null && bloqueadoHasta.after(ahora);
+    }
+
+    /** Minutos que le faltan al bloqueo (redondeado hacia arriba); 0 si no está bloqueada. */
+    public long minutosDeBloqueo(Date ahora) {
+        if (!estaBloqueado(ahora)) {
+            return 0;
+        }
+        return (bloqueadoHasta.getTime() - ahora.getTime() + 59_999L) / 60_000L;
+    }
+
+    /** SD-07a editarDatos(datos): copia los datos editables del formulario. */
+    public void editarDatos(String matricula, String nombre, String correo, boolean estaActivo) {
+        this.matricula = matricula;
+        this.nombre = nombre;
+        this.correo = correo;
+        this.estaActivo = estaActivo;
+    }
+
+    /** SD-07a asignarRol(rol). */
+    public void asignarRol(Rol rol) {
+        this.idRol = rol;
+    }
+
+    public int getIntentosFallidos() {
+        return intentosFallidos;
+    }
+
+    public void setIntentosFallidos(int intentosFallidos) {
+        this.intentosFallidos = intentosFallidos;
+    }
+
+    public Date getBloqueadoHasta() {
+        return bloqueadoHasta;
+    }
+
+    public void setBloqueadoHasta(Date bloqueadoHasta) {
+        this.bloqueadoHasta = bloqueadoHasta;
     }
 
     @Override

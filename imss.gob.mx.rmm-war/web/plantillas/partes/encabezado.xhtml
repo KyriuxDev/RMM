@@ -22,6 +22,11 @@
             </h1>
         </div>
 
+        <!-- Botones principales de la vista ("Nuevo usuario", "Nuevo equipo"): ui:define name="accionesEncabezado" -->
+        <div class="encabezado-acciones">
+            <ui:insert name="accionesEncabezado"/>
+        </div>
+
         <h:form id="formBuscar" styleClass="encabezado-buscar" prependId="false">
             <i class="pi pi-search"></i>
             <p:inputText id="buscarEquipo" placeholder="Buscar equipo por hostname o IP" autocomplete="off"/>

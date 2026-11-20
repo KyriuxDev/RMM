@@ -28,4 +28,10 @@ public class AlertaFacade extends AbstractFacade<Alerta> {
         super(Alerta.class);
     }
     
+
+    /** Alertas sin atender (estado "Activa"). */
+    public long contarActivas() {
+        return em.createQuery("SELECT COUNT(a) FROM Alerta a WHERE UPPER(a.estado) = 'ACTIVA'", Long.class)
+                .getSingleResult();
+    }
 }

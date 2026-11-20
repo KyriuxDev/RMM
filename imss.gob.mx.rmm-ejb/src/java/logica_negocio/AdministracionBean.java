@@ -86,9 +86,8 @@ public class AdministracionBean {
         Validacion.requerido(idRol, "rol", "Seleccione el rol del usuario");
         Validacion.requerido(Validacion.limpiar(contrasenaTemporal), "contrasena", "La contraseña es obligatoria");
 
-        // verificarCorreoDisponible(correo) (también la matrícula)
-        verificarMatriculaDisponible(usuario.getMatricula());
-        verificarCorreoDisponible(usuario.getCorreo());
+        // verificarMatriculaYCorreoDisponibles(matricula, correo)
+        verificarMatriculaYCorreoDisponibles(usuario.getMatricula(), usuario.getCorreo(), null);
 
         // asignarRol(rol)
         Rol rol = rolFacade.find(idRol);
@@ -115,9 +114,21 @@ public class AdministracionBean {
      * Lanza un error si la matrícula ya pertenece a otro usuario.
      * También la usa la vista (validador MatriculaDisponibleValidator).
      */
+    /** SD-07a verificarMatriculaYCorreoDisponibles(matricula, correo). */
+    public void verificarMatriculaYCorreoDisponibles(String matricula, String correo, Integer idExcluir) {
+        verificarMatriculaDisponible(matricula, idExcluir);
+        verificarCorreoDisponible(correo, idExcluir);
+    }
+
     public void verificarMatriculaDisponible(String matricula) {
+        verificarMatriculaDisponible(matricula, null);
+    }
+
+    /** Igual que la anterior, pero sin contar al usuario idExcluir (el que se está editando). */
+    public void verificarMatriculaDisponible(String matricula, Integer idExcluir) {
         String m = Validacion.limpiar(matricula);
-        if (m != null && usuarioFacade.buscarPorMatricula(m) != null) {
+        Usuario otro = m == null ? null : usuarioFacade.buscarPorMatricula(m);
+        if (otro != null && !otro.getIdUsuario().equals(idExcluir)) {
             throw new Excepciones("matricula", "La matrícula " + m + " ya está registrada");
         }
     }
@@ -127,10 +138,83 @@ public class AdministracionBean {
      * También la usa la vista (validador CorreoDisponibleValidator).
      */
     public void verificarCorreoDisponible(String correo) {
+        verificarCorreoDisponible(correo, null);
+    }
+
+    /** Igual que la anterior, pero sin contar al usuario idExcluir (el que se está editando). */
+    public void verificarCorreoDisponible(String correo, Integer idExcluir) {
         String c = Validacion.limpiar(correo);
-        if (c != null && usuarioFacade.buscarPorCorreo(c.toLowerCase()) != null) {
+        Usuario otro = c == null ? null : usuarioFacade.buscarPorCorreo(c.toLowerCase());
+        if (otro != null && !otro.getIdUsuario().equals(idExcluir)) {
             throw new Excepciones("correo", "El correo " + c.toLowerCase() + " ya está registrado");
         }
+    }
+
+    // ------------------------------------------------------------------
+    // Editar usuario (SD-07a, rama usuario existente: editarDatos + asignarRol)
+    // ------------------------------------------------------------------
+
+    public Usuario buscarUsuario(Integer idUsuario) {
+        return idUsuario == null ? null : usuarioFacade.find(idUsuario);
+    }
+
+    /**
+     * Guarda los cambios de un usuario.
+     *
+     * @param idUsuario      usuario que se edita
+     * @param datos          matrícula, nombre, correo y estado capturados
+     * @param idRol          rol nuevo
+     * @param contrasenaNueva vacía o null para conservar la actual
+     * @param idUsuarioActual quien hace el cambio (no puede desactivarse a sí mismo
+     *                        ni quitarse el rol con Administración)
+     */
+    public Usuario editarUsuario(Integer idUsuario, Usuario datos, Integer idRol,
+            String contrasenaNueva, Integer idUsuarioActual) {
+        Usuario usr = buscarUsuario(idUsuario);
+        if (usr == null) {
+            throw new Excepciones("El usuario que intenta editar ya no existe");
+        }
+        if (datos == null) {
+            throw new Excepciones("Los datos del usuario son obligatorios");
+        }
+        normalizar(datos);
+        Validacion.requerido(datos.getMatricula(), "matricula", "La matrícula es obligatoria");
+        Validacion.requerido(datos.getNombre(), "nombre", "El nombre es obligatorio");
+        Validacion.requerido(datos.getCorreo(), "correo", "El correo es obligatorio");
+        Validacion.requerido(idRol, "rol", "Seleccione el rol del usuario");
+
+        // verificarMatriculaYCorreoDisponibles(matricula, correo), sin contar al propio usuario
+        verificarMatriculaYCorreoDisponibles(datos.getMatricula(), datos.getCorreo(), idUsuario);
+
+        Rol rol = rolFacade.find(idRol);
+        if (rol == null) {
+            throw new Excepciones("rol", "El rol seleccionado no existe");
+        }
+        boolean esElMismo = idUsuario.equals(idUsuarioActual);
+        if (esElMismo && !datos.getEstaActivo()) {
+            throw new Excepciones("estaActivo", "No puede desactivar su propia cuenta");
+        }
+        if (esElMismo && !rol.obtenerPermisos().contains(Permiso.ADMINISTRAR.name())) {
+            throw new Excepciones("rol", "No puede quitarse a sí mismo el acceso a Administración");
+        }
+
+        // editarDatos(matricula, nombre, correo, estaActivo)
+        usr.editarDatos(datos.getMatricula(), datos.getNombre(), datos.getCorreo(), datos.getEstaActivo());
+        // asignarRol(rol)
+        usr.asignarRol(rol);
+        // Contraseña nueva (opcional)
+        String c = Validacion.limpiar(contrasenaNueva);
+        if (c != null) {
+            char[] caracteres = contrasenaNueva.toCharArray();
+            try {
+                usr.setContrasenaHash(passwordHash.generate(caracteres));
+            } finally {
+                Arrays.fill(caracteres, '\0');
+            }
+            usr.reiniciarIntentos();   // una contraseña nueva también quita el bloqueo
+        }
+        usuarioFacade.edit(usr);
+        return usr;
     }
 
     // ------------------------------------------------------------------
@@ -186,7 +270,7 @@ public class AdministracionBean {
         }
 
         // actualizarPermisosRol(idRol, permisos)
-        rol.setPermisos(String.join(",", ordenar(codigos)));
+        rol.actualizarPermisos(ordenar(codigos));
         rolFacade.edit(rol);
     }
 
@@ -201,15 +285,7 @@ public class AdministracionBean {
 
     /** Códigos de permiso guardados en un rol. */
     public static Set<String> permisosDe(Rol rol) {
-        Set<String> r = new LinkedHashSet<>();
-        if (rol != null && rol.getPermisos() != null) {
-            for (String p : rol.getPermisos().split(",")) {
-                if (!p.isBlank()) {
-                    r.add(p.trim());
-                }
-            }
-        }
-        return r;
+        return rol == null ? new LinkedHashSet<>() : rol.obtenerPermisos();
     }
 
     // ------------------------------------------------------------------

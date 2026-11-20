@@ -1,0 +1,365 @@
+/* Estilo tipo Zabbix con los colores del RMM.
+   Se carga al final de plantillaPrincipal.xhtml (después de los estilos de cada vista).
+
+     - Todo recto: tarjetas, botones, campos y pastillas sin esquinas redondeadas.
+     - Filtro: panel blanco con la pestaña "Filtro" arriba a la derecha; cada
+       etiqueta a la izquierda de su campo; opciones en botones pegados
+       (Todos | Activos | Inactivos) y "Aplicar" / "Restablecer" centrados.
+     - Tabla: encabezados grises (los que ordenan, en azul), renglones bajos,
+       "Editar" como liga y "Mostrando X de Y encontrados" abajo a la derecha. */
+
+/* ---------- Todo recto ---------- */
+.app-contenido .tarjeta,
+.app-contenido .ui-button,
+.app-contenido .ui-inputfield,
+.app-contenido .ui-inputtext,
+.app-contenido .ui-selectonemenu,
+.app-contenido .ui-selectonemenu-panel,
+.app-contenido .ui-password,
+.app-contenido .ui-chkbox-box,
+.app-contenido .ui-messages > div,
+.app-contenido .ui-datatable,
+.app-contenido .ui-paginator .ui-paginator-page,
+.app-contenido .estado,
+.app-contenido .pastilla-edicion,
+.ui-dialog,
+.ui-selectonemenu-panel {
+    border-radius: 0 !important;
+}
+
+/* ---------- Todo el ancho de la pantalla ---------- */
+.app-contenido .usuarios,
+.app-contenido .vista-formulario {
+    max-width: none;
+    width: 100%;
+}
+
+/* ---------- Botones principales en el encabezado (como "Crear informe" de Zabbix) ---------- */
+.encabezado-acciones {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.encabezado-acciones form { margin: 0; }
+
+/* ---------- Resumen (Equipos): clic = filtrar por estado ---------- */
+.resumen-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0;
+    background-color: var(--blanco);
+    border: 1px solid #DFE4E7;
+}
+
+.resumen-grid .resumen {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 10px 14px;
+    border-right: 1px solid #DFE4E7;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.resumen-grid .resumen:last-child { border-right: none; }
+.resumen-grid .resumen:hover { background-color: #F4F8FB; }
+.resumen-grid .resumen.elegida { box-shadow: inset 0 -3px 0 var(--azul); background-color: #F4F8FB; }
+.resumen-grid .resumen .tenue { font-size: 12px; color: #768D99; }
+.resumen-grid .cifra { font-size: 22px; font-weight: 700; line-height: 1.15; }
+
+.cifra-verde { color: var(--verde); }
+.cifra-ambar { color: #A15C00; }
+.cifra-roja { color: var(--rojo); }
+.cifra-gris { color: #768D99; }
+
+/* ---------- Filtro ---------- */
+.panel-filtro {
+    position: relative;
+    background-color: var(--blanco);
+    border: 1px solid #DFE4E7;
+    margin-top: 26px;
+}
+
+/* Pestaña "Filtro" arriba a la derecha */
+.panel-filtro > .pestana-filtro {
+    position: absolute;
+    top: -27px;
+    right: -1px;
+    height: 26px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--blanco);
+    border: 1px solid #DFE4E7;
+    border-bottom: none;
+    font-size: 12px;
+    color: var(--texto);
+}
+
+/* Etiqueta a la izquierda, campo a la derecha, en dos columnas centradas */
+.campos-filtro {
+    display: grid;
+    grid-template-columns: max-content minmax(220px, 320px) max-content minmax(220px, 360px);
+    justify-content: center;
+    align-items: center;
+    gap: 10px 12px;
+    padding: 14px 16px 12px;
+}
+
+.campos-filtro > label,
+.campos-filtro > .etiqueta {
+    justify-self: end;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: var(--texto) !important;
+}
+
+.campos-filtro .ancho-completo { grid-column: 2 / -1; }
+
+.campos-filtro .ui-inputfield,
+.campos-filtro .ui-selectonemenu {
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 12px;
+}
+
+.campos-filtro .ui-inputfield { height: 26px; padding: 0 8px; }
+.campos-filtro .ui-selectonemenu .ui-selectonemenu-label { padding: 4px 8px; font-size: 12px; }
+
+/* Opciones en botones pegados (Todos | Activos | Inactivos) */
+.campos-filtro .ui-selectonebutton { display: inline-flex; flex-wrap: wrap; }
+
+.campos-filtro .ui-selectonebutton .ui-button {
+    height: 26px;
+    margin: 0 -1px 0 0;
+    padding: 0 10px;
+    background: var(--blanco);
+    border: 1px solid #ACBBC2;
+    color: var(--texto);
+    font-size: 12px;
+    box-shadow: none;
+}
+
+.campos-filtro .ui-selectonebutton .ui-button .ui-button-text { padding: 0; line-height: 24px; }
+.campos-filtro .ui-selectonebutton .ui-button:hover { background: #F4F8FB; }
+
+.campos-filtro .ui-selectonebutton .ui-button.ui-state-active {
+    position: relative;
+    z-index: 1;
+    background: #768D99;
+    border-color: #768D99;
+    color: var(--blanco);
+}
+
+/* Aplicar / Restablecer centrados bajo una línea */
+.acciones-filtro {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px 14px;
+    border-top: 1px solid #EBEEF0;
+    margin: 0 auto;
+    max-width: 760px;
+}
+
+.acciones-filtro .btn.ui-button {
+    height: 26px;
+    padding: 0 12px;
+    font-size: 12px;
+}
+
+/* "Restablecer": blanco con borde azul (como en Zabbix) */
+.btn.btn-contorno,
+.btn.btn-contorno.ui-button {
+    background-color: var(--blanco) !important;
+    color: var(--azul) !important;
+    border: 1px solid var(--azul) !important;
+}
+
+.btn.btn-contorno:hover { background-color: #EAF3FA !important; }
+
+/* ---------- Tabla ---------- */
+.tarjeta.tarjeta-tabla {
+    padding: 0;
+    gap: 0;
+    border-color: #DFE4E7;
+}
+
+.tabla-lista.ui-datatable table {
+    border-collapse: collapse;
+    font-size: 12px;
+    color: var(--texto);
+}
+
+.tabla-lista.ui-datatable .ui-datatable-thead > tr > th,
+.tabla-lista.ui-datatable thead th {
+    height: 32px !important;
+    padding: 0 10px !important;
+    background: var(--blanco) !important;
+    border: none !important;
+    border-bottom: 2px solid #DFE4E7 !important;
+    color: #768D99 !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.tabla-lista.ui-datatable thead th .ui-column-title {
+    font-size: 12px !important;
+    font-weight: 400 !important;
+}
+
+/* Flecha de ordenar: chica y junto al título */
+.tabla-lista.ui-datatable thead th .ui-sortable-column-icon {
+    font-size: 10px !important;
+    width: auto !important;
+    height: auto !important;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.tabla-lista.ui-datatable thead th.ui-sortable-column .ui-column-title,
+.tabla-lista.ui-datatable thead th.ui-sortable-column .ui-sortable-column-icon {
+    color: var(--azul) !important;
+}
+
+.tabla-lista.ui-datatable .ui-datatable-thead > tr > th.ui-state-active { background: var(--blanco); }
+
+.tabla-lista.ui-datatable .ui-datatable-data > tr > td {
+    height: 30px;
+    padding: 3px 10px !important;
+    background: var(--blanco);
+    border: none !important;
+    border-bottom: 1px solid #EBEEF0 !important;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.tabla-lista.ui-datatable .ui-datatable-data > tr:hover > td { background: #EAF3FA; }
+.tabla-lista.ui-datatable .ui-datatable-data > tr.fila-inactiva > td { color: #8C99A6; }
+
+/* Sin resultados: lupa y "No se encontraron datos" */
+.tabla-lista.ui-datatable .ui-datatable-empty-message > td {
+    height: 200px;
+    text-align: center;
+    color: #768D99;
+    font-size: 14px;
+}
+
+.tabla-lista .sin-datos .pi {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 30px;
+    color: #ACBBC2;
+}
+
+/* Pie: "Mostrando 1 a 25 de 40 encontrados" a la derecha */
+.tabla-lista.ui-datatable .ui-paginator {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    background: var(--blanco);
+    border: none;
+    border-top: 1px solid #EBEEF0;
+    font-size: 12px;
+}
+
+.tabla-lista.ui-datatable .ui-paginator .ui-paginator-current {
+    order: 99;
+    margin-left: 12px;
+    color: #768D99;
+}
+
+/* Ligas (hostname, "Editar"): azul con subrayado punteado */
+.tabla-lista .enlace,
+.tabla-lista .accion {
+    color: var(--azul);
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.tabla-lista .enlace { font-weight: 600; }
+.tabla-lista .enlace:hover,
+.tabla-lista .accion:hover { text-decoration-style: solid; }
+.tabla-lista .col-acciones { width: 80px; white-space: nowrap; }
+
+/* Pastillas de estado: rectas, como etiquetas de Zabbix */
+.app-contenido .estado {
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 16px;
+    background-color: #F1F3F5;
+    color: var(--texto-sec);
+    border: 1px solid var(--gris-borde);
+    white-space: nowrap;
+}
+
+.app-contenido .estado.estado-activo { background-color: var(--verde-claro); color: var(--verde); border-color: var(--verde-borde); }
+.app-contenido .estado.estado-alerta { background-color: #FFF4E0; color: #A15C00; border-color: #F2CF8C; }
+.app-contenido .estado.estado-inactivo { background-color: #FDECEC; color: #A61B1B; border-color: #F3B8B8; }
+
+@media (max-width: 1000px) {
+    .resumen-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .campos-filtro { grid-template-columns: max-content minmax(0, 1fr); }
+    .campos-filtro .ancho-completo { grid-column: 2; }
+}
+
+/* ---------- Estructura ---------- */
+/* Región y zona en la misma celda del filtro */
+.campos-filtro .par-campos {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.campos-filtro .par-campos > .ui-selectonemenu:first-child { flex: 1; }
+.campos-filtro .par-campos > label { font-size: 12px; }
+.campos-filtro .par-campos > .ui-selectonemenu:last-child { width: 90px !important; flex: none; }
+
+.tabla-lista .col-abrir { width: 34px; }
+.tabla-lista .col-numero { text-align: right; }
+.tabla-lista .clave-area { white-space: nowrap; font-weight: 600; color: var(--azul); }
+.tabla-lista .cuenta-equipos { font-weight: 700; color: var(--azul); }
+
+/* Lo que se ve al abrir un área */
+.tabla-lista.ui-datatable .ui-expanded-row-content > td {
+    padding: 0 !important;
+    background: #F7F9FA !important;
+}
+
+.detalle-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 16px 14px 44px;
+    border-left: 3px solid var(--azul);
+}
+
+.detalle-area-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+}
+
+.detalle-area-titulo .espacio { flex: 1; }
+.detalle-area-titulo .btn.ui-button { height: 26px; font-size: 12px; }
+
+.tabla-lista.tabla-interna.ui-datatable { border: 1px solid #DFE4E7; }
+.tabla-lista.tabla-interna.ui-datatable .ui-datatable-empty-message > td { height: auto; padding: 12px !important; }
+
+/* ---------- Selector de destino del equipo (Unidad → Área) ---------- */
+.vista-formulario .detalle-destino {
+    font-size: 12px;
+    color: #768D99;
+}

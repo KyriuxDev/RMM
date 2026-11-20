@@ -96,6 +96,57 @@
     border-color: var(--verde-borde);
 }
 
+.vista-formulario .estado-inactivo {
+    background-color: #FDECEC;
+    color: #A61B1B;
+    border-color: #F3B8B8;
+}
+
+.vista-formulario .estado-alerta {
+    background-color: #FFF4E0;
+    color: #A15C00;
+    border-color: #F2CF8C;
+}
+
+/* Inventario de equipos (PR-12) */
+.vista-formulario .tarjeta-titulo .acciones-titulo { display: flex; gap: 10px; align-items: center; }
+.vista-formulario .enlace-equipo { font-weight: 600; color: var(--azul); text-decoration: none; }
+.vista-formulario .enlace-equipo:hover { text-decoration: underline; }
+.vista-formulario .fila-inactiva td { color: #8C99A6; }
+.vista-formulario .filtros-equipos { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto; }
+
+/* Acción de baja de equipo (PR-14) */
+.vista-formulario .zona-baja {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    border-left: 4px solid var(--rojo);
+}
+
+.vista-formulario .zona-baja p { margin: 4px 0 0; font-size: 13px; color: var(--texto-sec); }
+.vista-formulario .btn-peligro.ui-button,
+.dialogo-baja .btn-peligro.ui-button {
+    background: var(--rojo) !important;
+    border-color: var(--rojo) !important;
+    color: #FFFFFF !important;
+}
+
+.dialogo-baja .contenido-baja { display: flex; flex-direction: column; gap: 10px; max-width: 460px; }
+.dialogo-baja .aviso-baja {
+    margin: 0;
+    padding: 10px 12px;
+    background-color: #FFF4E0;
+    border: 1px solid #F2CF8C;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #7A4600;
+}
+.dialogo-baja .campo { display: flex; flex-direction: column; gap: 6px; }
+.dialogo-baja .campo label { font-size: 13px; font-weight: 600; }
+.dialogo-baja .campo .ui-inputtextarea { width: 100%; }
+.dialogo-baja .acciones { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+
 /* Matriz de permisos (Roles y permisos) */
 .vista-formulario .tabla-scroll { overflow-x: auto; }
 

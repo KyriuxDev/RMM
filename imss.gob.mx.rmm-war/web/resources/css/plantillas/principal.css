@@ -10,7 +10,7 @@
     --verde-claro: #E6F6EC;
     --verde-borde: #A8DDBC;
     --gris-borde: #D6DCE2;
-    --mono: "JetBrains Mono", "Consolas", monospace;
+    --mono: var(--letra);   /* misma letra que todo (como Zabbix) */
 }
 
 .app {
@@ -471,3 +471,226 @@
 .btn.ui-button .ui-button-icon-left { position: static; margin: 0; }
 .btn.ui-button .ui-button-text { padding: 0; line-height: 1; }
 a.btn.ui-button { text-decoration: none; }
+
+/* =====================================================================
+   Menú lateral estilo Zabbix (va al final para ganarle a lo de arriba)
+     - Renglones de orilla a orilla, rectos, sin esquinas redondeadas.
+     - Sección abierta: un poco más oscura, flecha hacia arriba.
+     - Subsecciones en una franja más oscura, letra chica y una línea
+       fina entre cada una.
+     - Página actual: barra clara a la izquierda y fondo un poco más claro.
+   ===================================================================== */
+:root {
+    --zbx-seccion-abierta: #0B2F4E;   /* encabezado de la sección abierta */
+    --zbx-submenu: #082640;           /* franja de las subsecciones */
+    --zbx-linea: rgba(0, 0, 0, 0.28); /* línea entre subsecciones */
+    --zbx-marca: #6FB6E8;             /* barra de la página actual */
+}
+
+.sidebar { padding: 0; }
+.sidebar-top { padding: 18px 20px 18px; }
+.sidebar-pie { padding: 14px 20px 18px; }
+
+.sidebar .ui-panelmenu .ui-panelmenu-panel { margin: 0; }
+
+/* Encabezado de cada sección */
+.sidebar .ui-panelmenu h3.ui-panelmenu-header,
+.sidebar .ui-panelmenu .ui-panelmenu-panel:first-child h3.ui-panelmenu-header,
+.sidebar .ui-panelmenu .ui-panelmenu-panel:last-child h3.ui-panelmenu-header,
+.sidebar .ui-panelmenu .ui-panelmenu-panel:last-child h3.ui-panelmenu-header.ui-state-active {
+    height: 40px;
+    padding: 0 18px 0 20px;
+    gap: 12px;
+    border-radius: 0;
+    font-size: 14px;
+}
+
+.sidebar .ui-panelmenu h3.ui-panelmenu-header:hover {
+    background: rgba(255, 255, 255, 0.07);
+}
+
+/* Sección abierta: más oscura (ya no azul brillante), con la flecha hacia arriba */
+.sidebar .ui-panelmenu h3.ui-panelmenu-header.ui-state-active,
+.sidebar .ui-panelmenu h3.ui-panelmenu-header.ui-state-active:hover,
+.sidebar .ui-panelmenu h3.ui-panelmenu-header.ui-state-active.ui-state-hover {
+    background: var(--zbx-seccion-abierta);
+    color: #FFFFFF;
+    font-weight: 400;
+}
+
+/* Sección de la página actual (aunque esté cerrada): texto blanco */
+.sidebar .ui-panelmenu .ui-panelmenu-panel.activa > h3.ui-panelmenu-header { color: #FFFFFF; }
+
+/* Franja de subsecciones */
+.sidebar .ui-panelmenu .ui-panelmenu-content {
+    padding: 0;
+    background: var(--zbx-submenu);
+    border-top: 1px solid var(--zbx-linea);
+}
+
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menu-list { margin: 0; padding: 0; }
+.sidebar .ui-panelmenu .ui-menuitem { margin: 0; }
+
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link {
+    position: relative;
+    padding: 0 18px 0 48px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    border-radius: 0;
+    border-bottom: 1px solid var(--zbx-linea);
+    color: var(--sidebar-texto);
+    font-size: 12px;
+}
+
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menuitem:last-child .ui-menuitem-link { border-bottom: none; }
+
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link.ui-state-hover,
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
+}
+
+/* Página actual: fondo un poco más claro y barra clara junto a la franja oscura */
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link.activo,
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link.activo:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF;
+    font-weight: 400;
+    box-shadow: none;
+}
+
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link.activo::before {
+    content: "";
+    position: absolute;
+    left: var(--zbx-ancho-franja);
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--zbx-marca);
+}
+
+/* ---------- Franja oscura gruesa a la izquierda de las subsecciones (como Zabbix) ---------- */
+:root {
+    --zbx-franja: #041A2C;
+    --zbx-ancho-franja: 20px;
+    --ancho-menu: 248px;
+    --ancho-menu-compacto: 54px;
+}
+
+.sidebar .ui-panelmenu .ui-panelmenu-content {
+    background: linear-gradient(to right,
+            var(--zbx-franja) 0, var(--zbx-franja) var(--zbx-ancho-franja),
+            var(--zbx-submenu) var(--zbx-ancho-franja));
+}
+
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link { padding-left: 44px; }
+
+/* La línea entre subsecciones no cruza la franja oscura */
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link { border-bottom: none; }
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link::after {
+    content: "";
+    position: absolute;
+    left: var(--zbx-ancho-franja);
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--zbx-linea);
+}
+.sidebar .ui-panelmenu .ui-panelmenu-content .ui-menuitem:last-child .ui-menuitem-link::after { display: none; }
+
+/* ---------- Menú fijo o automático ---------- */
+/* El menú queda encima del contenido (fixed) y el contenido le deja su espacio */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    width: var(--ancho-menu);
+    overflow-x: hidden;
+    transition: width 0.18s ease;
+}
+
+.app-main {
+    margin-left: var(--ancho-menu);
+    transition: margin-left 0.18s ease;
+}
+
+.sidebar,
+.sidebar .ui-panelmenu h3.ui-panelmenu-header,
+.sidebar .ui-menuitem-link,
+.sidebar-pie { white-space: nowrap; }
+
+/* Logo + botón de fijar */
+.sidebar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 66px;
+    box-sizing: border-box;
+}
+
+.fijar-menu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--sidebar-texto-sec);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.fijar-menu:hover { color: #FFFFFF; background: rgba(255, 255, 255, 0.08); }
+.fijar-menu.fijo { color: #FFFFFF; }
+.fijar-menu.fijo .pi { transform: rotate(-45deg); }
+
+/* Automático: angosto (sólo íconos) hasta que pasa el mouse */
+html.menu-compacto .app-main { margin-left: var(--ancho-menu-compacto); }
+
+html.menu-compacto .sidebar {
+    width: var(--ancho-menu-compacto);
+    transition: width 0.18s ease 0.3s;      /* espera un poco antes de encogerse */
+}
+
+html.menu-compacto .sidebar:hover {
+    width: var(--ancho-menu);
+    transition-delay: 0.05s;
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Lo que se oculta mientras está angosto */
+html.menu-compacto .sidebar:not(:hover) .ui-panelmenu-content { display: none !important; }
+html.menu-compacto .sidebar:not(:hover) .ui-panelmenu h3.ui-panelmenu-header > a,
+html.menu-compacto .sidebar:not(:hover) .ui-panelmenu h3.ui-panelmenu-header .ui-icon-triangle-1-e,
+html.menu-compacto .sidebar:not(:hover) .ui-panelmenu h3.ui-panelmenu-header .ui-icon-triangle-1-s,
+html.menu-compacto .sidebar:not(:hover) .fijar-menu,
+html.menu-compacto .sidebar:not(:hover) .usuario-datos,
+html.menu-compacto .sidebar:not(:hover) .texto-menu { display: none; }
+
+html.menu-compacto .sidebar:not(:hover) .ui-panelmenu h3.ui-panelmenu-header { padding: 0 0 0 19px; }
+
+/* Logo angosto: sólo la "R" */
+html.menu-compacto .sidebar:not(:hover) .sidebar-top { padding: 18px 8px; justify-content: center; }
+html.menu-compacto .sidebar:not(:hover) .logo-rmm {
+    width: 34px;
+    padding: 5px 0;
+    font-size: 0;
+    letter-spacing: 0;
+}
+html.menu-compacto .sidebar:not(:hover) .logo-rmm::before { content: "R"; font-size: 17px; }
+
+html.menu-compacto .sidebar:not(:hover) .sidebar-pie { padding: 14px 10px 18px; }
+html.menu-compacto .sidebar:not(:hover) .usuario { justify-content: center; }
+html.menu-compacto .sidebar:not(:hover) .cerrar-sesion { justify-content: center; width: 100%; }
+
+@media (max-width: 900px) {
+    :root { --ancho-menu: 220px; }
+}
+
+/* El menú va encima de todo (los controles del mapa Leaflet usan z-index 1000) */
+.sidebar { z-index: 3000; }

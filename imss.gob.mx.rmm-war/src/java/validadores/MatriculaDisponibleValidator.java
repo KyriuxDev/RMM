@@ -26,7 +26,7 @@ public class MatriculaDisponibleValidator extends ValidadorTexto {
     @Override
     protected void validar(String texto, UIComponent component) {
         if (MatriculaValidator.PATRON.matcher(texto).matches()) {
-            administracionBean.verificarMatriculaDisponible(texto);
+            administracionBean.verificarMatriculaDisponible(texto, idExcluir(component));
         }
     }
 }

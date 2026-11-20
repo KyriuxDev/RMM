@@ -1,23 +1,25 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
-<!-- Pie del menú lateral: usuario y "Cerrar sesión" (se incluye en sidebar.xhtml).
-     Por ahora los datos del usuario son fijos. -->
+<!-- Pie del menú lateral: usuario de la sesión y "Cerrar sesión" (se incluye en sidebar.xhtml).
+     PR-03 UsuarioActual / CerrarSesion; SD-00b cerrarSesion() → authCtrl.cerrarSesion(). -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html">
 
     <div class="sidebar-pie">
         <div class="usuario">
-            <span class="avatar">AM</span>
+            <span class="avatar">#{authCtrl.usuario.iniciales}</span>
             <div class="usuario-datos">
-                <div class="usuario-nombre">Alexander Martínez</div>
-                <div class="usuario-puesto">Auxiliar de Soporte Técnico</div>
+                <div class="usuario-nombre" title="#{authCtrl.usuario.nombre}">#{authCtrl.usuario.nombre}</div>
+                <div class="usuario-puesto">#{authCtrl.usuario.rol}</div>
             </div>
         </div>
 
-        <h:link outcome="/vista/acceso/login" styleClass="cerrar-sesion">
-            <i class="pi pi-sign-out"></i> Cerrar sesión
-        </h:link>
+        <h:form id="formSesion">
+            <h:commandLink action="#{authCtrl.cerrarSesion}" styleClass="cerrar-sesion">
+                <i class="pi pi-sign-out"></i> <span class="texto-menu">Cerrar sesión</span>
+            </h:commandLink>
+        </h:form>
     </div>
 
 </ui:composition>

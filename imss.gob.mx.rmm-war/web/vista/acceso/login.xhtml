@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- PR-01 Iniciar sesión / SD-00a.
+     ingresarCredenciales(usuario, contraseña) → authCtrl.iniciarSesion()
+     resultadoLogin: [válido] construirMenuLateral + mostrarInicio (redirige)
+                     [inválido o bloqueado] mostrarError(mensaje) -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
@@ -7,16 +11,27 @@
                 xmlns:p="primefaces"
                 template="/plantillas/plantillaLogin.xhtml">
 
+    <ui:define name="metadata">
+        <f:metadata>
+            <!-- Si ya hay sesión abierta, manda directo al inicio -->
+            <f:viewAction action="#{authCtrl.redirigirSiAutenticado}"/>
+        </f:metadata>
+    </ui:define>
+
     <ui:define name="titulo">Iniciar sesión</ui:define>
 
     <ui:define name="content">
         <h:form id="formLogin" prependId="false">
+            <h:panelGroup layout="block" styleClass="login-aviso" rendered="#{param.cerrada eq 'true'}">
+                <i class="pi pi-check-circle"></i> Cerraste sesión correctamente.
+            </h:panelGroup>
+
             <p:messages id="mensajes" showSummary="true" showDetail="false"/>
 
             <!-- Usuario: matrícula (6 a 10 dígitos) o correo que termine en @imss.gob.mx -->
             <div class="campo">
                 <p:outputLabel for="identificador" value="Usuario"/>
-                <p:inputText id="identificador"
+                <p:inputText id="identificador" value="#{authCtrl.identificador}"
                              placeholder="Matrícula o correo institucional"
                              autocomplete="username" maxlength="80"
                              required="true" requiredMessage="Escribe tu matrícula o tu correo institucional."
@@ -27,13 +42,13 @@
 
             <div class="campo">
                 <p:outputLabel for="contrasena" value="Contraseña"/>
-                <p:password id="contrasena" feedback="false" autocomplete="current-password"
+                <p:password id="contrasena" value="#{authCtrl.contrasena}" feedback="false"
+                            autocomplete="current-password"
                             required="true" requiredMessage="Escribe tu contraseña."/>
             </div>
 
-            <!-- Por ahora solo valida el formato y entra al tablero (sin autenticar). -->
             <p:commandButton value="Iniciar sesión" styleClass="boton-primario"
-                             action="/vista/tableros/vista-general?faces-redirect=true"
+                             action="#{authCtrl.iniciarSesion}"
                              process="@form" update="@form"/>
         </h:form>
     </ui:define>

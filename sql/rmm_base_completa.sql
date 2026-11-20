@@ -244,6 +244,8 @@ CREATE TABLE `usuario` (
   `correo` varchar(255) NOT NULL,
   `contrasena_hash` varchar(255) NOT NULL,
   `esta_activo` tinyint(1) NOT NULL DEFAULT 1,
+  `intentos_fallidos` tinyint unsigned NOT NULL DEFAULT 0 COMMENT 'Intentos de inicio de sesión fallidos seguidos',
+  `bloqueado_hasta` datetime DEFAULT NULL COMMENT 'Bloqueo temporal tras 3 intentos fallidos',
   `id_rol` int unsigned NOT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `uq_usuario_matricula` (`matricula`),
@@ -268,6 +270,8 @@ CREATE TABLE `equipo` (
   `fecha_registro` datetime DEFAULT CURRENT_TIMESTAMP,
   `ubicacion_fisica` varchar(255) DEFAULT NULL,
   `esta_activo` tinyint(1) NOT NULL DEFAULT 1,
+  `fecha_baja` datetime DEFAULT NULL COMMENT 'Fecha de la baja lógica (estado INACTIVO)',
+  `motivo_baja` varchar(255) DEFAULT NULL COMMENT 'Motivo capturado al dar de baja el equipo',
   `id_area` int unsigned DEFAULT NULL COMMENT 'Opcional: el agente registra equipos sin área',
   `id_usuario` int unsigned DEFAULT NULL COMMENT 'Usuario responsable',
   PRIMARY KEY (`id_equipo`),
@@ -498,6 +502,13 @@ INSERT INTO `rol` (`nombre`, `permisos`) VALUES
  ('Jefe', 'VER_TABLEROS,VER_MONITOREO,GESTIONAR_ALERTAS,GESTIONAR_INCIDENCIAS,GESTIONAR_INVENTARIO,VER_REPORTES,ADMINISTRAR'),
  ('Supervisor', 'VER_TABLEROS,VER_MONITOREO,GESTIONAR_ALERTAS,GESTIONAR_INCIDENCIAS,GESTIONAR_INVENTARIO,VER_REPORTES'),
  ('Auxiliar', 'VER_MONITOREO,GESTIONAR_ALERTAS,GESTIONAR_INCIDENCIAS');
+
+-- Usuario administrador inicial (rol Jefe).
+--   Matrícula: 999999999   Correo: admin.rmm@imss.gob.mx   Contraseña: admin
+INSERT INTO `usuario` (`matricula`, `nombre`, `correo`, `contrasena_hash`, `esta_activo`, `id_rol`)
+SELECT '999999999', 'Administrador RMM', 'admin.rmm@imss.gob.mx',
+       'PBKDF2WithHmacSHA256:600000:VyeOmdGmjXd7WRWW4Xt5MJkENoRL/CQFLKRVjp/TxIE=:ycV9Ugm23tzjN3azGoOMQ8AZO/pxZVLSOmuMU0bv6js=', 1, `id_rol`
+  FROM `rol` WHERE `nombre` = 'Jefe';
 
 
 -- =====================================================================

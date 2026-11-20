@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- PR-19 SesionExpiradaPage.
+     filtro.FiltroAcceso manda aquí cuando la sesión venció por inactividad
+     (session-timeout de web.xml) y el usuario intenta seguir trabajando. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                template="/plantillas/plantillaLogin.xhtml">
+
+    <ui:define name="titulo">Sesión expirada</ui:define>
+
+    <ui:define name="estilos">
+        <h:outputStylesheet library="css" name="acceso/estado-acceso.css"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="estado-acceso">
+            <!-- IconoReloj -->
+            <span class="estado-icono reloj"><i class="pi pi-clock"></i></span>
+            <!-- EstadoSesionExpirada -->
+            <span class="estado-etiqueta">Sesión expirada</span>
+            <!-- TituloInactividad -->
+            <h2>Tu sesión se cerró por inactividad</h2>
+            <!-- MensajeSeguridad -->
+            <p>Por seguridad, la sesión se cierra después de 30 minutos sin actividad.
+               Vuelve a iniciar sesión para continuar.</p>
+            <div class="acciones">
+                <!-- IniciarSesion -->
+                <h:link outcome="/vista/acceso/login" styleClass="boton-enlace">
+                    <i class="pi pi-sign-in"></i> Iniciar sesión
+                </h:link>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

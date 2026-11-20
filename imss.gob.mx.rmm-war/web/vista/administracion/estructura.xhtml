@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/plantillas/plantillaPrincipal.xhtml">
+
+    <!-- Administración → Estructura (SD-07b consultarEstructura; igual que Estructura de la intranet, sin RCAB)
+         Cada renglón es un área: unidad de información + centro de costo + división / subdivisión,
+         con su unidad homologada, región y zona. Al abrir el renglón se ven sus equipos
+         y se puede dar de alta un equipo en esa área (alta-equipo.xhtml?area=N). -->
+
+    <ui:param name="seccion" value="administracion"/>
+    <ui:param name="subseccion" value="estructura"/>
+    <ui:param name="migaSeccion" value="Administración"/>
+    <ui:param name="migaPagina" value="Estructura"/>
+    <ui:param name="titulo" value="Estructura"/>
+
+    <ui:define name="estilos">
+        <h:outputStylesheet library="css" name="comun/formularios.css"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formEstructura" styleClass="vista-formulario">
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <!-- Filtro (estilo Zabbix): "Aplicar" o Enter -->
+            <p:outputPanel id="panelFiltro" layout="block" styleClass="panel-filtro">
+                <span class="pestana-filtro"><i class="pi pi-filter"></i> Filtro</span>
+                <div class="campos-filtro">
+                    <p:outputLabel for="texto" value="Buscar"/>
+                    <p:inputText id="texto" value="#{estructuraCtrl.texto}" maxlength="100" autocomplete="off"
+                                 placeholder="Clave UI o CC, unidad de información, centro de costo o inmueble"/>
+
+                    <p:outputLabel for="unidad" value="Unidad"/>
+                    <p:selectOneMenu id="unidad" value="#{estructuraCtrl.idUnidadHomologada}"
+                                     filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Todas" itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{estructuraCtrl.unidades}" var="u"
+                                       itemValue="#{u.idUnidadHomologada}" itemLabel="#{u.nombre}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="tipo" value="Tipo de unidad"/>
+                    <p:selectOneMenu id="tipo" value="#{estructuraCtrl.tipoUnidad}">
+                        <f:selectItem itemLabel="Todos" itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{estructuraCtrl.tiposUnidad}" var="t" itemValue="#{t}" itemLabel="#{t}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="region" value="Región"/>
+                    <h:panelGroup layout="block" styleClass="par-campos">
+                        <p:selectOneMenu id="region" value="#{estructuraCtrl.idRegion}">
+                            <f:selectItem itemLabel="Todas" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{estructuraCtrl.regiones}" var="r"
+                                           itemValue="#{r.idRegion}" itemLabel="#{r.nombre}"/>
+                            <p:ajax event="change" process="@this" listener="#{estructuraCtrl.cambiarRegion}" update="zona"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="zona" value="Zona"/>
+                        <p:selectOneMenu id="zona" value="#{estructuraCtrl.numZona}">
+                            <f:selectItem itemLabel="Todas" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{estructuraCtrl.zonas}" var="z"
+                                           itemValue="#{z.numZona}" itemLabel="#{z.numZona}"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+
+                    <p:outputLabel for="regimen" value="Régimen"/>
+                    <p:selectOneButton id="regimen" value="#{estructuraCtrl.regimen}">
+                        <f:selectItem itemLabel="Todos" itemValue=""/>
+                        <f:selectItems value="#{estructuraCtrl.regimenes}" var="g" itemValue="#{g}" itemLabel="#{g}"/>
+                    </p:selectOneButton>
+
+                    <p:outputLabel for="equipos" value="Mostrar"/>
+                    <p:selectOneButton id="equipos" value="#{estructuraCtrl.equipos}">
+                        <f:selectItem itemLabel="Todas" itemValue=""/>
+                        <f:selectItem itemLabel="Con equipos" itemValue="CON"/>
+                        <f:selectItem itemLabel="Sin equipos" itemValue="SIN"/>
+                        <f:selectItem itemLabel="Sin unidad homologada" itemValue="SIN_UNIDAD"/>
+                    </p:selectOneButton>
+                </div>
+                <div class="acciones-filtro">
+                    <p:commandButton id="aplicar" value="Aplicar" action="#{estructuraCtrl.consultarEstructura}"
+                                     process="panelFiltro" update="tablaAreas"
+                                     styleClass="btn btn-primario"/>
+                    <p:commandButton value="Restablecer" action="#{estructuraCtrl.limpiarFiltros}"
+                                     process="@this" update="panelFiltro tablaAreas" resetValues="true"
+                                     styleClass="btn btn-contorno"/>
+                </div>
+                <p:defaultCommand target="aplicar" scope="panelFiltro"/>
+            </p:outputPanel>
+
+            <!-- Áreas; clic en la flecha = ver sus equipos -->
+            <section class="tarjeta tarjeta-tabla">
+                <p:dataTable id="tablaAreas" value="#{estructuraCtrl.areas}" var="a" styleClass="tabla-lista"
+                             rowKey="#{a.idArea}"
+                             rows="25" paginator="true" paginatorPosition="bottom"
+                             paginatorAlwaysVisible="false" rowsPerPageTemplate="25,50,100"
+                             currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontrados"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}">
+                    <f:facet name="emptyMessage">
+                        <div class="sin-datos"><i class="pi pi-search"></i>No se encontraron datos</div>
+                    </f:facet>
+
+                    <p:column styleClass="col-abrir">
+                        <p:rowToggler/>
+                    </p:column>
+                    <p:column headerText="Clave" sortBy="#{a.clave}">
+                        <h:outputText value="#{a.clave}" styleClass="mono clave-area"/>
+                    </p:column>
+                    <p:column headerText="Unidad de información" sortBy="#{a.idUnidadCc.claveUi.descripcion}">
+                        <h:outputText value="#{a.idUnidadCc.claveUi.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Centro de costo" sortBy="#{a.idUnidadCc.claveCc.descripcion}">
+                        <h:outputText value="#{a.idUnidadCc.claveCc.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Unidad homologada" sortBy="#{a.idUnidadHomologada.nombre}">
+                        <h:outputText value="#{a.idUnidadHomologada.nombre}" rendered="#{not empty a.idUnidadHomologada}"/>
+                        <h:outputText value="Sin asignar" styleClass="tenue" rendered="#{empty a.idUnidadHomologada}"/>
+                    </p:column>
+                    <p:column headerText="Tipo">
+                        <h:outputText value="#{estructuraCtrl.tipo(a)}"/>
+                    </p:column>
+                    <p:column headerText="Región · zona">
+                        <h:outputText value="#{estructuraCtrl.regionZona(a)}"/>
+                    </p:column>
+                    <p:column headerText="Régimen" width="110">
+                        <h:outputText value="#{a.idUnidadCc.claveUi.tipoRegimen}"/>
+                    </p:column>
+                    <p:column headerText="Equipos" sortBy="#{estructuraCtrl.equipos(a)}" width="80" styleClass="col-numero">
+                        <h:outputText value="#{estructuraCtrl.equipos(a)}"
+                                      styleClass="#{estructuraCtrl.equipos(a) gt 0 ? 'cuenta-equipos' : 'tenue'}"/>
+                    </p:column>
+
+                    <!-- Equipos del área -->
+                    <p:rowExpansion>
+                        <div class="detalle-area">
+                            <div class="detalle-area-titulo">
+                                <strong>Equipos en #{a.idUnidadCc.claveCc.descripcion}</strong>
+                                <span class="tenue">#{a.clave}#{empty a.codigoUbicacion ? '' : ' · inmueble ' += a.codigoUbicacion.descripcion}</span>
+                                <span class="espacio"></span>
+                                <p:button value="Agregar equipo en esta área" icon="pi pi-plus"
+                                          outcome="/vista/inventario/alta-equipo"
+                                          rendered="#{not empty a.idUnidadHomologada}"
+                                          styleClass="btn btn-contorno">
+                                    <f:param name="area" value="#{a.idArea}"/>
+                                </p:button>
+                                <h:outputText value="Para asignarle equipos, primero debe tener unidad homologada."
+                                              styleClass="tenue" rendered="#{empty a.idUnidadHomologada}"/>
+                            </div>
+                            <p:dataTable value="#{estructuraCtrl.equiposDe(a)}" var="e" styleClass="tabla-lista tabla-interna"
+                                         rowStyleClass="#{e.estaActivo ? '' : 'fila-inactiva'}">
+                                <f:facet name="emptyMessage">
+                                    <span class="tenue">Esta área no tiene equipos asignados.</span>
+                                </f:facet>
+                                <p:column headerText="Hostname">
+                                    <h:link outcome="/vista/inventario/alta-equipo" value="#{e.hostname}"
+                                            styleClass="enlace mono" rendered="#{e.estaActivo}">
+                                        <f:param name="id" value="#{e.idEquipo}"/>
+                                    </h:link>
+                                    <h:outputText value="#{e.hostname}" styleClass="mono" rendered="#{not e.estaActivo}"/>
+                                </p:column>
+                                <p:column headerText="IP" width="120">
+                                    <h:outputText value="#{e.ipLocal}" styleClass="mono"/>
+                                </p:column>
+                                <p:column headerText="MAC" width="150">
+                                    <h:outputText value="#{e.direccionMac}" styleClass="mono"/>
+                                </p:column>
+                                <p:column headerText="Ubicación física">
+                                    <h:outputText value="#{e.ubicacionFisica}"/>
+                                </p:column>
+                                <p:column headerText="Responsable">
+                                    <h:outputText value="#{e.idUsuario.nombre}"/>
+                                </p:column>
+                                <p:column headerText="Estado" width="120">
+                                    <h:outputText value="#{e.estadoConexion}" styleClass="estado #{estructuraCtrl.claseEstado(e)}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </p:rowExpansion>
+                </p:dataTable>
+            </section>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

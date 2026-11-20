@@ -7,14 +7,26 @@
                 xmlns:p="primefaces"
                 template="/plantillas/plantillaPrincipal.xhtml">
 
-    <!-- Inventario → Alta de equipo (PR-14, SD-05c operacion == "alta")
+    <!-- Inventario → Alta y edición de equipo (PR-14, SD-05c)
+         Sin parámetro: alta (guardarNuevoEquipo). Con ?id=N: edición (guardarCambios)
+         y "Acción de baja de equipo" (darDeBaja → INACTIVO).
          validarCamposObligatorios(): required + validadores del paquete "validadores".
          Hostname y MAC se revisan contra la base al salir del campo (aviso de MAC duplicada). -->
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{inventarioCtrl.idEquipo}"/>
+            <!-- Desde Estructura: "Agregar equipo en esta área" (alta con el destino ya elegido) -->
+            <f:viewParam name="area" value="#{inventarioCtrl.idAreaInicial}"/>
+            <f:viewAction action="#{inventarioCtrl.cargarEquipo}"/>
+        </f:metadata>
+    </ui:define>
+
     <ui:param name="seccion" value="inventario"/>
-    <ui:param name="subseccion" value="alta-equipo"/>
+    <ui:param name="subseccion" value="#{inventarioCtrl.editando ? 'equipos' : 'alta-equipo'}"/>
     <ui:param name="migaSeccion" value="Inventario"/>
-    <ui:param name="migaPagina" value="Alta de equipo"/>
-    <ui:param name="titulo" value="Alta de equipo"/>
+    <ui:param name="migaEnlace" value="/vista/inventario/equipos"/>
+    <ui:param name="migaPagina" value="#{inventarioCtrl.editando ? 'Editar equipo' : 'Alta de equipo'}"/>
+    <ui:param name="titulo" value="#{inventarioCtrl.editando ? 'Editar equipo' : 'Alta de equipo'}"/>
 
     <ui:define name="estilos">
         <h:outputStylesheet library="css" name="comun/formularios.css"/>
@@ -27,7 +39,7 @@
 
             <p:outputPanel id="panelEquipo" styleClass="tarjeta" layout="block">
                 <div class="tarjeta-titulo">
-                    <h2>Nuevo equipo</h2>
+                    <h2>#{inventarioCtrl.editando ? inventarioCtrl.nuevo.hostname : 'Nuevo equipo'}</h2>
                     <span class="tenue">Los campos con * son obligatorios</span>
                 </div>
 
@@ -41,6 +53,7 @@
                                      placeholder="Ej. OAX-HGZ1-PC014" styleClass="mono">
                             <f:validator validatorId="hostnameValidator"/>
                             <f:validator validatorId="hostnameDisponibleValidator"/>
+                            <f:attribute name="idExcluir" value="#{inventarioCtrl.idEquipo}"/>
                             <p:ajax event="change" process="@this" update="@this msgHostname"/>
                         </p:inputText>
                         <p:message id="msgHostname" for="hostname"/>
@@ -53,6 +66,7 @@
                                      placeholder="AA:BB:CC:DD:EE:FF" styleClass="mono">
                             <f:validator validatorId="macValidator"/>
                             <f:validator validatorId="macDisponibleValidator"/>
+                            <f:attribute name="idExcluir" value="#{inventarioCtrl.idEquipo}"/>
                             <p:ajax event="change" process="@this" update="@this msgMac"/>
                         </p:inputText>
                         <p:message id="msgMac" for="mac"/>
@@ -68,40 +82,47 @@
                     </div>
                 </div>
 
-                <!-- Ubicación y área: seleccionarHospital(idUnidadHomologada) → listarAreas(idUnidadHomologada)
-                     Hospital / sede = tabla unidad_homologada -->
-                <h3 class="subtitulo">Ubicación y área</h3>
+                <!-- Destino (igual que "asignar impresora" de la intranet, sin RCAB):
+                     1. Unidad (unidad_homologada): escribir o elegir
+                        seleccionarHospital(idUnidadHomologada) → listarAreas(idUnidadHomologada)
+                     2. Área de esa unidad: escribir centro de costo o clave. Si sólo tiene una, se elige sola.
+                     Debajo de cada lista se muestra el detalle (tipo · región · zona / clave · inmueble). -->
+                <h3 class="subtitulo">Destino</h3>
                 <div class="rejilla">
                     <div class="campo">
-                        <p:outputLabel for="hospital" value="Hospital / sede"/>
+                        <p:outputLabel for="hospital" value="Unidad"/>
                         <p:selectOneMenu id="hospital" value="#{inventarioCtrl.idUnidadHomologada}"
                                          filter="true" filterMatchMode="contains"
-                                         required="true" requiredMessage="Seleccione el hospital o sede">
-                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                                         required="true" requiredMessage="Seleccione la unidad">
+                            <f:selectItem itemLabel="Escribe o elige: HGZ 1, UMF 23…" itemValue="#{null}" noSelectionOption="true"/>
                             <f:selectItems value="#{inventarioCtrl.hospitales}" var="h"
                                            itemValue="#{h.idUnidadHomologada}" itemLabel="#{h.nombre}"/>
                             <p:ajax event="change" process="@this" listener="#{inventarioCtrl.seleccionarHospital}"
-                                    update="@this msgHospital area msgArea inmueble"/>
+                                    update="@this msgHospital detalleUnidad campoArea"/>
                         </p:selectOneMenu>
+                        <h:outputText id="detalleUnidad" value="#{inventarioCtrl.detalleUnidad}" styleClass="detalle-destino"/>
                         <p:message id="msgHospital" for="hospital"/>
                     </div>
 
-                    <div class="campo campo-ancho">
-                        <p:outputLabel for="area" value="Unidad / servicio (área)"/>
+                    <h:panelGroup id="campoArea" layout="block" styleClass="campo campo-ancho">
+                        <p:outputLabel for="area"
+                                       value="#{empty inventarioCtrl.areas or inventarioCtrl.areas.size() eq 1 ? 'Área' : 'Área (' += inventarioCtrl.areas.size() += ')'}"/>
                         <p:selectOneMenu id="area" value="#{inventarioCtrl.idArea}"
                                          filter="true" filterMatchMode="contains"
                                          disabled="#{empty inventarioCtrl.areas}"
-                                         required="true" requiredMessage="Seleccione la unidad / servicio">
-                            <f:selectItem itemLabel="#{empty inventarioCtrl.areas ? 'Primero elija el hospital' : 'Seleccione...'}"
+                                         required="true" requiredMessage="Seleccione el área">
+                            <f:selectItem itemLabel="#{empty inventarioCtrl.areas ? 'Primero elija la unidad' : 'Escribe centro de costo o clave'}"
                                           itemValue="#{null}" noSelectionOption="true"/>
                             <f:selectItems value="#{inventarioCtrl.areas}" var="a"
                                            itemValue="#{a.idArea}" itemLabel="#{inventarioCtrl.etiquetaArea(a)}"/>
-                            <p:ajax event="change" process="@this" update="@this msgArea inmueble"/>
+                            <p:ajax event="change" process="@this" update="campoArea"/>
                         </p:selectOneMenu>
+                        <h:outputText value="#{inventarioCtrl.detalleArea}" styleClass="detalle-destino mono"
+                                      rendered="#{not empty inventarioCtrl.detalleArea}"/>
                         <p:message id="msgArea" for="area"/>
-                    </div>
+                    </h:panelGroup>
 
-                    <div class="campo campo-ancho">
+                    <div class="campo campo-completo">
                         <p:outputLabel for="ubicacion" value="Ubicación física"/>
                         <p:inputText id="ubicacion" value="#{inventarioCtrl.nuevo.ubicacionFisica}" maxlength="255"
                                      placeholder="Ej. Planta baja, consultorio 4"
@@ -109,12 +130,6 @@
                             <f:validateLength maximum="255"/>
                         </p:inputText>
                         <p:message for="ubicacion"/>
-                    </div>
-
-                    <div class="campo">
-                        <label>Inmueble (automático)</label>
-                        <h:outputText id="inmueble" styleClass="valor-auto"
-                                      value="#{empty inventarioCtrl.inmueble ? 'Se llena al elegir el área' : inventarioCtrl.inmueble}"/>
                     </div>
                 </div>
 
@@ -191,14 +206,66 @@
                                      action="#{inventarioCtrl.cancelar}"
                                      process="@this" update="panelEquipo" resetValues="true"
                                      styleClass="btn btn-secundario"/>
+                    <!-- [alta] guardarNuevoEquipo(datos) -->
                     <p:commandButton value="Guardar equipo" icon="pi pi-save"
                                      action="#{inventarioCtrl.guardarNuevoEquipo}"
+                                     rendered="#{not inventarioCtrl.editando}"
+                                     process="panelEquipo" update="panelEquipo mensajes"
+                                     styleClass="btn btn-primario"/>
+                    <!-- [edición] guardarCambios(idEquipo, datos) -->
+                    <p:commandButton value="Guardar cambios" icon="pi pi-save"
+                                     action="#{inventarioCtrl.guardarCambios}"
+                                     rendered="#{inventarioCtrl.editando}"
                                      process="panelEquipo" update="panelEquipo mensajes"
                                      styleClass="btn btn-primario"/>
                 </div>
             </p:outputPanel>
 
+            <!-- PR-14 "Acción de baja de equipo" (sólo al editar) -->
+            <h:panelGroup layout="block" styleClass="tarjeta zona-baja" rendered="#{inventarioCtrl.editando}">
+                <div>
+                    <h2>Dar de baja el equipo</h2>
+                    <p>El equipo queda INACTIVO y deja de contarse en el monitoreo; su historial se conserva.</p>
+                </div>
+                <p:commandButton value="Dar de baja" icon="pi pi-power-off" type="button"
+                                 onclick="PF('dlgBaja').show()"
+                                 styleClass="btn btn-peligro"/>
+            </h:panelGroup>
         </h:form>
+
+        <!-- confirmarBaja(): diálogo con su propio formulario para no validar el de arriba -->
+        <p:dialog header="Dar de baja el equipo" widgetVar="dlgBaja" modal="true" resizable="false"
+                  styleClass="dialogo-baja" rendered="#{inventarioCtrl.editando}">
+            <h:form id="formBaja">
+                <div class="contenido-baja">
+                    <!-- Pregunta de baja -->
+                    <strong>¿Dar de baja #{inventarioCtrl.nuevo.hostname}?</strong>
+                    <!-- Aviso de baja -->
+                    <p class="aviso-baja">El equipo pasará a estado INACTIVO. No se borra: sus alertas,
+                        incidencias e informes se conservan.</p>
+                    <p:messages id="mensajesBaja" showSummary="true" showDetail="true" closable="true"/>
+                    <!-- Motivo de la baja -->
+                    <div class="campo">
+                        <p:outputLabel for="motivoBaja" value="Motivo de la baja"/>
+                        <p:inputTextarea id="motivoBaja" value="#{inventarioCtrl.motivoBaja}" rows="3"
+                                         maxlength="255" autoResize="false"
+                                         placeholder="Ej. Equipo dañado sin reparación, reemplazado por OAX-HGZ1-PC020"
+                                         required="true" requiredMessage="Escriba el motivo de la baja"/>
+                        <p:message for="motivoBaja"/>
+                    </div>
+                    <div class="acciones">
+                        <!-- Cancelar baja -->
+                        <p:commandButton value="Cancelar" type="button" onclick="PF('dlgBaja').hide()"
+                                         styleClass="btn btn-secundario"/>
+                        <!-- Dar de baja → darDeBaja(idEquipo) -->
+                        <p:commandButton value="Dar de baja" icon="pi pi-power-off"
+                                         action="#{inventarioCtrl.darDeBaja}"
+                                         process="@form" update="@form"
+                                         styleClass="btn btn-peligro"/>
+                    </div>
+                </div>
+            </h:form>
+        </p:dialog>
     </ui:define>
 
 </ui:composition>

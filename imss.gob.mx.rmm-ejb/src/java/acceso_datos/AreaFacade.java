@@ -93,4 +93,71 @@ public class AreaFacade extends AbstractFacade<Area> {
         return q.getResultList();
     }
 
+
+    /**
+     * Estructura (áreas) con filtros, como la sección Estructura de la intranet.
+     * Todos los filtros son opcionales.
+     *
+     * @param texto        clave UI / CC, unidad de información, centro de costo, unidad o inmueble
+     * @param tipoUnidad   clasificacion_unidad.tipo_unidad (HGZ, UMF, ...)
+     * @param sinUnidad    true: sólo áreas sin unidad homologada
+     */
+    public List<Area> buscarEstructura(String texto, Short idUnidadHomologada, Short idRegion, Short numZona,
+            String tipoUnidad, String regimen, boolean sinUnidad) {
+        StringBuilder jpql = new StringBuilder(
+                "SELECT a FROM Area a"
+                + " JOIN a.idUnidadCc ucc JOIN ucc.claveUi ui JOIN ucc.claveCc cc"
+                + " LEFT JOIN a.codigoUbicacion ub"
+                + " LEFT JOIN a.idUnidadHomologada uh"
+                + " LEFT JOIN uh.idClasificacion cl"
+                + " LEFT JOIN uh.idRegion r"
+                + " LEFT JOIN uh.numZona z LEFT JOIN z.idRegion rz"
+                + " WHERE 1 = 1");
+        if (texto != null) {
+            jpql.append(" AND (LOWER(ui.claveUi) LIKE :texto OR LOWER(ui.descripcion) LIKE :texto"
+                    + " OR LOWER(cc.claveCc) LIKE :texto OR LOWER(cc.descripcion) LIKE :texto"
+                    + " OR LOWER(ucc.uicc) LIKE :texto"
+                    + " OR LOWER(uh.nombre) LIKE :texto OR LOWER(ub.descripcion) LIKE :texto)");
+        }
+        if (idUnidadHomologada != null) {
+            jpql.append(" AND uh.idUnidadHomologada = :idUh");
+        }
+        if (idRegion != null) {
+            jpql.append(" AND (r.idRegion = :idRegion OR rz.idRegion = :idRegion)");
+        }
+        if (numZona != null) {
+            jpql.append(" AND z.numZona = :numZona");
+        }
+        if (tipoUnidad != null) {
+            jpql.append(" AND cl.tipoUnidad = :tipo");
+        }
+        if (regimen != null) {
+            jpql.append(" AND ui.tipoRegimen = :regimen");
+        }
+        if (sinUnidad) {
+            jpql.append(" AND uh IS NULL");
+        }
+        jpql.append(" ORDER BY ui.claveUi, cc.claveCc, a.division, a.subdivision");
+
+        TypedQuery<Area> q = em.createQuery(jpql.toString(), Area.class);
+        if (texto != null) {
+            q.setParameter("texto", "%" + texto.toLowerCase() + "%");
+        }
+        if (idUnidadHomologada != null) {
+            q.setParameter("idUh", idUnidadHomologada);
+        }
+        if (idRegion != null) {
+            q.setParameter("idRegion", idRegion);
+        }
+        if (numZona != null) {
+            q.setParameter("numZona", numZona);
+        }
+        if (tipoUnidad != null) {
+            q.setParameter("tipo", tipoUnidad);
+        }
+        if (regimen != null) {
+            q.setParameter("regimen", regimen);
+        }
+        return q.getResultList();
+    }
 }

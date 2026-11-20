@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- PR-19 AccesoDenegadoPage (SinPermisoSeccion).
+     filtro.FiltroAcceso manda aquí cuando el rol no tiene el permiso del módulo
+     (?modulo=<código del permiso>). -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                template="/plantillas/plantillaPrincipal.xhtml">
+
+    <ui:param name="migaSeccion" value="Acceso"/>
+    <ui:param name="migaPagina" value="Sin permiso"/>
+    <ui:param name="titulo" value="Acceso denegado"/>
+
+    <ui:define name="estilos">
+        <h:outputStylesheet library="css" name="acceso/estado-acceso.css"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <section class="tarjeta estado-acceso">
+            <!-- IconoCandado -->
+            <span class="estado-icono candado"><i class="pi pi-lock"></i></span>
+            <!-- EstadoSinPermiso -->
+            <span class="estado-etiqueta">Sin permiso</span>
+            <!-- TituloAcceso -->
+            <h2>No tienes acceso a esta sección</h2>
+            <!-- MensajeRol -->
+            <p>
+                <h:outputText value="Tu rol (#{authCtrl.usuario.rol}) no tiene permiso para el módulo #{authCtrl.nombreModulo(param.modulo)}."
+                              rendered="#{not empty authCtrl.nombreModulo(param.modulo)}"/>
+                <h:outputText value="Tu rol (#{authCtrl.usuario.rol}) todavía no tiene ninguna sección disponible."
+                              rendered="#{empty authCtrl.nombreModulo(param.modulo)}"/>
+                Si necesitas entrar, pide al jefe de soporte que revise tus permisos.
+            </p>
+            <h:form id="formAcceso" styleClass="acciones">
+                <!-- VolverAlInicio -->
+                <h:commandLink action="#{authCtrl.inicio}" styleClass="boton-enlace"
+                               rendered="#{authCtrl.tieneInicio}">
+                    <i class="pi pi-home"></i> Volver al inicio
+                </h:commandLink>
+                <h:commandLink action="#{authCtrl.cerrarSesion}" styleClass="boton-enlace secundario">
+                    <i class="pi pi-sign-out"></i> Cerrar sesión
+                </h:commandLink>
+            </h:form>
+        </section>
+    </ui:define>
+
+</ui:composition>

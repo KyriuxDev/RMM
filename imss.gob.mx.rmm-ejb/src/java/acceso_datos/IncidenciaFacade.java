@@ -28,4 +28,11 @@ public class IncidenciaFacade extends AbstractFacade<Incidencia> {
         super(Incidencia.class);
     }
     
+
+    /** Incidencias abiertas o en proceso. */
+    public long contarAbiertas() {
+        return em.createQuery("SELECT COUNT(i) FROM Incidencia i"
+                + " WHERE UPPER(i.estado) IN ('ABIERTA', 'ENPROCESO', 'EN PROCESO', 'EN_PROCESO')", Long.class)
+                .getSingleResult();
+    }
 }

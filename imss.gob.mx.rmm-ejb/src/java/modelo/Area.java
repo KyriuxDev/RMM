@@ -149,6 +149,28 @@ public class Area implements Serializable {
         this.equipoList = equipoList;
     }
 
+    /**
+     * Clave del área: UI · CC · división-subdivisión (p. ej. "210101 · 110100 · 01-00").
+     * Sólo para mostrar; no es una columna.
+     */
+    public String getClave() {
+        StringBuilder r = new StringBuilder();
+        if (idUnidadCc != null) {
+            if (idUnidadCc.getClaveUi() != null) {
+                r.append(idUnidadCc.getClaveUi().getClaveUi());
+            }
+            if (idUnidadCc.getClaveCc() != null) {
+                r.append(r.length() > 0 ? " · " : "").append(idUnidadCc.getClaveCc().getClaveCc());
+            }
+        }
+        boolean div = division != null && !division.isBlank();
+        boolean sub = subdivision != null && !subdivision.isBlank();
+        if (div || sub) {
+            r.append(" · ").append(div ? division : "—").append("-").append(sub ? subdivision : "—");
+        }
+        return r.toString();
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

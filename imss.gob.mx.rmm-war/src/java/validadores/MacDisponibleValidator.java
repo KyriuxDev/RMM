@@ -22,7 +22,7 @@ public class MacDisponibleValidator extends ValidadorTexto {
     @Override
     protected void validar(String texto, UIComponent component) {
         if (MacValidator.PATRON.matcher(texto).matches()) {
-            inventarioBean.verificarMacDisponible(texto);
+            inventarioBean.verificarMacDisponible(texto, idExcluir(component));
         }
     }
 }

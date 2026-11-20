@@ -22,7 +22,7 @@ public class HostnameDisponibleValidator extends ValidadorTexto {
     @Override
     protected void validar(String texto, UIComponent component) {
         if (HostnameValidator.PATRON.matcher(texto).matches()) {
-            inventarioBean.verificarHostnameDisponible(texto);
+            inventarioBean.verificarHostnameDisponible(texto, idExcluir(component));
         }
     }
 }

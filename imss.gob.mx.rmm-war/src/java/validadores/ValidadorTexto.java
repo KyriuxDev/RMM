@@ -44,6 +44,26 @@ public abstract class ValidadorTexto implements Validator<Object> {
      */
     protected abstract void validar(String texto, UIComponent component);
 
+    /**
+     * Id del registro que se está editando, para no marcarlo como duplicado
+     * de sí mismo. Se pasa desde la vista con
+     * &lt;f:attribute name="idExcluir" value="#{...}"/&gt;; null en un alta.
+     */
+    protected static Integer idExcluir(UIComponent component) {
+        Object v = component.getAttributes().get("idExcluir");
+        if (v instanceof Number n) {
+            return n.intValue();
+        }
+        if (v != null && !v.toString().isBlank()) {
+            try {
+                return Integer.valueOf(v.toString().trim());
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
     /** Crea la excepción con el mensaje que verá el usuario. */
     protected static ValidatorException error(String mensaje) {
         return new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, mensaje));

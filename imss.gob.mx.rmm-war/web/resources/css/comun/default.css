@@ -8,13 +8,15 @@
     --texto: #1A2433;
     --texto-sec: #4A5565;
     --borde-input: #8A9BB5;
+    /* Letra única del RMM: la misma de Zabbix */
+    --letra: Arial, Tahoma, Verdana, sans-serif;
 }
 
 * { box-sizing: border-box; }
 
 body {
     margin: 0;
-    font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+    font-family: var(--letra);
     font-size: 14px;
     color: var(--texto);
     background-color: var(--fondo);
@@ -27,4 +29,29 @@ body {
     font-weight: 700;
     letter-spacing: 4px;
     text-align: center;
+}
+
+/* La misma letra en todo, también en los componentes de PrimeFaces
+   (su tema pone otra) y en campos y botones, que no la heredan solos. */
+body,
+input,
+textarea,
+select,
+button,
+.ui-widget,
+.ui-widget .ui-widget,
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget button,
+.ui-inputfield,
+.ui-selectonemenu-label,
+.ui-datatable,
+.ui-paginator,
+.ui-messages,
+.ui-message,
+.ui-dialog,
+.ui-menu,
+.ui-panelmenu {
+    font-family: var(--letra) !important;
 }

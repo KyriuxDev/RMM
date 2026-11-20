@@ -20,7 +20,10 @@ import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -99,6 +102,27 @@ public class Rol implements Serializable {
 
     public void setUsuarioList(List<Usuario> usuarioList) {
         this.usuarioList = usuarioList;
+    }
+
+    /**
+     * SD-00a obtenerPermisos(): los códigos guardados en "permisos"
+     * (lista separada por comas), sin espacios ni repetidos.
+     */
+    public Set<String> obtenerPermisos() {
+        Set<String> r = new LinkedHashSet<>();
+        if (permisos != null) {
+            for (String p : permisos.split(",")) {
+                if (!p.isBlank()) {
+                    r.add(p.trim());
+                }
+            }
+        }
+        return r;
+    }
+
+    /** SD-07a actualizarPermisos(permisos). */
+    public void actualizarPermisos(Collection<String> codigos) {
+        this.permisos = String.join(",", codigos);
     }
 
     @Override

@@ -107,3 +107,17 @@
     text-align: center;
     color: var(--texto-sec);
 }
+
+/* Aviso "Cerraste sesión correctamente" */
+.login-aviso {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    background-color: #E6F6EC;
+    border: 1px solid #A8DDBC;
+    color: #2E7D4F;
+    font-size: 13px;
+}

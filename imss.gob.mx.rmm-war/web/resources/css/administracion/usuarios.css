@@ -44,6 +44,19 @@
     gap: 10px;
 }
 
+/* Casilla "Usuario activo" (edición) */
+.usuarios .campo-casilla { flex-direction: row; align-items: center; gap: 8px; padding-top: 22px; }
+.usuarios .campo-casilla label { margin: 0; }
+
+.usuarios .tarjeta-titulo .pastilla-edicion {
+    padding: 2px 10px;
+    border-radius: 10px;
+    background-color: #E6F1F8;
+    color: var(--azul);
+    font-size: 12px;
+    font-weight: 600;
+}
+
 /* Tabla */
 .usuarios .tabla-usuarios .ui-datatable-data td { vertical-align: middle; }
 

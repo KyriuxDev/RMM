@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/plantillas/plantillaPrincipal.xhtml">
+
+    <!-- Inventario → Equipos (PR-12 Inventario de equipos, versión básica; SN-05a / SN-05c)
+         Resumen por estado (clic = filtrar), filtros que se aplican solos
+         (consultarInventario(filtros)) y tabla. Desde cada renglón se abre la
+         edición (alta-equipo.xhtml?id=N), donde también está la baja. -->
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <!-- Desde la Vista general: equipos.xhtml?estado=OFFLINE o ?unidad=N -->
+            <f:viewParam name="estado" value="#{equiposCtrl.estado}"/>
+            <f:viewParam name="unidad" value="#{equiposCtrl.idUnidadHomologada}"/>
+            <f:viewAction action="#{equiposCtrl.aplicarParametros}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:param name="seccion" value="inventario"/>
+    <ui:param name="subseccion" value="equipos"/>
+    <ui:param name="migaSeccion" value="Inventario"/>
+    <ui:param name="migaPagina" value="Equipos"/>
+    <ui:param name="titulo" value="Inventario de equipos"/>
+
+    <ui:define name="estilos">
+        <h:outputStylesheet library="css" name="comun/formularios.css"/>
+    </ui:define>
+
+    <ui:define name="accionesEncabezado">
+        <p:button value="Nuevo equipo" icon="pi pi-plus" outcome="/vista/inventario/alta-equipo"
+                  styleClass="btn btn-primario"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formEquipos" styleClass="vista-formulario">
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+
+            <!-- Resumen: clic en una tarjeta filtra por ese estado -->
+            <p:outputPanel id="panelResumen" layout="block" styleClass="resumen-grid">
+                <p:commandLink action="#{equiposCtrl.filtrarEstado('')}" process="@this"
+                               update="panelResumen panelFiltro tablaEquipos"
+                               styleClass="resumen #{equiposCtrl.elegido('') ? 'elegida' : ''}">
+                    <span class="tenue">Total</span>
+                    <span class="cifra">#{equiposCtrl.contar('')}</span>
+                </p:commandLink>
+                <p:commandLink action="#{equiposCtrl.filtrarEstado('ONLINE')}" process="@this"
+                               update="panelResumen panelFiltro tablaEquipos"
+                               styleClass="resumen #{equiposCtrl.elegido('ONLINE') ? 'elegida' : ''}">
+                    <span class="tenue">En línea</span>
+                    <span class="cifra cifra-verde">#{equiposCtrl.contar('ONLINE')}</span>
+                </p:commandLink>
+                <p:commandLink action="#{equiposCtrl.filtrarEstado('OFFLINE')}" process="@this"
+                               update="panelResumen panelFiltro tablaEquipos"
+                               styleClass="resumen #{equiposCtrl.elegido('OFFLINE') ? 'elegida' : ''}">
+                    <span class="tenue">Sin conexión</span>
+                    <span class="cifra cifra-gris">#{equiposCtrl.contar('OFFLINE')}</span>
+                </p:commandLink>
+                <p:commandLink action="#{equiposCtrl.filtrarEstado('ALERTA')}" process="@this"
+                               update="panelResumen panelFiltro tablaEquipos"
+                               styleClass="resumen #{equiposCtrl.elegido('ALERTA') ? 'elegida' : ''}">
+                    <span class="tenue">Con alerta</span>
+                    <span class="cifra cifra-ambar">#{equiposCtrl.contar('ALERTA')}</span>
+                </p:commandLink>
+                <p:commandLink action="#{equiposCtrl.filtrarEstado('INACTIVO')}" process="@this"
+                               update="panelResumen panelFiltro tablaEquipos"
+                               styleClass="resumen #{equiposCtrl.elegido('INACTIVO') ? 'elegida' : ''}">
+                    <span class="tenue">Dados de baja</span>
+                    <span class="cifra cifra-roja">#{equiposCtrl.contar('INACTIVO')}</span>
+                </p:commandLink>
+            </p:outputPanel>
+
+            <!-- Filtro (estilo Zabbix): se aplica con "Aplicar" o Enter -->
+            <p:outputPanel id="panelFiltro" layout="block" styleClass="panel-filtro">
+                <span class="pestana-filtro"><i class="pi pi-filter"></i> Filtro</span>
+                <div class="campos-filtro">
+                    <p:outputLabel for="texto" value="Buscar"/>
+                    <p:inputText id="texto" value="#{equiposCtrl.texto}" maxlength="100"
+                                 placeholder="Hostname, MAC, IP, unidad o área" autocomplete="off"/>
+
+                    <p:outputLabel for="hospital" value="Unidad"/>
+                    <p:selectOneMenu id="hospital" value="#{equiposCtrl.idUnidadHomologada}"
+                                     filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Todos" itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{equiposCtrl.hospitales}" var="h"
+                                       itemValue="#{h.idUnidadHomologada}" itemLabel="#{h.nombre}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="estado" value="Estado"/>
+                    <p:selectOneButton id="estado" value="#{equiposCtrl.estado}" styleClass="ancho-completo">
+                        <f:selectItem itemLabel="Todos" itemValue=""/>
+                        <f:selectItem itemLabel="En línea" itemValue="ONLINE"/>
+                        <f:selectItem itemLabel="Sin conexión" itemValue="OFFLINE"/>
+                        <f:selectItem itemLabel="Con alerta" itemValue="ALERTA"/>
+                        <f:selectItem itemLabel="Dados de baja" itemValue="INACTIVO"/>
+                    </p:selectOneButton>
+                </div>
+                <div class="acciones-filtro">
+                    <p:commandButton id="aplicar" value="Aplicar" action="#{equiposCtrl.consultarInventario}"
+                                     process="panelFiltro" update="panelResumen tablaEquipos"
+                                     styleClass="btn btn-primario"/>
+                    <p:commandButton value="Restablecer" action="#{equiposCtrl.limpiarFiltros}"
+                                     process="@this" update="panelResumen panelFiltro tablaEquipos"
+                                     resetValues="true" styleClass="btn btn-contorno"/>
+                </div>
+                <p:defaultCommand target="aplicar" scope="panelFiltro"/>
+            </p:outputPanel>
+
+            <!-- Tabla -->
+            <section class="tarjeta tarjeta-tabla">
+                <p:dataTable id="tablaEquipos" value="#{equiposCtrl.equipos}" var="e" styleClass="tabla-lista"
+                             rows="25" paginator="true" paginatorPosition="bottom"
+                             paginatorAlwaysVisible="false" rowsPerPageTemplate="25,50,100"
+                             rowStyleClass="#{e.estaActivo ? '' : 'fila-inactiva'}"
+                             currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontrados"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}">
+                    <f:facet name="emptyMessage">
+                        <div class="sin-datos"><i class="pi pi-search"></i>No se encontraron datos</div>
+                    </f:facet>
+                    <p:column headerText="Hostname" sortBy="#{e.hostname}">
+                        <h:link outcome="/vista/inventario/alta-equipo" value="#{e.hostname}"
+                                styleClass="enlace mono" rendered="#{e.estaActivo}">
+                            <f:param name="id" value="#{e.idEquipo}"/>
+                        </h:link>
+                        <h:outputText value="#{e.hostname}" styleClass="mono" rendered="#{not e.estaActivo}"/>
+                    </p:column>
+                    <p:column headerText="IP" width="110">
+                        <h:outputText value="#{e.ipLocal}" styleClass="mono"/>
+                    </p:column>
+                    <p:column headerText="MAC" width="140">
+                        <h:outputText value="#{e.direccionMac}" styleClass="mono"/>
+                    </p:column>
+                    <p:column headerText="Sistema operativo">
+                        <h:outputText value="#{e.nombreSo} #{e.versionSo}"/>
+                    </p:column>
+                    <p:column headerText="Unidad" sortBy="#{equiposCtrl.hospital(e)}">
+                        <h:outputText value="#{equiposCtrl.hospital(e)}"/>
+                    </p:column>
+                    <p:column headerText="Área">
+                        <h:outputText value="#{equiposCtrl.area(e)}"/>
+                    </p:column>
+                    <p:column headerText="Responsable">
+                        <h:outputText value="#{e.idUsuario.nombre}" rendered="#{not empty e.idUsuario}"/>
+                    </p:column>
+                    <p:column headerText="Estado" width="120" sortBy="#{e.estadoConexion}">
+                        <h:outputText value="#{e.estadoConexion}" styleClass="estado #{equiposCtrl.claseEstado(e)}"
+                                      title="#{e.estaActivo ? '' : 'Baja: ' += e.motivoBaja}"/>
+                    </p:column>
+                    <p:column headerText="Acciones" styleClass="col-acciones">
+                        <h:link outcome="/vista/inventario/alta-equipo" value="Editar" rendered="#{e.estaActivo}"
+                                styleClass="accion" title="Editar o dar de baja">
+                            <f:param name="id" value="#{e.idEquipo}"/>
+                        </h:link>
+                    </p:column>
+                </p:dataTable>
+            </section>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

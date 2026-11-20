@@ -7,6 +7,8 @@
     - La sección de la vista actual aparece abierta y resaltada (parámetros "seccion" y "subseccion").
     - multiple="false": solo una sección abierta a la vez.
     - stateful="false": no recuerda lo que se abrió en la página anterior; siempre abre la sección actual.
+    - construirMenuLateral(listaPermisos) de SD-00a: cada sección se muestra sólo si el rol
+      del usuario tiene su permiso (rendered="#{authCtrl.tienePermiso('...')}").
 
     Las subsecciones cuya vista todavía no existe usan url="#". Cuando creen la vista,
     cambien url="#" por outcome="/vista/...". (Un outcome hacia una vista que no existe
@@ -19,7 +21,12 @@
 
     <aside class="sidebar">
         <div class="sidebar-top">
-            <h:link outcome="/vista/tableros/vista-general" styleClass="logo-rmm" value="RMM"/>
+            <h:link outcome="#{authCtrl.paginaInicio}" styleClass="logo-rmm" value="RMM"/>
+            <!-- Como Zabbix: el menú se encoge a íconos al quitar el mouse y se extiende al pasarlo.
+                 Este botón lo deja fijo (abierto) o lo regresa a automático; se recuerda en el navegador. -->
+            <button type="button" class="fijar-menu" onclick="RMM.alternarMenu()" title="Fijar menú">
+                <i class="pi pi-thumbtack"></i>
+            </button>
         </div>
 
         <!-- Los p:menuitem son comandos en PrimeFaces: deben estar dentro de un h:form
@@ -27,7 +34,7 @@
         <h:form id="formMenu" styleClass="menu-form">
             <p:panelMenu styleClass="menu" multiple="false" stateful="false">
             <!-- Tableros -->
-            <p:submenu label="Tableros" icon="pi pi-objects-column" expanded="#{seccion eq 'tableros'}"
+            <p:submenu label="Tableros" rendered="#{authCtrl.tienePermiso('VER_TABLEROS')}" icon="pi pi-objects-column" expanded="#{seccion eq 'tableros'}"
                        styleClass="seccion-tableros #{seccion eq 'tableros' ? 'activa' : ''}">
                 <p:menuitem value="Vista general" outcome="/vista/tableros/vista-general"
                             styleClass="#{subseccion eq 'vista-general' ? 'activo' : ''}"/>
@@ -36,14 +43,14 @@
             </p:submenu>
 
             <!-- Monitoreo -->
-            <p:submenu label="Monitoreo" icon="pi pi-wave-pulse" expanded="#{seccion eq 'monitoreo'}"
+            <p:submenu label="Monitoreo" rendered="#{authCtrl.tienePermiso('VER_MONITOREO')}" icon="pi pi-wave-pulse" expanded="#{seccion eq 'monitoreo'}"
                        styleClass="seccion-monitoreo #{seccion eq 'monitoreo' ? 'activa' : ''}">
                 <p:menuitem value="Estado y rendimiento" url="#"
                             styleClass="#{subseccion eq 'estado-rendimiento' ? 'activo' : ''}"/>
             </p:submenu>
 
             <!-- Alertas -->
-            <p:submenu label="Alertas" icon="pi pi-bell" expanded="#{seccion eq 'alertas'}"
+            <p:submenu label="Alertas" rendered="#{authCtrl.tienePermiso('GESTIONAR_ALERTAS')}" icon="pi pi-bell" expanded="#{seccion eq 'alertas'}"
                        styleClass="seccion-alertas #{seccion eq 'alertas' ? 'activa' : ''}">
                 <p:menuitem value="Alertas activas" url="#"
                             styleClass="#{subseccion eq 'alertas-activas' ? 'activo' : ''}"/>
@@ -54,7 +61,7 @@
             </p:submenu>
 
             <!-- Incidencias -->
-            <p:submenu label="Incidencias" icon="pi pi-file" expanded="#{seccion eq 'incidencias'}"
+            <p:submenu label="Incidencias" rendered="#{authCtrl.tienePermiso('GESTIONAR_INCIDENCIAS')}" icon="pi pi-file" expanded="#{seccion eq 'incidencias'}"
                        styleClass="seccion-incidencias #{seccion eq 'incidencias' ? 'activa' : ''}">
                 <p:menuitem value="Lista de incidencias" url="#"
                             styleClass="#{subseccion eq 'lista-incidencias' ? 'activo' : ''}"/>
@@ -65,9 +72,9 @@
             </p:submenu>
 
             <!-- Inventario -->
-            <p:submenu label="Inventario" icon="pi pi-desktop" expanded="#{seccion eq 'inventario'}"
+            <p:submenu label="Inventario" rendered="#{authCtrl.tienePermiso('GESTIONAR_INVENTARIO')}" icon="pi pi-desktop" expanded="#{seccion eq 'inventario'}"
                        styleClass="seccion-inventario #{seccion eq 'inventario' ? 'activa' : ''}">
-                <p:menuitem value="Equipos" url="#"
+                <p:menuitem value="Equipos" outcome="/vista/inventario/equipos.xhtml"
                             styleClass="#{subseccion eq 'equipos' ? 'activo' : ''}"/>
                 <p:menuitem value="Alta de equipo" outcome="/vista/inventario/alta-equipo.xhtml"
                             styleClass="#{subseccion eq 'alta-equipo' ? 'activo' : ''}"/>
@@ -78,21 +85,21 @@
             </p:submenu>
 
             <!-- Reportes -->
-            <p:submenu label="Reportes" icon="pi pi-chart-bar" expanded="#{seccion eq 'reportes'}"
+            <p:submenu label="Reportes" rendered="#{authCtrl.tienePermiso('VER_REPORTES')}" icon="pi pi-chart-bar" expanded="#{seccion eq 'reportes'}"
                        styleClass="seccion-reportes #{seccion eq 'reportes' ? 'activa' : ''}">
                 <p:menuitem value="Disponibilidad, SLA e incidencias" url="#"
                             styleClass="#{subseccion eq 'disponibilidad-sla' ? 'activo' : ''}"/>
             </p:submenu>
 
             <!-- Administración -->
-            <p:submenu label="Administración" icon="pi pi-cog" expanded="#{seccion eq 'administracion'}"
+            <p:submenu label="Administración" rendered="#{authCtrl.tienePermiso('ADMINISTRAR')}" icon="pi pi-cog" expanded="#{seccion eq 'administracion'}"
                        styleClass="seccion-administracion #{seccion eq 'administracion' ? 'activa' : ''}">
                 <p:menuitem value="Usuarios" outcome="/vista/administracion/usuarios.xhtml"
                             styleClass="#{subseccion eq 'usuarios' ? 'activo' : ''}"/>
                 <p:menuitem value="Roles y permisos" outcome="/vista/administracion/roles-permisos.xhtml"
                             styleClass="#{subseccion eq 'roles-permisos' ? 'activo' : ''}"/>
-                <p:menuitem value="Unidades" outcome="/vista/administracion/unidades.xhtml"
-                            styleClass="#{subseccion eq 'unidades' ? 'activo' : ''}"/>
+                <p:menuitem value="Estructura" outcome="/vista/administracion/estructura.xhtml"
+                            styleClass="#{subseccion eq 'estructura' ? 'activo' : ''}"/>
                 <p:menuitem value="Metas SLA" outcome="/vista/administracion/metas-sla.xhtml"
                             styleClass="#{subseccion eq 'metas-sla' ? 'activo' : ''}"/>
                 <p:menuitem value="Correo y conectores" url="#"
@@ -104,6 +111,22 @@
         <!-- Al dar clic en una subsección, el resaltado (clase "activo") pasa a esa subsección.
              Si la subsección tiene vista, la página nueva la vuelve a marcar con el parámetro "subseccion". -->
         <script type="text/javascript">
+            /* Menú fijo / automático (la clase "menu-compacto" de la etiqueta html la pone plantillaPrincipal al cargar) */
+            window.RMM = window.RMM || {};
+            RMM.actualizarBotonMenu = function () {
+                var fijo = !document.documentElement.classList.contains('menu-compacto');
+                $('.fijar-menu').toggleClass('fijo', fijo)
+                        .attr('title', fijo ? 'Menú fijo: clic para que se encoja solo' : 'Fijar menú');
+            };
+            RMM.alternarMenu = function () {
+                var compacto = document.documentElement.classList.toggle('menu-compacto');
+                try { localStorage.setItem('rmm-menu', compacto ? 'auto' : 'fijo'); } catch (e) { }
+                RMM.actualizarBotonMenu();
+                // El mapa de la Vista general cambia de ancho
+                setTimeout(function () { if (window.mapa &amp;&amp; window.mapa.invalidateSize) { window.mapa.invalidateSize(); } }, 250);
+            };
+            $(RMM.actualizarBotonMenu);
+
             $(document).on('click', '.sidebar .ui-panelmenu .ui-menuitem-link', function () {
                 $('.sidebar .ui-panelmenu .ui-menuitem-link.activo').removeClass('activo');
                 $(this).addClass('activo');

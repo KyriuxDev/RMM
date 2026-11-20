@@ -23,7 +23,7 @@ public class CorreoDisponibleValidator extends ValidadorTexto {
     @Override
     protected void validar(String texto, UIComponent component) {
         if (CorreoInstitucionalValidator.PATRON.matcher(texto).matches()) {
-            administracionBean.verificarCorreoDisponible(texto);
+            administracionBean.verificarCorreoDisponible(texto, idExcluir(component));
         }
     }
 }

@@ -95,6 +95,12 @@ public class Equipo implements Serializable {
     @NotNull
     @Column(name = "esta_activo")
     private boolean estaActivo;
+    @Column(name = "fecha_baja")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaBaja;
+    @Size(max = 255)
+    @Column(name = "motivo_baja")
+    private String motivoBaja;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
     private List<Alerta> alertaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEquipo")
@@ -302,6 +308,52 @@ public class Equipo implements Serializable {
 
     public void setHardware(Hardware hardware) {
         this.hardware = hardware;
+    }
+
+    // ------------------------------------------------------------------
+    // Gestión manual (SD-05c)
+    // ------------------------------------------------------------------
+
+    /** SD-05c actualizarEstado(estado). */
+    public void actualizarEstado(String estado) {
+        this.estadoConexion = estado;
+    }
+
+    /** SD-05c editarDatos(datos): copia los datos editables del formulario. */
+    public void editarDatos(Equipo datos) {
+        this.hostname = datos.getHostname();
+        this.direccionMac = datos.getDireccionMac();
+        this.ipLocal = datos.getIpLocal();
+        this.nombreSo = datos.getNombreSo();
+        this.versionSo = datos.getVersionSo();
+        this.ubicacionFisica = datos.getUbicacionFisica();
+    }
+
+    /**
+     * SD-05c darDeBaja(confirmacion): baja lógica. El equipo queda INACTIVO
+     * y conserva su historial (HU-9).
+     */
+    public void darDeBaja(String motivo, Date fecha) {
+        actualizarEstado("INACTIVO");
+        this.estaActivo = false;
+        this.motivoBaja = motivo;
+        this.fechaBaja = fecha;
+    }
+
+    public Date getFechaBaja() {
+        return fechaBaja;
+    }
+
+    public void setFechaBaja(Date fechaBaja) {
+        this.fechaBaja = fechaBaja;
+    }
+
+    public String getMotivoBaja() {
+        return motivoBaja;
+    }
+
+    public void setMotivoBaja(String motivoBaja) {
+        this.motivoBaja = motivoBaja;
     }
 
     @Override

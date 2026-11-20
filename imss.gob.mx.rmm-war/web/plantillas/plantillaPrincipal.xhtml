@@ -5,15 +5,23 @@
       xmlns:ui="jakarta.faces.facelets"
       xmlns:h="jakarta.faces.html">
 
+    <!-- f:metadata de cada vista (f:viewParam, f:viewAction) -->
+    <ui:insert name="metadata"/>
     <h:head>
+        <!-- Menú automático (se encoge) salvo que el usuario lo haya fijado; antes de pintar, para que no parpadee -->
+        <script type="text/javascript">
+            try { if (localStorage.getItem('rmm-menu') !== 'fijo') { document.documentElement.classList.add('menu-compacto'); } }
+            catch (e) { document.documentElement.classList.add('menu-compacto'); }
+        </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" type="image/svg+xml" href="#{resource['img:favicon.svg']}" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" />
         <h:outputStylesheet library="primefaces" name="primeicons/primeicons.css"/>
         <h:outputStylesheet library="css" name="comun/default.css"/>
         <h:outputStylesheet library="css" name="plantillas/principal.css"/>
         <ui:insert name="estilos"/>
+        <!-- Al final: estilo tipo Zabbix (todo recto, filtros y tablas compactas) -->
+        <h:outputStylesheet library="css" name="comun/listados.css"/>
         <title>#{titulo} | RMM IMSS</title>
     </h:head>
 

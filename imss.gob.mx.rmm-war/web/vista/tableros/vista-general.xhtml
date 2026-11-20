@@ -3,8 +3,13 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
                 xmlns:p="primefaces"
                 template="/plantillas/plantillaPrincipal.xhtml">
+
+    <!-- Tableros → Vista general (PR-03, SD-04a). Mismo diseño que el inicio de la intranet:
+         saludo, indicadores (clic = abrir el inventario con ese filtro), equipos por unidad,
+         equipos que llevan más tiempo sin señal y el mapa. -->
 
     <ui:param name="seccion" value="tableros"/>
     <ui:param name="subseccion" value="vista-general"/>
@@ -17,27 +22,180 @@
         <h:outputStylesheet library="css" name="tableros/vista-general.css"/>
     </ui:define>
 
-
     <ui:define name="content">
-        <section class="tarjeta t-mapa">
-            <div class="tarjeta-titulo">
-                <h2>Geomapa</h2>
-                <span class="mono tenue">17°04'N 96°43'W</span>
+        <h:form id="formTablero" styleClass="tablero">
+
+            <!-- Saludo -->
+            <div class="tablero-saludo">
+                <div class="tablero-saludo-texto">
+                    <h2>#{tableroCtrl.saludo}</h2>
+                    <p class="tenue">#{tableroCtrl.hoy} · Coordinación de Informática, OOAD Oaxaca</p>
+                </div>
+                <p:commandButton value="Actualizar" icon="pi pi-refresh" action="#{tableroCtrl.actualizar}"
+                                 process="@this" update="indicadores panelUnidades panelSinSenal"
+                                 styleClass="btn btn-contorno"/>
+                <p:button value="Inventario" icon="pi pi-desktop" outcome="/vista/inventario/equipos"
+                          styleClass="btn btn-contorno"
+                          rendered="#{authCtrl.tienePermiso('GESTIONAR_INVENTARIO')}"/>
+                <p:button value="Nuevo equipo" icon="pi pi-plus" outcome="/vista/inventario/alta-equipo"
+                          styleClass="btn btn-primario"
+                          rendered="#{authCtrl.tienePermiso('GESTIONAR_INVENTARIO')}"/>
             </div>
 
-            <div class="mapa-contenedor">
-                <div id="mapaOaxaca"></div>
+            <!-- Indicadores -->
+            <p:outputPanel id="indicadores" layout="block" styleClass="indicadores">
+                <!-- Disponibilidad (tarjeta oscura) -->
+                <div class="tarjeta indicador oscuro">
+                    <div class="icono"><i class="pi pi-chart-line"></i></div>
+                    <div>
+                        <div class="cifra">#{tableroCtrl.resumen.disponibilidad}%</div>
+                        <div class="etiqueta">Disponibilidad</div>
+                        <div class="detalle">#{tableroCtrl.resumen.enLinea + tableroCtrl.resumen.conAlerta} de #{tableroCtrl.resumen.activos} equipos reportando</div>
+                    </div>
+                </div>
 
-                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-                <script>
-                    var mapa = L.map('mapaOaxaca').setView([17.06, -96.72], 8);
-                    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        maxZoom: 18, attribution: '© OpenStreetMap'
-                    }).addTo(mapa);
-                </script>
+                <h:link outcome="/vista/inventario/equipos" styleClass="tarjeta indicador">
+                    <div class="icono marino"><i class="pi pi-desktop"></i></div>
+                    <div>
+                        <div class="cifra">#{tableroCtrl.resumen.activos}</div>
+                        <div class="etiqueta">Equipos registrados</div>
+                        <div class="detalle">#{tableroCtrl.resumen.bajas} dados de baja</div>
+                    </div>
+                </h:link>
+
+                <h:link outcome="/vista/inventario/equipos" styleClass="tarjeta indicador">
+                    <f:param name="estado" value="ONLINE"/>
+                    <div class="icono verde"><i class="pi pi-check-circle"></i></div>
+                    <div>
+                        <div class="cifra">#{tableroCtrl.resumen.enLinea}</div>
+                        <div class="etiqueta">En línea</div>
+                        <div class="detalle">Reportando con normalidad</div>
+                    </div>
+                </h:link>
+
+                <h:link outcome="/vista/inventario/equipos" styleClass="tarjeta indicador">
+                    <f:param name="estado" value="OFFLINE"/>
+                    <div class="icono gris"><i class="pi pi-power-off"></i></div>
+                    <div>
+                        <div class="cifra">#{tableroCtrl.resumen.sinConexion}</div>
+                        <div class="etiqueta">Sin conexión</div>
+                        <div class="detalle">Su agente no ha reportado</div>
+                    </div>
+                </h:link>
+
+                <h:link outcome="/vista/inventario/equipos" styleClass="tarjeta indicador">
+                    <f:param name="estado" value="ALERTA"/>
+                    <div class="icono ambar"><i class="pi pi-exclamation-triangle"></i></div>
+                    <div>
+                        <div class="cifra">#{tableroCtrl.resumen.conAlerta}</div>
+                        <div class="etiqueta">Con alerta</div>
+                        <div class="detalle">#{tableroCtrl.resumen.alertasActivas} alertas sin atender</div>
+                    </div>
+                </h:link>
+
+                <div class="tarjeta indicador">
+                    <div class="icono rojo"><i class="pi pi-ticket"></i></div>
+                    <div>
+                        <div class="cifra">#{tableroCtrl.resumen.incidenciasAbiertas}</div>
+                        <div class="etiqueta">Incidencias abiertas</div>
+                        <div class="detalle">Abiertas o en proceso</div>
+                    </div>
+                </div>
+            </p:outputPanel>
+
+            <div class="tablero-columnas">
+                <!-- Equipos por unidad -->
+                <p:outputPanel id="panelUnidades" layout="block" styleClass="tarjeta tarjeta-tabla">
+                    <div class="tarjeta-encabezado">
+                        <h2>Equipos por unidad</h2>
+                        <h:link outcome="/vista/administracion/estructura" value="Ver estructura"
+                                rendered="#{authCtrl.tienePermiso('ADMINISTRAR')}"/>
+                    </div>
+                    <p:dataTable value="#{tableroCtrl.unidades}" var="u" styleClass="tabla-lista"
+                                 rows="10" paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false"
+                                 currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontrados"
+                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport}">
+                        <f:facet name="emptyMessage">
+                            <div class="sin-datos"><i class="pi pi-search"></i>Todavía no hay equipos con unidad asignada</div>
+                        </f:facet>
+                        <p:column headerText="Unidad">
+                            <h:link outcome="/vista/inventario/equipos" value="#{u.nombre}" styleClass="enlace">
+                                <f:param name="unidad" value="#{u.idUnidadHomologada}"/>
+                            </h:link>
+                        </p:column>
+                        <p:column headerText="Equipos" styleClass="col-numero" width="80">
+                            <strong>#{u.total}</strong>
+                        </p:column>
+                        <p:column headerText="En línea" styleClass="col-numero" width="80">
+                            <h:outputText value="#{u.enLinea}" styleClass="#{u.enLinea gt 0 ? 'cifra-verde' : 'tenue'}"/>
+                        </p:column>
+                        <p:column headerText="Sin conexión" styleClass="col-numero" width="95">
+                            <h:outputText value="#{u.sinConexion}" styleClass="#{u.sinConexion gt 0 ? '' : 'tenue'}"/>
+                        </p:column>
+                        <p:column headerText="Con alerta" styleClass="col-numero" width="85">
+                            <h:outputText value="#{u.conAlerta}" styleClass="#{u.conAlerta gt 0 ? 'cifra-ambar' : 'tenue'}"/>
+                        </p:column>
+                        <p:column headerText="Disponibilidad" width="170">
+                            <div class="barra-disponibilidad">
+                                <span class="barra"><span class="relleno #{tableroCtrl.claseDisponibilidad(u.disponibilidad)}"
+                                                          style="width: #{u.disponibilidad}%"></span></span>
+                                <span class="valor">#{u.disponibilidad}%</span>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </p:outputPanel>
+
+                <!-- Lo que lleva más tiempo sin señal -->
+                <p:outputPanel id="panelSinSenal" layout="block" styleClass="tarjeta tarjeta-tabla">
+                    <div class="tarjeta-encabezado">
+                        <h2>Sin señal desde hace más tiempo</h2>
+                        <h:link outcome="/vista/inventario/equipos" value="Ver todos"
+                                rendered="#{authCtrl.tienePermiso('GESTIONAR_INVENTARIO')}">
+                            <f:param name="estado" value="OFFLINE"/>
+                        </h:link>
+                    </div>
+                    <ul class="lista-pendientes">
+                        <ui:repeat value="#{tableroCtrl.sinSenal}" var="e">
+                            <li>
+                                <h:link outcome="/vista/inventario/alta-equipo" styleClass="pendiente">
+                                    <f:param name="id" value="#{e.idEquipo}"/>
+                                    <div class="pendiente-linea">
+                                        <span class="mono pendiente-host">#{e.hostname}</span>
+                                        <h:outputText value="#{e.estadoConexion}"
+                                                      styleClass="estado #{e.estadoConexion eq 'ALERTA' ? 'estado-alerta' : ''}"/>
+                                        <span class="espacio"></span>
+                                        <span class="tenue pendiente-hace">#{tableroCtrl.haceCuanto(e.ultimaSenal)}</span>
+                                    </div>
+                                    <div class="tenue pendiente-sub">#{tableroCtrl.unidad(e)}</div>
+                                </h:link>
+                            </li>
+                        </ui:repeat>
+                        <h:panelGroup rendered="#{empty tableroCtrl.sinSenal}">
+                            <li class="todo-bien"><i class="pi pi-check-circle"></i> Todos los equipos están reportando.</li>
+                        </h:panelGroup>
+                    </ul>
+                </p:outputPanel>
             </div>
-        </section>
+
+            <!-- Mapa -->
+            <section class="tarjeta tarjeta-tabla t-mapa">
+                <div class="tarjeta-encabezado">
+                    <h2>Geomapa</h2>
+                    <span class="mono tenue">17°04'N 96°43'W</span>
+                </div>
+                <div class="mapa-contenedor">
+                    <div id="mapaOaxaca"></div>
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+                    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                    <script>
+                        var mapa = L.map('mapaOaxaca').setView([17.06, -96.72], 8);
+                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 18, attribution: '© OpenStreetMap'
+                        }).addTo(mapa);
+                    </script>
+                </div>
+            </section>
+        </h:form>
     </ui:define>
 
 </ui:composition>
