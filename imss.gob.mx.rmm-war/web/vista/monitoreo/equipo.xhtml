@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/plantillas/plantillaPrincipal.xhtml">
+
+    <!-- Monitoreo → rendimiento de un equipo (HU-2). equipo.xhtml?id=N
+         Estado y última captura, gráficas del periodo elegido (CPU/RAM, disco, red),
+         particiones, alertas activas y últimas sesiones de monitoreo.
+         Se actualiza sola cada 60 s. -->
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{rendimientoCtrl.id}"/>
+            <f:viewAction action="#{rendimientoCtrl.cargar}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:param name="seccion" value="monitoreo"/>
+    <ui:param name="subseccion" value="estado-rendimiento"/>
+    <ui:param name="migaSeccion" value="Estado y rendimiento"/>
+    <ui:param name="migaEnlace" value="/vista/monitoreo/estado-rendimiento"/>
+    <ui:param name="migaPagina" value="#{rendimientoCtrl.equipo.hostname}"/>
+    <ui:param name="titulo" value="#{rendimientoCtrl.equipo.hostname}"/>
+
+    <ui:define name="estilos">
+        <h:outputStylesheet library="css" name="comun/formularios.css"/>
+        <h:outputStylesheet library="css" name="monitoreo/monitoreo.css"/>
+    </ui:define>
+
+    <ui:define name="accionesEncabezado">
+        <p:button value="Editar equipo" icon="pi pi-pencil" outcome="/vista/inventario/alta-equipo"
+                  styleClass="btn btn-contorno" rendered="#{authCtrl.tienePermiso('GESTIONAR_INVENTARIO')}">
+            <f:param name="id" value="#{rendimientoCtrl.equipo.idEquipo}"/>
+        </p:button>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formRendimiento" styleClass="vista-formulario monitoreo-equipo">
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <p:poll interval="60" listener="#{rendimientoCtrl.actualizar}" widgetVar="pollEquipo"
+                    process="@this" update="panelDatos"/>
+
+            <p:outputPanel id="panelDatos" layout="block" styleClass="monitoreo-columnas">
+
+                <!-- ===== Ficha: estado, identidad y última captura ===== -->
+                <section class="tarjeta ficha-equipo">
+                    <div class="ficha-linea">
+                        <h:outputText value="#{rendimientoCtrl.estado}" styleClass="estado #{rendimientoCtrl.claseEstado}"/>
+                        <span class="tenue">Última señal: #{rendimientoCtrl.haceCuanto(rendimientoCtrl.equipo.ultimaSenal)}</span>
+                    </div>
+                    <dl class="ficha-datos">
+                        <dt>Unidad</dt><dd>#{rendimientoCtrl.unidad}</dd>
+                        <dt>IP</dt><dd class="mono">#{rendimientoCtrl.equipo.ipLocal}</dd>
+                        <dt>MAC</dt><dd class="mono">#{rendimientoCtrl.equipo.direccionMac}</dd>
+                        <dt>Sistema</dt><dd>#{rendimientoCtrl.equipo.nombreSo} #{rendimientoCtrl.equipo.versionSo}</dd>
+                        <dt>CPU</dt>
+                        <dd>#{rendimientoCtrl.equipo.hardware.modeloCpu}
+                            <h:outputText value=" (#{rendimientoCtrl.equipo.hardware.nucleosCpu} núcleos / #{rendimientoCtrl.equipo.hardware.hilosCpu} hilos)"
+                                          rendered="#{not empty rendimientoCtrl.equipo.hardware.nucleosCpu}" styleClass="tenue"/></dd>
+                        <dt>RAM</dt><dd>#{rendimientoCtrl.gb(rendimientoCtrl.equipo.hardware.totalRamGb)}</dd>
+                    </dl>
+
+                    <h3>Última captura
+                        <h:outputText value="#{rendimientoCtrl.haceCuanto(rendimientoCtrl.ultimo.fechaInforme)}" styleClass="tenue"/></h3>
+                    <h:panelGroup rendered="#{not rendimientoCtrl.ultimo.conDatos}">
+                        <p class="tenue">Este equipo todavía no ha enviado telemetría. Instale el agente para ver sus métricas.</p>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{rendimientoCtrl.ultimo.conDatos}" layout="block" styleClass="medidores">
+                        <div class="medidor">
+                            <span class="etiqueta">CPU</span>
+                            <div class="uso #{rendimientoCtrl.claseUso(rendimientoCtrl.ultimo.cpu)}">
+                                <span class="barra"><span class="relleno" style="width: #{rendimientoCtrl.ancho(rendimientoCtrl.ultimo.cpu)}%"></span></span>
+                                <span class="valor">#{rendimientoCtrl.porcentaje(rendimientoCtrl.ultimo.cpu)}</span>
+                            </div>
+                        </div>
+                        <div class="medidor">
+                            <span class="etiqueta">RAM</span>
+                            <div class="uso #{rendimientoCtrl.claseUso(rendimientoCtrl.ultimo.ram)}">
+                                <span class="barra"><span class="relleno" style="width: #{rendimientoCtrl.ancho(rendimientoCtrl.ultimo.ram)}%"></span></span>
+                                <span class="valor">#{rendimientoCtrl.porcentaje(rendimientoCtrl.ultimo.ram)}</span>
+                            </div>
+                            <span class="tenue nota">#{rendimientoCtrl.gb(rendimientoCtrl.ultimo.ramUsadaGb)} de #{rendimientoCtrl.gb(rendimientoCtrl.ultimo.ramTotalGb)}</span>
+                        </div>
+                        <div class="medidor">
+                            <span class="etiqueta">Disco</span>
+                            <div class="uso #{rendimientoCtrl.claseUso(rendimientoCtrl.ultimo.disco)}">
+                                <span class="barra"><span class="relleno" style="width: #{rendimientoCtrl.ancho(rendimientoCtrl.ultimo.disco)}%"></span></span>
+                                <span class="valor">#{rendimientoCtrl.porcentaje(rendimientoCtrl.ultimo.disco)}</span>
+                            </div>
+                            <span class="tenue nota mono">#{rendimientoCtrl.ultimo.particionMasLlena}</span>
+                        </div>
+                        <div class="medidor-cifras">
+                            <div><span class="tenue">Procesos</span><strong>#{rendimientoCtrl.ultimo.procesos}</strong></div>
+                            <div><span class="tenue">Red ↓ MB</span><strong>#{rendimientoCtrl.ultimo.redRxMb}</strong></div>
+                            <div><span class="tenue">Red ↑ MB</span><strong>#{rendimientoCtrl.ultimo.redTxMb}</strong></div>
+                        </div>
+                    </h:panelGroup>
+                </section>
+
+                <!-- ===== Gráficas ===== -->
+                <section class="tarjeta tarjeta-tabla graficas">
+                    <div class="tarjeta-encabezado">
+                        <h2>Rendimiento</h2>
+                        <span class="tenue">Disponibilidad: <strong>#{rendimientoCtrl.disponibilidad} %</strong></span>
+                        <p:selectOneButton value="#{rendimientoCtrl.rango}" styleClass="selector-rango">
+                            <f:selectItems value="#{rendimientoCtrl.rangos}" var="r" itemValue="#{r.codigo}" itemLabel="#{r.etiqueta}"/>
+                            <p:ajax listener="#{rendimientoCtrl.actualizar}" update="panelDatos"/>
+                        </p:selectOneButton>
+                    </div>
+                    <h:panelGroup rendered="#{rendimientoCtrl.historial.capturas eq 0}" layout="block" styleClass="sin-datos-grafica">
+                        <i class="pi pi-chart-line"></i>
+                        No hay capturas en este periodo.
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{rendimientoCtrl.historial.capturas gt 0}" layout="block" styleClass="grafica-grid">
+                        <div class="grafica">
+                            <h3>CPU y RAM</h3>
+                            <div class="lienzo"><p:chart value="#{rendimientoCtrl.graficaCpuRam}" style="height: 100%"/></div>
+                        </div>
+                        <div class="grafica">
+                            <h3>Disco (partición más llena)</h3>
+                            <div class="lienzo"><p:chart value="#{rendimientoCtrl.graficaDisco}" style="height: 100%"/></div>
+                        </div>
+                        <div class="grafica">
+                            <h3>Red</h3>
+                            <div class="lienzo"><p:chart value="#{rendimientoCtrl.graficaRed}" style="height: 100%"/></div>
+                        </div>
+                    </h:panelGroup>
+                    <div class="pie-grafica tenue">
+                        Los huecos son periodos sin datos (equipo sin conexión). #{rendimientoCtrl.historial.capturas} capturas en el periodo.
+                        Actualizado a las <h:outputText value="#{rendimientoCtrl.actualizado}">
+                            <f:convertDateTime pattern="HH:mm:ss" timeZone="America/Mexico_City"/>
+                        </h:outputText>.
+                    </div>
+                </section>
+
+                <!-- ===== Particiones ===== -->
+                <section class="tarjeta tarjeta-tabla">
+                    <div class="tarjeta-encabezado"><h2>Particiones</h2></div>
+                    <p:dataTable value="#{rendimientoCtrl.ultimo.particiones}" var="a" styleClass="tabla-lista">
+                        <f:facet name="emptyMessage">
+                            <div class="sin-datos"><i class="pi pi-database"></i>Sin datos de almacenamiento</div>
+                        </f:facet>
+                        <p:column headerText="Unidad / montaje">
+                            <h:outputText value="#{a.puntoMontaje}" styleClass="mono"/>
+                        </p:column>
+                        <p:column headerText="Uso" width="170">
+                            <div class="uso #{rendimientoCtrl.claseUso(rendimientoCtrl.usoParticion(a))}">
+                                <span class="barra"><span class="relleno" style="width: #{rendimientoCtrl.ancho(rendimientoCtrl.usoParticion(a))}%"></span></span>
+                                <span class="valor">#{rendimientoCtrl.porcentaje(rendimientoCtrl.usoParticion(a))}</span>
+                            </div>
+                        </p:column>
+                        <p:column headerText="Libre" width="90" styleClass="col-numero">#{rendimientoCtrl.gb(a.espacioLibreGb)}</p:column>
+                        <p:column headerText="Total" width="90" styleClass="col-numero">#{rendimientoCtrl.gb(a.capacidadTotalGb)}</p:column>
+                    </p:dataTable>
+                </section>
+
+                <!-- ===== Alertas activas ===== -->
+                <section class="tarjeta tarjeta-tabla">
+                    <div class="tarjeta-encabezado"><h2>Alertas activas</h2></div>
+                    <p:dataTable value="#{rendimientoCtrl.alertas}" var="al" styleClass="tabla-lista">
+                        <f:facet name="emptyMessage">
+                            <div class="sin-datos"><i class="pi pi-check-circle"></i>Sin alertas activas</div>
+                        </f:facet>
+                        <p:column headerText="Gravedad" width="100">
+                            <h:outputText value="#{al.nivelGravedad}" styleClass="estado #{rendimientoCtrl.claseGravedad(al)}"/>
+                        </p:column>
+                        <p:column headerText="Descripción">#{al.descripcion}</p:column>
+                        <p:column headerText="Desde" width="120">#{rendimientoCtrl.haceCuanto(al.fechaGeneracion)}</p:column>
+                    </p:dataTable>
+                </section>
+
+                <!-- ===== Sesiones de monitoreo ===== -->
+                <section class="tarjeta tarjeta-tabla">
+                    <div class="tarjeta-encabezado"><h2>Últimas sesiones de monitoreo</h2></div>
+                    <p:dataTable value="#{rendimientoCtrl.sesiones}" var="s" styleClass="tabla-lista">
+                        <f:facet name="emptyMessage">
+                            <div class="sin-datos"><i class="pi pi-history"></i>Todavía no hay sesiones</div>
+                        </f:facet>
+                        <p:column headerText="Inicio" width="140">
+                            <h:outputText value="#{s.inicioSesion}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Mexico_City"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Fin" width="140">
+                            <h:outputText value="#{s.finSesion}" rendered="#{not empty s.finSesion}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Mexico_City"/>
+                            </h:outputText>
+                            <h:outputText value="En curso" styleClass="estado estado-activo" rendered="#{empty s.finSesion}"/>
+                        </p:column>
+                        <p:column headerText="Duración" width="110">#{rendimientoCtrl.duracion(s)}</p:column>
+                        <p:column headerText="Cierre">
+                            <h:outputText value="Desconexión abrupta" styleClass="estado estado-alerta"
+                                          rendered="#{not empty s.finSesion and s.desconexionAbrupta}"/>
+                            <h:outputText value="Normal" styleClass="tenue"
+                                          rendered="#{not empty s.finSesion and not s.desconexionAbrupta}"/>
+                        </p:column>
+                        <p:column headerText="IP de origen" width="130">
+                            <h:outputText value="#{s.ipOrigen}" styleClass="mono"/>
+                        </p:column>
+                    </p:dataTable>
+                </section>
+            </p:outputPanel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

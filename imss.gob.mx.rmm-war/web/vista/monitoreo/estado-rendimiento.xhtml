@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/plantillas/plantillaPrincipal.xhtml">
+
+    <!-- Monitoreo → Estado y rendimiento (HU-2). Como "Latest data" de Zabbix:
+         cada equipo con su estado y su última captura (CPU, RAM, disco, red, procesos).
+         Se actualiza sola cada 30 s; el hostname abre las gráficas del equipo. -->
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <!-- estado-rendimiento.xhtml?estado=ALERTA o ?unidad=N -->
+            <f:viewParam name="estado" value="#{monitoreoCtrl.estado}"/>
+            <f:viewParam name="unidad" value="#{monitoreoCtrl.idUnidadHomologada}"/>
+            <f:viewAction action="#{monitoreoCtrl.aplicarParametros}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:param name="seccion" value="monitoreo"/>
+    <ui:param name="subseccion" value="estado-rendimiento"/>
+    <ui:param name="migaSeccion" value="Monitoreo"/>
+    <ui:param name="migaPagina" value="Estado y rendimiento"/>
+    <ui:param name="titulo" value="Estado y rendimiento"/>
+
+    <ui:define name="estilos">
+        <h:outputStylesheet library="css" name="comun/formularios.css"/>
+        <h:outputStylesheet library="css" name="monitoreo/monitoreo.css"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMonitoreo" styleClass="vista-formulario">
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <!-- Se actualiza solo cada 30 s (se puede pausar) -->
+            <p:poll id="poll" interval="30" listener="#{monitoreoCtrl.consultar}" widgetVar="pollMonitoreo"
+                    process="@this" update="panelResumen tablaMonitoreo panelActualizado"/>
+
+            <!-- Resumen: clic en una tarjeta filtra por ese estado -->
+            <p:outputPanel id="panelResumen" layout="block" styleClass="resumen-grid resumen-4">
+                <p:commandLink action="#{monitoreoCtrl.filtrarEstado('')}" process="@this"
+                               update="panelResumen panelFiltro tablaMonitoreo"
+                               styleClass="resumen #{monitoreoCtrl.elegido('') ? 'elegida' : ''}">
+                    <span class="tenue">Equipos activos</span>
+                    <span class="cifra">#{monitoreoCtrl.contar('')}</span>
+                </p:commandLink>
+                <p:commandLink action="#{monitoreoCtrl.filtrarEstado('ONLINE')}" process="@this"
+                               update="panelResumen panelFiltro tablaMonitoreo"
+                               styleClass="resumen #{monitoreoCtrl.elegido('ONLINE') ? 'elegida' : ''}">
+                    <span class="tenue">En línea</span>
+                    <span class="cifra cifra-verde">#{monitoreoCtrl.contar('ONLINE')}</span>
+                </p:commandLink>
+                <p:commandLink action="#{monitoreoCtrl.filtrarEstado('ALERTA')}" process="@this"
+                               update="panelResumen panelFiltro tablaMonitoreo"
+                               styleClass="resumen #{monitoreoCtrl.elegido('ALERTA') ? 'elegida' : ''}">
+                    <span class="tenue">Con alerta</span>
+                    <span class="cifra cifra-ambar">#{monitoreoCtrl.contar('ALERTA')}</span>
+                </p:commandLink>
+                <p:commandLink action="#{monitoreoCtrl.filtrarEstado('OFFLINE')}" process="@this"
+                               update="panelResumen panelFiltro tablaMonitoreo"
+                               styleClass="resumen #{monitoreoCtrl.elegido('OFFLINE') ? 'elegida' : ''}">
+                    <span class="tenue">Sin conexión</span>
+                    <span class="cifra cifra-gris">#{monitoreoCtrl.contar('OFFLINE')}</span>
+                </p:commandLink>
+            </p:outputPanel>
+
+            <!-- Filtro (estilo Zabbix): se aplica con "Aplicar" o Enter -->
+            <p:outputPanel id="panelFiltro" layout="block" styleClass="panel-filtro">
+                <span class="pestana-filtro"><i class="pi pi-filter"></i> Filtro</span>
+                <div class="campos-filtro">
+                    <p:outputLabel for="texto" value="Buscar"/>
+                    <p:inputText id="texto" value="#{monitoreoCtrl.texto}" maxlength="100"
+                                 placeholder="Hostname, MAC, IP, unidad o área" autocomplete="off"/>
+
+                    <p:outputLabel for="hospital" value="Unidad"/>
+                    <p:selectOneMenu id="hospital" value="#{monitoreoCtrl.idUnidadHomologada}"
+                                     filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Todas" itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{monitoreoCtrl.hospitales}" var="h"
+                                       itemValue="#{h.idUnidadHomologada}" itemLabel="#{h.nombre}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="estado" value="Estado"/>
+                    <p:selectOneButton id="estado" value="#{monitoreoCtrl.estado}" styleClass="ancho-completo">
+                        <f:selectItem itemLabel="Todos" itemValue=""/>
+                        <f:selectItem itemLabel="En línea" itemValue="ONLINE"/>
+                        <f:selectItem itemLabel="Con alerta" itemValue="ALERTA"/>
+                        <f:selectItem itemLabel="Sin conexión" itemValue="OFFLINE"/>
+                    </p:selectOneButton>
+                </div>
+                <div class="acciones-filtro">
+                    <p:commandButton id="aplicar" value="Aplicar" action="#{monitoreoCtrl.consultar}"
+                                     process="panelFiltro" update="panelResumen tablaMonitoreo panelActualizado"
+                                     styleClass="btn btn-primario"/>
+                    <p:commandButton value="Restablecer" action="#{monitoreoCtrl.limpiarFiltros}"
+                                     process="@this" update="panelResumen panelFiltro tablaMonitoreo panelActualizado"
+                                     resetValues="true" styleClass="btn btn-contorno"/>
+                </div>
+                <p:defaultCommand target="aplicar" scope="panelFiltro"/>
+            </p:outputPanel>
+
+            <!-- Barra: hora de la última actualización y pausa -->
+            <div class="barra-actualizacion">
+                <p:outputPanel id="panelActualizado" styleClass="tenue">
+                    Actualizado a las <h:outputText value="#{monitoreoCtrl.actualizado}">
+                        <f:convertDateTime pattern="HH:mm:ss" timeZone="America/Mexico_City"/>
+                    </h:outputText>
+                </p:outputPanel>
+                <label class="auto-actualizar">
+                    <input type="checkbox" checked="checked"
+                           onchange="this.checked ? PF('pollMonitoreo').start() : PF('pollMonitoreo').stop()"/>
+                    Actualizar cada 30 s
+                </label>
+            </div>
+
+            <!-- Tabla -->
+            <section class="tarjeta tarjeta-tabla">
+                <p:dataTable id="tablaMonitoreo" value="#{monitoreoCtrl.filas}" var="f" styleClass="tabla-lista tabla-monitoreo"
+                             rows="25" paginator="true" paginatorPosition="bottom"
+                             paginatorAlwaysVisible="false" rowsPerPageTemplate="25,50,100"
+                             currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontrados"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}">
+                    <f:facet name="emptyMessage">
+                        <div class="sin-datos"><i class="pi pi-search"></i>No se encontraron datos</div>
+                    </f:facet>
+
+                    <p:column headerText="Hostname" sortBy="#{f.equipo.hostname}">
+                        <h:link outcome="/vista/monitoreo/equipo" value="#{f.equipo.hostname}" styleClass="enlace mono">
+                            <f:param name="id" value="#{f.equipo.idEquipo}"/>
+                        </h:link>
+                        <div class="tenue sub">#{monitoreoCtrl.unidad(f.equipo)}</div>
+                    </p:column>
+                    <p:column headerText="Estado" width="95" sortBy="#{f.equipo.estadoConexion}">
+                        <h:outputText value="#{empty f.equipo.estadoConexion ? 'OFFLINE' : f.equipo.estadoConexion}"
+                                      styleClass="estado #{monitoreoCtrl.claseEstado(f.equipo)}"/>
+                    </p:column>
+                    <p:column headerText="CPU" width="130" sortBy="#{f.cpu}">
+                        <div class="uso #{monitoreoCtrl.claseUso(f.cpu)}">
+                            <span class="barra"><span class="relleno" style="width: #{monitoreoCtrl.ancho(f.cpu)}%"></span></span>
+                            <span class="valor">#{monitoreoCtrl.porcentaje(f.cpu)}</span>
+                        </div>
+                    </p:column>
+                    <p:column headerText="RAM" width="130" sortBy="#{f.ram}">
+                        <div class="uso #{monitoreoCtrl.claseUso(f.ram)}"
+                             title="#{f.ramUsadaGb} de #{f.ramTotalGb} GB">
+                            <span class="barra"><span class="relleno" style="width: #{monitoreoCtrl.ancho(f.ram)}%"></span></span>
+                            <span class="valor">#{monitoreoCtrl.porcentaje(f.ram)}</span>
+                        </div>
+                    </p:column>
+                    <p:column headerText="Disco" width="130" sortBy="#{f.disco}">
+                        <div class="uso #{monitoreoCtrl.claseUso(f.disco)}" title="Partición más llena: #{f.particionMasLlena}">
+                            <span class="barra"><span class="relleno" style="width: #{monitoreoCtrl.ancho(f.disco)}%"></span></span>
+                            <span class="valor">#{monitoreoCtrl.porcentaje(f.disco)}</span>
+                        </div>
+                    </p:column>
+                    <p:column headerText="Red ↓ / ↑ (MB)" width="115" styleClass="col-numero">
+                        <h:outputText value="#{monitoreoCtrl.mb(f.redRxMb)} / #{monitoreoCtrl.mb(f.redTxMb)}" styleClass="mono"/>
+                    </p:column>
+                    <p:column headerText="Procesos" width="80" styleClass="col-numero" sortBy="#{f.procesos}">
+                        <h:outputText value="#{f.procesos}"/>
+                    </p:column>
+                    <p:column headerText="Última captura" width="120" sortBy="#{f.fechaInforme}">
+                        <h:outputText value="#{monitoreoCtrl.haceCuanto(f.fechaInforme)}"
+                                      styleClass="#{monitoreoCtrl.atrasado(f.fechaInforme) ? 'tenue' : ''}"/>
+                    </p:column>
+                    <p:column headerText="Acciones" styleClass="col-acciones">
+                        <h:link outcome="/vista/monitoreo/equipo" value="Gráficas" styleClass="accion">
+                            <f:param name="id" value="#{f.equipo.idEquipo}"/>
+                        </h:link>
+                    </p:column>
+                </p:dataTable>
+            </section>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

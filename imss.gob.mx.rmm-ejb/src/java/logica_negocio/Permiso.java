@@ -18,7 +18,7 @@ public enum Permiso {
     VER_TABLEROS("Tableros", "Ver la vista general y los indicadores por unidad",
             "/vista/tableros/", "/vista/tableros/vista-general.xhtml"),
     VER_MONITOREO("Monitoreo", "Ver el estado de conexión y el rendimiento de los equipos",
-            "/vista/monitoreo/", null),
+            "/vista/monitoreo/", "/vista/monitoreo/estado-rendimiento.xhtml"),
     GESTIONAR_ALERTAS("Alertas", "Atender y escalar alertas, configurar umbrales y ver notificaciones",
             "/vista/alertas/", null),
     GESTIONAR_INCIDENCIAS("Incidencias", "Registrar, asignar y dar seguimiento a incidencias",

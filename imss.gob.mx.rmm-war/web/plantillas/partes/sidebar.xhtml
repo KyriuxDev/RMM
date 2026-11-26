@@ -45,7 +45,7 @@
             <!-- Monitoreo -->
             <p:submenu label="Monitoreo" rendered="#{authCtrl.tienePermiso('VER_MONITOREO')}" icon="pi pi-wave-pulse" expanded="#{seccion eq 'monitoreo'}"
                        styleClass="seccion-monitoreo #{seccion eq 'monitoreo' ? 'activa' : ''}">
-                <p:menuitem value="Estado y rendimiento" url="#"
+                <p:menuitem value="Estado y rendimiento" outcome="/vista/monitoreo/estado-rendimiento.xhtml"
                             styleClass="#{subseccion eq 'estado-rendimiento' ? 'activo' : ''}"/>
             </p:submenu>
 
