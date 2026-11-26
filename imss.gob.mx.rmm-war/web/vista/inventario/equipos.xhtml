@@ -123,11 +123,10 @@
                         <div class="sin-datos"><i class="pi pi-search"></i>No se encontraron datos</div>
                     </f:facet>
                     <p:column headerText="Hostname" sortBy="#{e.hostname}">
-                        <h:link outcome="/vista/inventario/alta-equipo" value="#{e.hostname}"
-                                styleClass="enlace mono" rendered="#{e.estaActivo}">
+                        <h:link outcome="/vista/inventario/detalle-equipo" value="#{e.hostname}"
+                                styleClass="enlace mono" title="Ver ficha del equipo">
                             <f:param name="id" value="#{e.idEquipo}"/>
                         </h:link>
-                        <h:outputText value="#{e.hostname}" styleClass="mono" rendered="#{not e.estaActivo}"/>
                     </p:column>
                     <p:column headerText="IP" width="110">
                         <h:outputText value="#{e.ipLocal}" styleClass="mono"/>

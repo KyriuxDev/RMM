@@ -1,0 +1,277 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/plantillas/plantillaPrincipal.xhtml">
+
+    <!-- Inventario → Ficha del equipo (HU-10, Figura 13). detalle-equipo.xhtml?id=N
+         Datos del equipo, consumo de recursos en tiempo real, alertas activas,
+         historial de eventos e incidencias y pestañas de hardware / software / periféricos.
+         Lo "en vivo" se actualiza solo cada 60 s. -->
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{detalleCtrl.id}"/>
+            <f:viewAction action="#{detalleCtrl.cargar}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:param name="seccion" value="inventario"/>
+    <ui:param name="subseccion" value="equipos"/>
+    <ui:param name="migaSeccion" value="Equipos"/>
+    <ui:param name="migaEnlace" value="/vista/inventario/equipos"/>
+    <ui:param name="migaPagina" value="Ficha del equipo"/>
+    <ui:param name="titulo" value="#{detalleCtrl.equipo.hostname}"/>
+
+    <ui:define name="estilos">
+        <h:outputStylesheet library="css" name="comun/formularios.css"/>
+        <h:outputStylesheet library="css" name="monitoreo/monitoreo.css"/>
+        <h:outputStylesheet library="css" name="inventario/detalle-equipo.css"/>
+    </ui:define>
+
+    <ui:define name="accionesEncabezado">
+        <p:button value="Ver rendimiento" icon="pi pi-chart-line" outcome="/vista/monitoreo/equipo"
+                  styleClass="btn btn-contorno" rendered="#{authCtrl.tienePermiso('VER_MONITOREO')}">
+            <f:param name="id" value="#{detalleCtrl.id}"/>
+        </p:button>
+        <p:button value="Editar equipo" icon="pi pi-pencil" outcome="/vista/inventario/alta-equipo"
+                  styleClass="btn btn-contorno"
+                  rendered="#{authCtrl.tienePermiso('GESTIONAR_INVENTARIO') and detalleCtrl.equipo.estaActivo}">
+            <f:param name="id" value="#{detalleCtrl.id}"/>
+        </p:button>
+        <!-- TODO (HU-7): cuando exista la vista de alta de incidencia, cambiar por
+             <p:button outcome="/vista/incidencias/..."> con f:param name="equipo" -->
+        <button type="button" class="btn btn-primario" disabled="disabled"
+                title="Disponible cuando esté lista la gestión de incidencias">
+            <i class="pi pi-plus"></i> Registrar incidencia
+        </button>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formDetalle" styleClass="vista-formulario">
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <p:poll interval="60" listener="#{detalleCtrl.actualizar}" process="@this" update="panelVivo"
+                    rendered="#{detalleCtrl.equipo.estaActivo}"/>
+
+            <div class="det-pagina">
+
+                <!-- ===== Parte en vivo: datos, consumo y alertas activas ===== -->
+                <p:outputPanel id="panelVivo" layout="block" styleClass="det-pagina">
+
+                    <!-- Equipo dado de baja -->
+                    <h:panelGroup rendered="#{not detalleCtrl.equipo.estaActivo}" layout="block" styleClass="tarjeta det-baja">
+                        <strong>Equipo dado de baja</strong>
+                        <p class="tenue">
+                            <h:outputText value="#{detalleCtrl.equipo.fechaBaja}" rendered="#{not empty detalleCtrl.equipo.fechaBaja}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Mexico_City"/>
+                            </h:outputText>
+                            <h:outputText value=" · Motivo: #{detalleCtrl.equipo.motivoBaja}" rendered="#{not empty detalleCtrl.equipo.motivoBaja}"/>
+                            · Su historial se conserva.
+                        </p>
+                    </h:panelGroup>
+
+                    <!-- Datos del equipo -->
+                    <section class="tarjeta">
+                        <div class="det-estado-linea">
+                            <h:outputText value="#{detalleCtrl.estado}" styleClass="estado #{detalleCtrl.claseEstado}"/>
+                            <span class="tenue">Última señal: #{detalleCtrl.haceCuanto(detalleCtrl.equipo.ultimaSenal)}</span>
+                        </div>
+                        <div class="det-fila-datos">
+                            <div class="det-dato"><span class="det-etiqueta">IP asignada</span>
+                                <strong class="mono">#{empty detalleCtrl.equipo.ipLocal ? '—' : detalleCtrl.equipo.ipLocal}</strong></div>
+                            <div class="det-dato"><span class="det-etiqueta">Dirección MAC</span>
+                                <strong class="mono">#{detalleCtrl.equipo.direccionMac}</strong></div>
+                            <div class="det-dato"><span class="det-etiqueta">Ubicación</span>
+                                <strong>#{detalleCtrl.ubicacion}</strong></div>
+                            <div class="det-dato"><span class="det-etiqueta">Responsable</span>
+                                <strong>#{detalleCtrl.responsable}</strong></div>
+                        </div>
+                        <div class="det-fila-datos">
+                            <div class="det-dato"><span class="det-etiqueta">Sistema operativo</span>
+                                <strong>#{detalleCtrl.sistema}</strong></div>
+                            <div class="det-dato"><span class="det-etiqueta">Clave del área</span>
+                                <strong class="mono">#{detalleCtrl.claveArea}</strong></div>
+                            <div class="det-dato"><span class="det-etiqueta">IP pública</span>
+                                <strong class="mono">#{empty detalleCtrl.equipo.ipPublica ? '—' : detalleCtrl.equipo.ipPublica}</strong></div>
+                            <div class="det-dato"><span class="det-etiqueta">Fecha de registro</span>
+                                <strong>
+                                    <h:outputText value="#{detalleCtrl.equipo.fechaRegistro}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Mexico_City"/>
+                                    </h:outputText>
+                                </strong></div>
+                        </div>
+                    </section>
+
+                    <div class="det-dos-columnas">
+
+                        <!-- Consumo de recursos en tiempo real -->
+                        <section class="tarjeta">
+                            <div class="tarjeta-encabezado">
+                                <h2>Consumo de recursos en tiempo real</h2>
+                            </div>
+                            <h:panelGroup rendered="#{not detalleCtrl.ultimo.conDatos}">
+                                <p class="tenue">Este equipo todavía no ha enviado telemetría. Instale el agente para ver su consumo.</p>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{detalleCtrl.ultimo.conDatos}" layout="block" styleClass="medidores">
+                                <div class="medidor">
+                                    <span class="etiqueta">#{detalleCtrl.etiquetaCpu}</span>
+                                    <div class="uso #{detalleCtrl.claseUso(detalleCtrl.ultimo.cpu)}">
+                                        <span class="barra"><span class="relleno" style="width: #{detalleCtrl.ancho(detalleCtrl.ultimo.cpu)}%"></span></span>
+                                        <span class="valor">#{detalleCtrl.porcentaje(detalleCtrl.ultimo.cpu)}</span>
+                                    </div>
+                                </div>
+                                <div class="medidor">
+                                    <span class="etiqueta">#{detalleCtrl.etiquetaRam}</span>
+                                    <div class="uso #{detalleCtrl.claseUso(detalleCtrl.ultimo.ram)}">
+                                        <span class="barra"><span class="relleno" style="width: #{detalleCtrl.ancho(detalleCtrl.ultimo.ram)}%"></span></span>
+                                        <span class="valor">#{detalleCtrl.porcentaje(detalleCtrl.ultimo.ram)}</span>
+                                    </div>
+                                    <span class="tenue nota">#{detalleCtrl.gb(detalleCtrl.ultimo.ramUsadaGb)} de #{detalleCtrl.gb(detalleCtrl.ultimo.ramTotalGb)}</span>
+                                </div>
+                                <div class="medidor">
+                                    <span class="etiqueta">#{detalleCtrl.etiquetaDisco}</span>
+                                    <div class="uso #{detalleCtrl.claseUso(detalleCtrl.ultimo.disco)}">
+                                        <span class="barra"><span class="relleno" style="width: #{detalleCtrl.ancho(detalleCtrl.ultimo.disco)}%"></span></span>
+                                        <span class="valor">#{detalleCtrl.porcentaje(detalleCtrl.ultimo.disco)}</span>
+                                    </div>
+                                </div>
+                            </h:panelGroup>
+                            <div class="pie-grafica tenue">
+                                Última captura: #{detalleCtrl.haceCuanto(detalleCtrl.ultimo.fechaInforme)}.
+                                Actualizado a las <h:outputText value="#{detalleCtrl.actualizado}">
+                                    <f:convertDateTime pattern="HH:mm:ss" timeZone="America/Mexico_City"/>
+                                </h:outputText>.
+                            </div>
+                        </section>
+
+                        <!-- Alertas activas del equipo -->
+                        <section class="tarjeta">
+                            <div class="tarjeta-encabezado">
+                                <h2>Alertas activas del equipo (#{detalleCtrl.alertas.size()})</h2>
+                            </div>
+                            <h:panelGroup rendered="#{empty detalleCtrl.alertas}" layout="block" styleClass="sin-datos">
+                                <i class="pi pi-check-circle"></i>Sin alertas activas
+                            </h:panelGroup>
+                            <ui:repeat value="#{detalleCtrl.alertas}" var="al">
+                                <div class="det-alerta #{detalleCtrl.claseAlerta(al)}">
+                                    <div class="det-alerta-texto">
+                                        <strong>#{empty al.descripcion ? al.tipoAlerta : al.descripcion}</strong>
+                                        <span>Detectada: #{detalleCtrl.haceCuanto(al.fechaGeneracion)}</span>
+                                    </div>
+                                    <!-- TODO (HU-3/4): cuando exista la vista de alertas, convertir en p:button "Atender" -->
+                                    <button type="button" class="btn btn-contorno" disabled="disabled"
+                                            title="Disponible cuando esté lista la gestión de alertas">Atender</button>
+                                </div>
+                            </ui:repeat>
+                        </section>
+                    </div>
+                </p:outputPanel>
+
+                <!-- ===== Historial de eventos e incidencias ===== -->
+                <p:outputPanel id="panelHistorial" layout="block">
+                    <section class="tarjeta tarjeta-tabla">
+                        <div class="tarjeta-encabezado">
+                            <h2>Historial de eventos e incidencias</h2>
+                            <p:commandButton value="Actualizar" icon="pi pi-refresh"
+                                             action="#{detalleCtrl.actualizarHistorial}"
+                                             process="@this" update="panelHistorial"
+                                             styleClass="btn btn-contorno"/>
+                        </div>
+                        <p:dataTable id="tablaHistorial" value="#{detalleCtrl.historial}" var="ev" styleClass="tabla-lista"
+                                     rows="10" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+                            <f:facet name="emptyMessage">
+                                <div class="sin-datos"><i class="pi pi-history"></i>Este equipo todavía no tiene eventos</div>
+                            </f:facet>
+                            <p:column headerText="Fecha y hora" width="140">
+                                <h:outputText value="#{ev.fecha}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Mexico_City"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Tipo" width="100">#{ev.tipo}</p:column>
+                            <p:column headerText="Descripción">#{ev.descripcion}</p:column>
+                            <p:column headerText="Técnico" width="160">#{ev.tecnico}</p:column>
+                            <p:column headerText="Estado" width="120">
+                                <h:outputText value="#{ev.estado}" styleClass="estado #{detalleCtrl.claseEvento(ev)}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </section>
+                </p:outputPanel>
+
+                <!-- ===== Hardware, software y periféricos ===== -->
+                <section class="tarjeta tarjeta-tabla">
+                    <p:tabView id="tabs" dynamic="true" cache="true" styleClass="det-tabs">
+
+                        <p:tab title="Hardware">
+                            <h:panelGroup rendered="#{not detalleCtrl.conHardware}" layout="block" styleClass="sin-datos">
+                                <i class="pi pi-microchip"></i>Sin datos de hardware
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{detalleCtrl.conHardware}" layout="block">
+                                <div class="det-fila-datos">
+                                    <div class="det-dato"><span class="det-etiqueta">Procesador</span>
+                                        <strong>#{empty detalleCtrl.equipo.hardware.modeloCpu ? '—' : detalleCtrl.equipo.hardware.modeloCpu}</strong></div>
+                                    <div class="det-dato"><span class="det-etiqueta">Núcleos / hilos</span>
+                                        <strong>#{empty detalleCtrl.equipo.hardware.nucleosCpu ? '—' : detalleCtrl.equipo.hardware.nucleosCpu} / #{empty detalleCtrl.equipo.hardware.hilosCpu ? '—' : detalleCtrl.equipo.hardware.hilosCpu}</strong></div>
+                                    <div class="det-dato"><span class="det-etiqueta">Memoria RAM</span>
+                                        <strong>#{detalleCtrl.gb(detalleCtrl.equipo.hardware.totalRamGb)}</strong></div>
+                                    <div class="det-dato"><span class="det-etiqueta">Disco</span>
+                                        <strong>#{detalleCtrl.gb(detalleCtrl.equipo.hardware.capacidadDiscoGb)}</strong></div>
+                                </div>
+                                <div class="det-fila-datos">
+                                    <div class="det-dato"><span class="det-etiqueta">Placa base</span>
+                                        <strong>#{empty detalleCtrl.equipo.hardware.modeloPlacaBase ? '—' : detalleCtrl.equipo.hardware.modeloPlacaBase}</strong></div>
+                                </div>
+                            </h:panelGroup>
+                        </p:tab>
+
+                        <p:tab title="Software (#{detalleCtrl.software.size()})">
+                            <p:dataTable id="tablaSoftware" value="#{detalleCtrl.software}" var="s" styleClass="tabla-lista"
+                                         rows="15" paginator="true" paginatorPosition="bottom"
+                                         paginatorAlwaysVisible="false" rowsPerPageTemplate="15,30,50"
+                                         currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontrados"
+                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}">
+                                <f:facet name="emptyMessage">
+                                    <div class="sin-datos"><i class="pi pi-th-large"></i>No hay software registrado para este equipo</div>
+                                </f:facet>
+                                <p:column headerText="Nombre" sortBy="#{s.nombre}" filterBy="#{s.nombre}" filterMatchMode="contains">
+                                    #{s.nombre}
+                                </p:column>
+                                <p:column headerText="Versión" width="150">
+                                    <h:outputText value="#{s.version}" styleClass="mono"/>
+                                </p:column>
+                                <p:column headerText="Fabricante" sortBy="#{s.fabricante}">#{s.fabricante}</p:column>
+                                <p:column headerText="Instalado" width="110" sortBy="#{s.fechaInstalacion}">
+                                    <h:outputText value="#{s.fechaInstalacion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Mexico_City"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Observación" width="130">
+                                    <h:outputText value="#{detalleCtrl.estadoSoftware(s)}"
+                                                  styleClass="estado #{detalleCtrl.claseSoftware(s)}"
+                                                  rendered="#{not empty detalleCtrl.estadoSoftware(s)}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+
+                        <p:tab title="Periféricos (#{detalleCtrl.perifericos.size()})">
+                            <p:dataTable id="tablaPerifericos" value="#{detalleCtrl.perifericos}" var="pe" styleClass="tabla-lista">
+                                <f:facet name="emptyMessage">
+                                    <div class="sin-datos"><i class="pi pi-desktop"></i>No hay periféricos registrados para este equipo</div>
+                                </f:facet>
+                                <p:column headerText="Tipo" width="180">#{pe.tipo}</p:column>
+                                <p:column headerText="Modelo">#{pe.modelo}</p:column>
+                                <p:column headerText="Número de serie" width="220">
+                                    <h:outputText value="#{pe.numeroSerie}" styleClass="mono"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                </section>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,104 @@
+/* Inventario → Ficha del equipo (HU-10, Figura 13).
+   Reutiliza tarjeta, estado, uso/barra/relleno y tabla-lista; aquí sólo lo nuevo (prefijo det-). */
+
+.det-pagina {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Datos del equipo: IP, MAC, ubicación, responsable (+ segunda fila) */
+.det-estado-linea {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.det-fila-datos {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px 24px;
+}
+
+.det-fila-datos + .det-fila-datos {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #EBEEF0;
+}
+
+.det-dato .det-etiqueta {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: #6B7780;
+}
+
+.det-dato strong {
+    font-size: 15px;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+/* Consumo de recursos + alertas activas, lado a lado */
+.det-dos-columnas {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+
+/* Alertas activas */
+.det-alerta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+.det-alerta-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.det-alerta-texto span {
+    font-size: 12px;
+}
+
+.det-alerta-critica {
+    background: #FDECEC;
+    border-color: #F1B8B8;
+    color: #A4161A;
+}
+
+.det-alerta-media {
+    background: #FFF6E0;
+    border-color: #F0D590;
+    color: #7A4B00;
+}
+
+/* Aviso de equipo dado de baja */
+.det-baja {
+    border-left: 4px solid #B3261E;
+}
+
+/* Pestañas: hardware, software, periféricos */
+.det-tabs .det-fila-datos {
+    padding: 4px 0;
+}
+
+@media (max-width: 1000px) {
+    .det-fila-datos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .det-dos-columnas {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
