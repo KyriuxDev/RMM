@@ -1,3 +1,13 @@
-/build/
-/imss.gob.mx.rmm-ejb/dist/
-/imss.gob.mx.rmm-war/dist/
+# Salidas de compilación de NetBeans (raíz y subproyectos)
+build/
+dist/
+
+# Configuración local de cada quien (rutas, servidor, usuario)
+nbproject/private/
+*/nbproject/private/
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+*.swp
+*~

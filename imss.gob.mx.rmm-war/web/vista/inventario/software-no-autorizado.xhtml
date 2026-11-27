@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/plantillas/plantillaPrincipal.xhtml">
+
+    <!-- Inventario → Software no autorizado (HU-8)
+         Página creada en la fase 0 para que el menú ya apunte aquí.
+         Reemplacen el contenido de "content" con la vista real; no cambien
+         los ui:param de seccion/subseccion (el menú los usa para resaltar). -->
+    <ui:param name="seccion" value="inventario"/>
+    <ui:param name="subseccion" value="software-no-autorizado"/>
+    <ui:param name="migaSeccion" value="Inventario"/>
+    <ui:param name="migaPagina" value="Software no autorizado"/>
+    <ui:param name="titulo" value="Software no autorizado"/>
+
+    <ui:define name="estilos">
+        <h:outputStylesheet library="css" name="comun/formularios.css"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="vista-formulario">
+            <div class="tarjeta">
+                <div class="tarjeta-titulo">
+                    <h2>Software no autorizado</h2>
+                    <span class="tenue">HU-8 · En construcción</span>
+                </div>
+                <p>Esta sección todavía no está disponible.</p>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

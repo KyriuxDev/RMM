@@ -74,8 +74,9 @@ public class Alerta implements Serializable {
     @JoinColumn(name = "id_equipo", referencedColumnName = "id_equipo")
     @ManyToOne(optional = false)
     private Equipo idEquipo;
-    @JoinColumn(name = "id_umbral_alerta", referencedColumnName = "id_umbral_alerta")
-    @ManyToOne(optional = false)
+    /** Opcional (0..1): las alertas de desconexión y de seguridad no vienen de un umbral. */
+    @JoinColumn(name = "id_umbral_alerta", referencedColumnName = "id_umbral_alerta", nullable = true)
+    @ManyToOne(optional = true)
     private UmbralAlerta idUmbralAlerta;
     @OneToMany(mappedBy = "idAlerta")
     private List<Incidencia> incidenciaList;

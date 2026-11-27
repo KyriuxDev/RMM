@@ -14,6 +14,8 @@ import ingesta.TelemetriaAgente;
 import jakarta.ejb.EJB;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -90,9 +92,10 @@ public class IngestaBean {
     @EJB
     private IngestaFacade ingestaFacade;
 
-    // ------------------------------------------------------------------
-    // HU-1 Registro y enlace del agente (mensajes 1–3)
-    // ------------------------------------------------------------------
+    /** Avisa a otros módulos (p. ej. correo de HU-15) que se generó una alerta. */
+    @Inject
+    private Event<AlertaGenerada> alertaGenerada;
+
 
     /**
      * Primer enlace del agente. Busca el equipo por MAC; si no existe, por
@@ -177,9 +180,6 @@ public class IngestaBean {
         return new ConfigAgente(equipo.getIdEquipo(), intervaloTelemetriaSeg(), intervaloInventarioMin());
     }
 
-    // ------------------------------------------------------------------
-    // HU-2 Señal de vida + informe de rendimiento (mensajes 4–22)
-    // ------------------------------------------------------------------
 
     /**
      * Recibe una captura del agente.
@@ -256,7 +256,9 @@ public class IngestaBean {
             excedido = true;
             // 4–6 (iteración 3): la alerta se crea una sola vez mientras siga "Activa"
             if (!ingestaFacade.existeAlertaActiva(equipo, umbral)) {
-                ingestaFacade.crearAlerta(nuevaAlerta(equipo, umbral, recurso, valor, masLlena, ahora));
+                Alerta alerta = nuevaAlerta(equipo, umbral, recurso, valor, masLlena, ahora);
+                ingestaFacade.crearAlerta(alerta);
+                alertaGenerada.fire(new AlertaGenerada(alerta));
                 alertas++;
             }
         }
@@ -281,9 +283,6 @@ public class IngestaBean {
         equipoFacade.edit(equipo);
     }
 
-    // ------------------------------------------------------------------
-    // HU-8 Inventario automático (software y periféricos)
-    // ------------------------------------------------------------------
 
     /**
      * Sincroniza el software y los periféricos con lo que reporta el agente:
@@ -372,8 +371,8 @@ public class IngestaBean {
             e.actualizarEstado(OFFLINE);
             equipoFacade.edit(e);
             n++;
-            // TODO iteración 3 (HU-4): alerta de tipo "Desconexion". Requiere que
-            // Alerta.idUmbralAlerta sea opcional (multiplicidad 0..1 del modelo).
+            // TODO HU-4: alerta de tipo "Desconexion" (sin umbral; idUmbralAlerta ya es opcional).
+            // Al crearla, lanzar también alertaGenerada.fire(...).
         }
         return n;
     }
@@ -501,7 +500,7 @@ public class IngestaBean {
                 recurso, valor, donde, umbral.getValorUmbral(), equipo.getHostname()), 255));
         a.setFechaGeneracion(ahora);
         a.setEstado(ESTADO_ALERTA_ACTIVA);
-        // TODO iteración 3 (HU-15): si es crítica, crear Notificacion "Pendiente" y enviar correo.
+        // HU-15: el correo NO va aquí; se hace observando el evento AlertaGenerada.
         return a;
     }
 

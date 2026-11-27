@@ -10,9 +10,9 @@
     - construirMenuLateral(listaPermisos) de SD-00a: cada sección se muestra sólo si el rol
       del usuario tiene su permiso (rendered="#{authCtrl.tienePermiso('...')}").
 
-    Las subsecciones cuya vista todavía no existe usan url="#". Cuando creen la vista,
-    cambien url="#" por outcome="/vista/...". (Un outcome hacia una vista que no existe
-    muestra el aviso "Este vínculo está desactivado...")
+    Fase 0: todas las subsecciones ya apuntan a su vista (las nuevas empiezan como
+    página "En construcción"). NO editen este archivo para su módulo: trabajen solo
+    dentro de su .xhtml. Si necesitan una subsección nueva, avísenle al equipo.
 -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
@@ -38,7 +38,7 @@
                        styleClass="seccion-tableros #{seccion eq 'tableros' ? 'activa' : ''}">
                 <p:menuitem value="Vista general" outcome="/vista/tableros/vista-general"
                             styleClass="#{subseccion eq 'vista-general' ? 'activo' : ''}"/>
-                <p:menuitem value="Indicadores por unidad" url="#"
+                <p:menuitem value="Indicadores por unidad" outcome="/vista/tableros/indicadores-unidad.xhtml"
                             styleClass="#{subseccion eq 'indicadores-unidad' ? 'activo' : ''}"/>
             </p:submenu>
 
@@ -52,22 +52,22 @@
             <!-- Alertas -->
             <p:submenu label="Alertas" rendered="#{authCtrl.tienePermiso('GESTIONAR_ALERTAS')}" icon="pi pi-bell" expanded="#{seccion eq 'alertas'}"
                        styleClass="seccion-alertas #{seccion eq 'alertas' ? 'activa' : ''}">
-                <p:menuitem value="Alertas activas" url="#"
+                <p:menuitem value="Alertas activas" outcome="/vista/alertas/alertas-activas.xhtml"
                             styleClass="#{subseccion eq 'alertas-activas' ? 'activo' : ''}"/>
-                <p:menuitem value="Umbrales" url="#"
+                <p:menuitem value="Umbrales" outcome="/vista/alertas/umbrales.xhtml"
                             styleClass="#{subseccion eq 'umbrales' ? 'activo' : ''}"/>
-                <p:menuitem value="Notificaciones" url="#"
+                <p:menuitem value="Notificaciones" outcome="/vista/alertas/notificaciones.xhtml"
                             styleClass="#{subseccion eq 'notificaciones' ? 'activo' : ''}"/>
             </p:submenu>
 
             <!-- Incidencias -->
             <p:submenu label="Incidencias" rendered="#{authCtrl.tienePermiso('GESTIONAR_INCIDENCIAS')}" icon="pi pi-file" expanded="#{seccion eq 'incidencias'}"
                        styleClass="seccion-incidencias #{seccion eq 'incidencias' ? 'activa' : ''}">
-                <p:menuitem value="Lista de incidencias" url="#"
+                <p:menuitem value="Lista de incidencias" outcome="/vista/incidencias/lista-incidencias.xhtml"
                             styleClass="#{subseccion eq 'lista-incidencias' ? 'activo' : ''}"/>
-                <p:menuitem value="Mi actividad" url="#"
+                <p:menuitem value="Mi actividad" outcome="/vista/incidencias/mi-actividad.xhtml"
                             styleClass="#{subseccion eq 'mi-actividad' ? 'activo' : ''}"/>
-                <p:menuitem value="Historial por equipo" url="#"
+                <p:menuitem value="Historial por equipo" outcome="/vista/incidencias/historial-equipo.xhtml"
                             styleClass="#{subseccion eq 'historial-equipo' ? 'activo' : ''}"/>
             </p:submenu>
 
@@ -78,16 +78,16 @@
                             styleClass="#{subseccion eq 'equipos' ? 'activo' : ''}"/>
                 <p:menuitem value="Alta de equipo" outcome="/vista/inventario/alta-equipo.xhtml"
                             styleClass="#{subseccion eq 'alta-equipo' ? 'activo' : ''}"/>
-                <p:menuitem value="Software no autorizado" url="#"
+                <p:menuitem value="Software no autorizado" outcome="/vista/inventario/software-no-autorizado.xhtml"
                             styleClass="#{subseccion eq 'software-no-autorizado' ? 'activo' : ''}"/>
-                <p:menuitem value="Agentes" url="#"
+                <p:menuitem value="Agentes" outcome="/vista/inventario/agentes.xhtml"
                             styleClass="#{subseccion eq 'agentes' ? 'activo' : ''}"/>
             </p:submenu>
 
             <!-- Reportes -->
             <p:submenu label="Reportes" rendered="#{authCtrl.tienePermiso('VER_REPORTES')}" icon="pi pi-chart-bar" expanded="#{seccion eq 'reportes'}"
                        styleClass="seccion-reportes #{seccion eq 'reportes' ? 'activa' : ''}">
-                <p:menuitem value="Disponibilidad, SLA e incidencias" url="#"
+                <p:menuitem value="Disponibilidad, SLA e incidencias" outcome="/vista/reportes/disponibilidad-sla.xhtml"
                             styleClass="#{subseccion eq 'disponibilidad-sla' ? 'activo' : ''}"/>
             </p:submenu>
 
@@ -102,7 +102,7 @@
                             styleClass="#{subseccion eq 'estructura' ? 'activo' : ''}"/>
                 <p:menuitem value="Metas SLA" outcome="/vista/administracion/metas-sla.xhtml"
                             styleClass="#{subseccion eq 'metas-sla' ? 'activo' : ''}"/>
-                <p:menuitem value="Correo y conectores" url="#"
+                <p:menuitem value="Correo y conectores" outcome="/vista/administracion/correo-conectores.xhtml"
                             styleClass="#{subseccion eq 'correo-conectores' ? 'activo' : ''}"/>
             </p:submenu>
             </p:panelMenu>

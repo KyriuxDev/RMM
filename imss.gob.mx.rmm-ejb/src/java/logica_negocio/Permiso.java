@@ -20,13 +20,13 @@ public enum Permiso {
     VER_MONITOREO("Monitoreo", "Ver el estado de conexión y el rendimiento de los equipos",
             "/vista/monitoreo/", "/vista/monitoreo/estado-rendimiento.xhtml"),
     GESTIONAR_ALERTAS("Alertas", "Atender y escalar alertas, configurar umbrales y ver notificaciones",
-            "/vista/alertas/", null),
+            "/vista/alertas/", "/vista/alertas/alertas-activas.xhtml"),
     GESTIONAR_INCIDENCIAS("Incidencias", "Registrar, asignar y dar seguimiento a incidencias",
-            "/vista/incidencias/", null),
+            "/vista/incidencias/", "/vista/incidencias/lista-incidencias.xhtml"),
     GESTIONAR_INVENTARIO("Inventario", "Dar de alta, editar y dar de baja equipos",
             "/vista/inventario/", "/vista/inventario/equipos.xhtml"),
     VER_REPORTES("Reportes", "Generar y exportar reportes de disponibilidad, SLA e incidencias",
-            "/vista/reportes/", null),
+            "/vista/reportes/", "/vista/reportes/disponibilidad-sla.xhtml"),
     ADMINISTRAR("Administración", "Usuarios, roles y permisos, estructura y metas SLA",
             "/vista/administracion/", "/vista/administracion/usuarios.xhtml");
 
