@@ -8,9 +8,11 @@
                 template="/plantillas/plantillaPrincipal.xhtml">
 
     <!-- Inventario → Software no autorizado (HU-8)
-         Página creada en la fase 0 para que el menú ya apunte aquí.
-         Reemplacen el contenido de "content" con la vista real; no cambien
-         los ui:param de seccion/subseccion (el menú los usa para resaltar). -->
+         Catálogo del software instalado en los equipos activos, agrupado por nombre.
+         - Autorizar / No autorizar aplica a todas sus instalaciones; el software
+           nuevo que reporta el agente hereda la marca.
+         - Desactualizado: hay equipos con una versión menor que la más reciente del parque.
+         - Al expandir un renglón se ven los equipos y la versión de cada uno. -->
     <ui:param name="seccion" value="inventario"/>
     <ui:param name="subseccion" value="software-no-autorizado"/>
     <ui:param name="migaSeccion" value="Inventario"/>
@@ -22,14 +24,143 @@
     </ui:define>
 
     <ui:define name="content">
-        <div class="vista-formulario">
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    <h2>Software no autorizado</h2>
-                    <span class="tenue">HU-8 · En construcción</span>
+        <h:form id="formSoftware" styleClass="vista-formulario">
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <!-- Resumen: clic en una tarjeta filtra -->
+            <p:outputPanel id="panelResumen" layout="block" styleClass="resumen-grid">
+                <p:commandLink action="#{softwareCtrl.filtrar('NO_AUTORIZADO')}" process="@this"
+                               update="panelResumen tablaSoftware"
+                               styleClass="resumen #{softwareCtrl.elegido('NO_AUTORIZADO') ? 'elegida' : ''}">
+                    <span class="tenue">No autorizado</span>
+                    <span class="cifra cifra-roja">#{softwareCtrl.contar('NO_AUTORIZADO')}</span>
+                </p:commandLink>
+                <p:commandLink action="#{softwareCtrl.filtrar('SIN_REVISAR')}" process="@this"
+                               update="panelResumen tablaSoftware"
+                               styleClass="resumen #{softwareCtrl.elegido('SIN_REVISAR') ? 'elegida' : ''}">
+                    <span class="tenue">Sin revisar</span>
+                    <span class="cifra cifra-gris">#{softwareCtrl.contar('SIN_REVISAR')}</span>
+                </p:commandLink>
+                <p:commandLink action="#{softwareCtrl.filtrar('DESACTUALIZADO')}" process="@this"
+                               update="panelResumen tablaSoftware"
+                               styleClass="resumen #{softwareCtrl.elegido('DESACTUALIZADO') ? 'elegida' : ''}">
+                    <span class="tenue">Desactualizado</span>
+                    <span class="cifra cifra-ambar">#{softwareCtrl.contar('DESACTUALIZADO')}</span>
+                </p:commandLink>
+                <p:commandLink action="#{softwareCtrl.filtrar('AUTORIZADO')}" process="@this"
+                               update="panelResumen tablaSoftware"
+                               styleClass="resumen #{softwareCtrl.elegido('AUTORIZADO') ? 'elegida' : ''}">
+                    <span class="tenue">Autorizado</span>
+                    <span class="cifra cifra-verde">#{softwareCtrl.contar('AUTORIZADO')}</span>
+                </p:commandLink>
+                <p:commandLink action="#{softwareCtrl.filtrar('')}" process="@this"
+                               update="panelResumen tablaSoftware"
+                               styleClass="resumen #{softwareCtrl.elegido('') ? 'elegida' : ''}">
+                    <span class="tenue">Todo el software</span>
+                    <span class="cifra">#{softwareCtrl.contar('')}</span>
+                </p:commandLink>
+            </p:outputPanel>
+
+            <!-- Filtro -->
+            <p:outputPanel id="panelFiltro" layout="block" styleClass="panel-filtro">
+                <span class="pestana-filtro"><i class="pi pi-filter"></i> Filtro</span>
+                <div class="campos-filtro">
+                    <p:outputLabel for="texto" value="Buscar"/>
+                    <p:inputText id="texto" value="#{softwareCtrl.texto}" maxlength="100"
+                                 placeholder="Nombre o fabricante" autocomplete="off"/>
                 </div>
-                <p>Esta sección todavía no está disponible.</p>
-            </div>
-        </div>
+                <div class="acciones-filtro">
+                    <p:commandButton id="aplicar" value="Aplicar" action="#{softwareCtrl.consultar}"
+                                     process="panelFiltro" update="panelResumen tablaSoftware"
+                                     styleClass="btn btn-primario"/>
+                    <p:commandButton value="Restablecer" action="#{softwareCtrl.limpiar}"
+                                     process="@this" update="panelResumen panelFiltro tablaSoftware"
+                                     resetValues="true" styleClass="btn btn-contorno"/>
+                </div>
+                <p:defaultCommand target="aplicar" scope="panelFiltro"/>
+            </p:outputPanel>
+
+            <!-- Tabla -->
+            <section class="tarjeta tarjeta-tabla">
+                <p:dataTable id="tablaSoftware" value="#{softwareCtrl.filas}" var="s" styleClass="tabla-lista"
+                             rows="25" paginator="true" paginatorPosition="bottom"
+                             paginatorAlwaysVisible="false" rowsPerPageTemplate="25,50,100"
+                             currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontrados"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}">
+                    <f:facet name="emptyMessage">
+                        <div class="sin-datos"><i class="pi pi-search"></i>No se encontraron datos</div>
+                    </f:facet>
+
+                    <p:column style="width:2.5rem">
+                        <p:rowToggler/>
+                    </p:column>
+                    <p:column headerText="Software" sortBy="#{s.nombre}">
+                        <h:outputText value="#{s.nombre}" style="font-weight:600"/>
+                    </p:column>
+                    <p:column headerText="Fabricante" sortBy="#{s.fabricante}">
+                        <h:outputText value="#{s.fabricante}"/>
+                    </p:column>
+                    <p:column headerText="Equipos" width="90" sortBy="#{s.equipos}">
+                        <h:outputText value="#{s.equipos}"/>
+                    </p:column>
+                    <p:column headerText="Versión más reciente" width="170">
+                        <h:outputText value="#{s.versionReciente}" styleClass="mono"/>
+                        <h:outputText value=" (+#{s.versiones.size() - 1})" styleClass="tenue"
+                                      rendered="#{s.versiones.size() gt 1}"
+                                      title="#{s.versiones.size()} versiones distintas en el parque"/>
+                    </p:column>
+                    <p:column headerText="Desactualizados" width="130" sortBy="#{s.desactualizados}">
+                        <h:outputText value="#{s.desactualizados}" rendered="#{s.desactualizados gt 0}"
+                                      styleClass="estado estado-alerta"/>
+                        <h:outputText value="—" rendered="#{s.desactualizados eq 0}" styleClass="tenue"/>
+                    </p:column>
+                    <p:column headerText="Estado" width="130" sortBy="#{softwareCtrl.etiqueta(s)}">
+                        <h:outputText value="#{softwareCtrl.etiqueta(s)}" styleClass="estado #{softwareCtrl.claseEstado(s)}"/>
+                    </p:column>
+                    <p:column headerText="Acciones" styleClass="col-acciones" style="width:auto">
+                        <p:commandLink value="Autorizar" action="#{softwareCtrl.autorizar(s)}"
+                                       rendered="#{empty s.autorizado or not s.autorizado}" process="@this"
+                                       update="@form" styleClass="accion"/>
+                        <h:outputText value=" · " rendered="#{empty s.autorizado}" styleClass="tenue"/>
+                        <p:commandLink value="No autorizar" action="#{softwareCtrl.noAutorizar(s)}"
+                                       rendered="#{empty s.autorizado or s.autorizado}" process="@this"
+                                       update="@form" styleClass="accion">
+                            <p:confirm header="Marcar como no autorizado"
+                                       message="¿Marcar «#{s.nombre}» como no autorizado en #{s.equipos} equipo(s)?"
+                                       icon="pi pi-exclamation-triangle"/>
+                        </p:commandLink>
+                        <h:outputText value=" · " rendered="#{not empty s.autorizado}" styleClass="tenue"/>
+                        <p:commandLink value="Quitar marca" action="#{softwareCtrl.sinRevisar(s)}"
+                                       rendered="#{not empty s.autorizado}" process="@this"
+                                       update="@form" styleClass="accion"/>
+                    </p:column>
+
+                    <!-- Equipos donde está instalado -->
+                    <p:rowExpansion>
+                        <p:dataTable value="#{s.instalaciones}" var="i" styleClass="tabla-lista">
+                            <p:column headerText="Equipo">
+                                <h:link outcome="/vista/inventario/detalle-equipo" value="#{i.hostname}"
+                                        styleClass="enlace mono" title="Ver ficha del equipo">
+                                    <f:param name="id" value="#{i.idEquipo}"/>
+                                </h:link>
+                            </p:column>
+                            <p:column headerText="Versión instalada">
+                                <h:outputText value="#{i.version}" styleClass="mono"/>
+                            </p:column>
+                            <p:column headerText="" width="140">
+                                <h:outputText value="Desactualizado" rendered="#{i.desactualizado}"
+                                              styleClass="estado estado-alerta"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:rowExpansion>
+                </p:dataTable>
+            </section>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="380">
+                <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no btn btn-contorno"/>
+                <p:commandButton value="Sí, marcar" type="button" styleClass="ui-confirmdialog-yes btn btn-primario"/>
+            </p:confirmDialog>
+        </h:form>
     </ui:define>
+
 </ui:composition>

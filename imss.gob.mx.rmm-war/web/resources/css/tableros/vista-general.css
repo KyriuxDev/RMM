@@ -220,3 +220,8 @@
     z-index: 0;
     isolation: isolate;
 }
+
+/* HU-12: gráfica de equipos por unidad */
+.t-grafica { margin-bottom: 16px; }
+.grafica-contenedor { position: relative; width: 100%; padding: 4px 16px 12px; box-sizing: border-box; }
+.grafica-contenedor canvas { cursor: default; }

@@ -9,6 +9,7 @@ import ingesta.ParticionAgente;
 import ingesta.PerifericoAgente;
 import ingesta.RegistroAgente;
 import ingesta.RespuestaIngesta;
+import ingesta.SeguridadAgente;
 import ingesta.SoftwareAgente;
 import ingesta.TelemetriaAgente;
 import jakarta.ejb.EJB;
@@ -75,7 +76,10 @@ public class IngestaBean {
     public static final String OFFLINE = "OFFLINE";
 
     /** Valores de Alerta (notas inv: del modelo de contenido, iteración 3). */
+    public static final String TIPO_DESCONEXION = "Desconexion";
     public static final String TIPO_USO_ANOMALO = "UsoAnomalo";
+    public static final String TIPO_RIESGO_SEGURIDAD = "RiesgoSeguridad";
+    public static final String GRAVEDAD_INFORMATIVA = "Informativa";
     public static final String GRAVEDAD_ADVERTENCIA = "Advertencia";
     public static final String GRAVEDAD_CRITICA = "Critica";
     public static final String ESTADO_ALERTA_ACTIVA = "Activa";
@@ -311,6 +315,8 @@ public class IngestaBean {
                     s = new Software();
                     s.setIdEquipo(equipo);
                     s.setNombre(nombre);
+                    // HU-8: hereda la marca que el técnico ya le puso en otros equipos
+                    s.setAutorizado(ingestaFacade.autorizacionCatalogo(nombre));
                     ingestaFacade.crear(s);
                 }
                 s.setVersion(recortar(sa.version, 255));
@@ -346,6 +352,51 @@ public class IngestaBean {
             }
         }
         perActuales.values().forEach(ingestaFacade::eliminar);   // desconectado
+
+        // HU-4: riesgo de seguridad (antivirus / firewall apagados)
+        revisarSeguridad(equipo, inv.seguridad);
+    }
+
+    /**
+     * Genera una alerta "RiesgoSeguridad" si el agente confirmó que el
+     * antivirus o el firewall están apagados. Solo un false genera alerta;
+     * null (no se pudo saber) se ignora. Una sola alerta activa por equipo:
+     * mientras siga "Activa" no se repite en cada inventario.
+     *
+     * Gravedad: Critica si falta el antivirus (dispara el correo de HU-15),
+     * Advertencia si solo es el firewall.
+     */
+    private void revisarSeguridad(Equipo equipo, SeguridadAgente seg) {
+        if (seg == null) {
+            return;
+        }
+        boolean sinAntivirus = Boolean.FALSE.equals(seg.antivirusActivo);
+        boolean sinFirewall = Boolean.FALSE.equals(seg.firewallActivo);
+        if (!sinAntivirus && !sinFirewall) {
+            return;
+        }
+        if (ingestaFacade.existeAlertaActivaSinUmbral(equipo, TIPO_RIESGO_SEGURIDAD)) {
+            return;
+        }
+        List<String> problemas = new ArrayList<>();
+        if (sinAntivirus) {
+            problemas.add(seg.antivirusNombre == null || seg.antivirusNombre.isBlank()
+                    ? "sin antivirus" : "antivirus desactivado (" + seg.antivirusNombre.trim() + ")");
+        }
+        if (sinFirewall) {
+            problemas.add("firewall desactivado");
+        }
+        Alerta a = new Alerta();
+        a.setIdEquipo(equipo);
+        a.setIdUmbralAlerta(null);
+        a.setTipoAlerta(TIPO_RIESGO_SEGURIDAD);
+        a.setNivelGravedad(sinAntivirus ? GRAVEDAD_CRITICA : GRAVEDAD_ADVERTENCIA);
+        a.setDescripcion(recortar("Riesgo de seguridad en " + equipo.getHostname() + ": "
+                + String.join(" y ", problemas), 255));
+        a.setFechaGeneracion(new Date());
+        a.setEstado(ESTADO_ALERTA_ACTIVA);
+        ingestaFacade.crearAlerta(a);
+        alertaGenerada.fire(new AlertaGenerada(a));
     }
 
     // ------------------------------------------------------------------
@@ -371,8 +422,13 @@ public class IngestaBean {
             e.actualizarEstado(OFFLINE);
             equipoFacade.edit(e);
             n++;
-            // TODO HU-4: alerta de tipo "Desconexion" (sin umbral; idUmbralAlerta ya es opcional).
-            // Al crearla, lanzar también alertaGenerada.fire(...).
+            // HU-4: alerta por desconexión (timeout, sin umbral). Solo para caídas
+            // abruptas: si el agente avisó que se apagaba (desconectar), no llega aquí.
+            if (!ingestaFacade.existeAlertaActivaSinUmbral(e, TIPO_DESCONEXION)) {
+                Alerta alerta = alertaDesconexion(e, margenMs);
+                ingestaFacade.crearAlerta(alerta);
+                alertaGenerada.fire(new AlertaGenerada(alerta));
+            }
         }
         return n;
     }
@@ -501,6 +557,26 @@ public class IngestaBean {
         a.setFechaGeneracion(ahora);
         a.setEstado(ESTADO_ALERTA_ACTIVA);
         // HU-15: el correo NO va aquí; se hace observando el evento AlertaGenerada.
+        return a;
+    }
+
+    /**
+     * Alerta "Desconexion": el equipo dejó de mandar señal sin avisar.
+     * Es Advertencia y no Critica porque un equipo apagado al final del turno
+     * también cae aquí; así no se manda un correo (HU-15) por cada uno.
+     */
+    private static Alerta alertaDesconexion(Equipo equipo, long margenMs) {
+        Alerta a = new Alerta();
+        a.setIdEquipo(equipo);
+        a.setIdUmbralAlerta(null);
+        a.setTipoAlerta(TIPO_DESCONEXION);
+        a.setNivelGravedad(GRAVEDAD_ADVERTENCIA);
+        long minutos = Math.max(1, Math.round(margenMs / 60000.0));
+        a.setDescripcion(recortar(String.format(Locale.ROOT,
+                "%s dejó de enviar señal (más de %d min sin comunicación)",
+                equipo.getHostname(), minutos), 255));
+        a.setFechaGeneracion(new Date());
+        a.setEstado(ESTADO_ALERTA_ACTIVA);
         return a;
     }
 
