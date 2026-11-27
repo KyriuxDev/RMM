@@ -58,8 +58,7 @@
                 <div class="tarjeta-encabezado">
                     <h2>Detalle por unidad</h2>
                 </div>
-                <p:dataTable value="#{tableroCtrl.unidades}" var="u" styleClass="tabla-lista"
-                             sortBy="#{u.total}" sortOrder="descending"
+                <p:dataTable value="#{tableroCtrl.unidadesPorTotal}" var="u" styleClass="tabla-lista"
                              rows="25" paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false"
                              currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontrados"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport}">

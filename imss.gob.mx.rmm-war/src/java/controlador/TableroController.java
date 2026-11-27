@@ -157,6 +157,13 @@ public class TableroController implements Serializable {
         return resumen;
     }
 
+    /** Unidades de la que tiene más equipos a la que tiene menos (Indicadores por unidad). */
+    public List<FilaUnidad> getUnidadesPorTotal() {
+        return unidades.stream()
+                .sorted(Comparator.comparingLong(FilaUnidad::getTotal).reversed())
+                .toList();
+    }
+
     public List<FilaUnidad> getUnidades() {
         return unidades;
     }
