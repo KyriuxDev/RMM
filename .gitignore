@@ -11,3 +11,7 @@ nbproject/private/
 Thumbs.db
 *.swp
 *~
+
+# Respaldos de la base (traen datos reales de los equipos)
+respaldo*.sql
+*.dump

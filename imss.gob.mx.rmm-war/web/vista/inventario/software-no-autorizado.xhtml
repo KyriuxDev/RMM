@@ -83,6 +83,7 @@
             <!-- Tabla -->
             <section class="tarjeta tarjeta-tabla">
                 <p:dataTable id="tablaSoftware" value="#{softwareCtrl.filas}" var="s" styleClass="tabla-lista"
+                             rowKey="#{s.nombre}"
                              rows="25" paginator="true" paginatorPosition="bottom"
                              paginatorAlwaysVisible="false" rowsPerPageTemplate="25,50,100"
                              currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontrados"
@@ -137,7 +138,8 @@
 
                     <!-- Equipos donde está instalado -->
                     <p:rowExpansion>
-                        <p:dataTable value="#{s.instalaciones}" var="i" styleClass="tabla-lista">
+                        <p:dataTable value="#{s.instalaciones}" var="i" styleClass="tabla-lista"
+                                     rowKey="#{i.idEquipo}">
                             <p:column headerText="Equipo">
                                 <h:link outcome="/vista/inventario/detalle-equipo" value="#{i.hostname}"
                                         styleClass="enlace mono" title="Ver ficha del equipo">
