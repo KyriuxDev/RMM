@@ -1,0 +1,118 @@
+/* Incidencias → Mi actividad (HU-14).
+   Una tarjeta por incidencia: prioridad, descripción y datos, estado y botón de acción.
+   Reutiliza tarjeta, mono y los botones .btn de la plantilla; aquí sólo lo nuevo (prefijo act-). */
+
+.act-intro {
+    margin: 0;
+    font-size: 14px;
+    color: var(--texto-sec);
+}
+
+.act-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.act-tarjeta {
+    display: grid;
+    grid-template-columns: 80px minmax(0, 1fr) 110px 170px;
+    align-items: center;
+    gap: 0 20px;
+    padding: 14px 20px;
+    background-color: var(--blanco);
+    border: 1px solid #DFE4E7;
+}
+
+.act-tarjeta:hover { background-color: #F9FBFC; }
+
+/* Prioridad y estado: pastillas rectas, como las demás etiquetas del RMM */
+.act-prio,
+.act-estado {
+    display: inline-block;
+    justify-self: stretch;
+    padding: 3px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.act-prio-alta { background-color: #FDECEC; color: #A61B1B; border-color: #F3B8B8; }
+.act-prio-media { background-color: #FFF4E0; color: #A15C00; border-color: #F2CF8C; }
+.act-prio-baja { background-color: #F1F3F5; color: var(--texto-sec); border-color: #DFE4E7; }
+
+.act-est-abierta { background-color: #E6F1F9; color: #005A92; border-color: #B9D7EC; }
+.act-est-proceso { background-color: #FFF4E0; color: #A15C00; border-color: #F2CF8C; }
+
+/* Título y datos */
+.act-cuerpo { min-width: 0; }
+
+.act-titulo {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--texto);
+}
+
+.act-meta {
+    margin-top: 3px;
+    font-size: 13px;
+    color: var(--texto-sec);
+}
+
+.act-sep { margin: 0 4px; color: #ACBBC2; }
+
+.act-equipo {
+    color: var(--azul);
+    text-decoration: none;
+}
+
+.act-equipo:hover { text-decoration: underline; }
+
+/* Botones de acción */
+.act-accion { display: flex; }
+
+.act-accion .ui-button {
+    width: 100%;
+    height: 32px;
+}
+
+/* "Marcar resuelta": blanco con borde y texto verde */
+.btn.btn-resuelta,
+.btn.btn-resuelta.ui-button {
+    background-color: var(--blanco) !important;
+    color: var(--verde, #1E7B45) !important;
+    border: 1px solid var(--verde, #1E7B45) !important;
+}
+
+.btn.btn-resuelta:hover { background-color: var(--verde-claro, #E8F5EC) !important; }
+
+/* Sin pendientes */
+.act-vacio {
+    padding: 40px 18px;
+    text-align: center;
+    font-size: 14px;
+    color: #768D99;
+}
+
+.act-vacio .pi {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 30px;
+    color: #ACBBC2;
+}
+
+@media (max-width: 900px) {
+    .act-tarjeta {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px 12px;
+    }
+
+    .act-prio { grid-column: 1; grid-row: 1; justify-self: start; min-width: 70px; }
+    .act-estado { grid-column: 2; grid-row: 1; min-width: 90px; }
+    .act-cuerpo { grid-column: 1 / -1; }
+    .act-accion { grid-column: 1 / -1; }
+}

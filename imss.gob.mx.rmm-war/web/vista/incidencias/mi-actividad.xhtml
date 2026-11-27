@@ -8,28 +8,77 @@
                 template="/plantillas/plantillaPrincipal.xhtml">
 
     <!-- Incidencias → Mi actividad (HU-14)
-         Página creada en la fase 0 para que el menú ya apunte aquí.
-         Reemplacen el contenido de "content" con la vista real; no cambien
-         los ui:param de seccion/subseccion (el menú los usa para resaltar). -->
+         Incidencias pendientes (Abierta o En proceso) asignadas al usuario en sesión,
+         ordenadas por prioridad. "Iniciar atención" las pasa a En proceso y
+         "Marcar resuelta" las cierra. Los botones recargan la página completa
+         (ajax="false") para que la pastilla "N pendientes" del título se actualice.
+         El hostname abre su Historial por equipo (HU-6) con ?id=N. -->
     <ui:param name="seccion" value="incidencias"/>
     <ui:param name="subseccion" value="mi-actividad"/>
     <ui:param name="migaSeccion" value="Incidencias"/>
     <ui:param name="migaPagina" value="Mi actividad"/>
     <ui:param name="titulo" value="Mi actividad"/>
+    <ui:param name="etiqueta" value="#{miActividadCtrl.etiquetaPendientes}"/>
 
     <ui:define name="estilos">
         <h:outputStylesheet library="css" name="comun/formularios.css"/>
+        <h:outputStylesheet library="css" name="incidencias/mi-actividad.css"/>
     </ui:define>
 
     <ui:define name="content">
-        <div class="vista-formulario">
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    <h2>Mi actividad</h2>
-                    <span class="tenue">HU-14 · En construcción</span>
-                </div>
-                <p>Esta sección todavía no está disponible.</p>
+        <h:form id="formActividad" styleClass="vista-formulario">
+            <p:messages id="mensajes" severity="info,error" showSummary="true" showDetail="true"
+                        globalOnly="true" closable="true"/>
+
+            <p class="act-intro">
+                Incidencias asignadas a ti, ordenadas por prioridad. Cambia el estado cuando
+                empieces a atender y cuando quede resuelta.
+            </p>
+
+            <div class="act-lista">
+                <ui:repeat value="#{miActividadCtrl.incidencias}" var="i">
+                    <article class="act-tarjeta">
+                        <span class="act-prio #{miActividadCtrl.clasePrioridad(i)}">#{miActividadCtrl.etiquetaPrioridad(i)}</span>
+
+                        <div class="act-cuerpo">
+                            <strong class="act-titulo">#{i.descripcion}</strong>
+                            <div class="act-meta">
+                                <span class="mono">#{miActividadCtrl.codigo(i)}</span>
+                                <span class="act-sep">·</span>
+                                <h:link outcome="/vista/incidencias/historial-equipo" value="#{i.idEquipo.hostname}"
+                                        styleClass="act-equipo mono" title="Ver historial del equipo">
+                                    <f:param name="id" value="#{i.idEquipo.idEquipo}"/>
+                                </h:link>
+                                <span class="act-sep">·</span>
+                                <span>#{miActividadCtrl.unidad(i)}</span>
+                                <span class="act-sep">·</span>
+                                <span>#{miActividadCtrl.fecha(i)}</span>
+                            </div>
+                        </div>
+
+                        <span class="act-estado #{miActividadCtrl.claseEstado(i)}">#{miActividadCtrl.etiquetaEstado(i)}</span>
+
+                        <div class="act-accion">
+                            <p:commandButton value="Iniciar atención"
+                                             action="#{miActividadCtrl.iniciar(i)}"
+                                             ajax="false" process="@form"
+                                             rendered="#{miActividadCtrl.puedeIniciar(i)}"
+                                             styleClass="btn btn-primario"/>
+                            <p:commandButton value="Marcar resuelta"
+                                             action="#{miActividadCtrl.resolver(i)}"
+                                             ajax="false" process="@form"
+                                             rendered="#{miActividadCtrl.puedeResolver(i)}"
+                                             styleClass="btn btn-resuelta"/>
+                        </div>
+                    </article>
+                </ui:repeat>
             </div>
-        </div>
+
+            <h:panelGroup layout="block" styleClass="tarjeta act-vacio"
+                          rendered="#{not miActividadCtrl.hayIncidencias}">
+                <i class="pi pi-check-circle"></i>
+                No tienes incidencias pendientes
+            </h:panelGroup>
+        </h:form>
     </ui:define>
 </ui:composition>
