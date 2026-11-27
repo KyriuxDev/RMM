@@ -20,6 +20,9 @@
 
     <ui:define name="estilos">
         <h:outputStylesheet library="css" name="tableros/vista-general.css"/>
+        <!-- HU-12: gráficas (Chart.js desde CDN, igual que Leaflet para el mapa) -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        <h:outputScript library="js" name="tableros/graficas.js"/>
     </ui:define>
 
     <ui:define name="content">
@@ -32,7 +35,7 @@
                     <p class="tenue">#{tableroCtrl.hoy} · Coordinación de Informática, OOAD Oaxaca</p>
                 </div>
                 <p:commandButton value="Actualizar" icon="pi pi-refresh" action="#{tableroCtrl.actualizar}"
-                                 process="@this" update="indicadores panelUnidades panelSinSenal"
+                                 process="@this" update="indicadores panelGrafica panelUnidades panelSinSenal"
                                  styleClass="btn btn-contorno"/>
                 <p:button value="Inventario" icon="pi pi-desktop" outcome="/vista/inventario/equipos"
                           styleClass="btn btn-contorno"
@@ -101,6 +104,25 @@
                         <div class="detalle">Abiertas o en proceso</div>
                     </div>
                 </div>
+            </p:outputPanel>
+
+            <!-- HU-12: estado de los equipos por unidad (las 8 con más equipos) -->
+            <p:outputPanel id="panelGrafica" layout="block" styleClass="tarjeta tarjeta-tabla t-grafica">
+                <div class="tarjeta-encabezado">
+                    <h2>Estado de los equipos por unidad</h2>
+                    <h:link outcome="/vista/tableros/indicadores-unidad"
+                            value="#{tableroCtrl.hayMasUnidades ? 'Ver todas las unidades' : 'Ver indicadores'}"/>
+                </div>
+                <h:panelGroup layout="block" styleClass="grafica-contenedor" rendered="#{not empty tableroCtrl.unidades}">
+                    <canvas id="graficaUnidades" role="img"
+                            aria-label="Porcentaje de equipos en línea, con alerta y sin conexión por unidad"
+                            data-datos="#{tableroCtrl.graficaUnidades(false)}"
+                            data-enlace="#{request.contextPath}/faces/vista/inventario/equipos.xhtml?unidad="></canvas>
+                    <script>RMM.graficaUnidades('graficaUnidades');</script>
+                </h:panelGroup>
+                <h:panelGroup layout="block" styleClass="sin-datos" rendered="#{empty tableroCtrl.unidades}">
+                    <i class="pi pi-chart-bar"></i>Todavía no hay equipos con unidad asignada
+                </h:panelGroup>
             </p:outputPanel>
 
             <div class="tablero-columnas">

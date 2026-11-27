@@ -5,11 +5,14 @@ import jakarta.ejb.EJB;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -93,6 +96,61 @@ public class TableroController implements Serializable {
     /** Clase del color de la barra de disponibilidad. */
     public String claseDisponibilidad(long porcentaje) {
         return porcentaje >= 90 ? "buena" : porcentaje >= 70 ? "regular" : "mala";
+    }
+
+    /** Unidades que caben en la gráfica de la Vista general (las de más equipos). */
+    private static final int UNIDADES_VISTA_GENERAL = 8;
+
+    /**
+     * HU-12: datos de la gráfica de equipos por unidad, en JSON para Chart.js
+     * (resources/js/tableros/graficas.js). Colores de estado validados para
+     * daltonismo: en línea #1F7A45, con alerta #E6A817, sin conexión #9AA6B2.
+     *
+     * @param todas true = todas las unidades (Indicadores por unidad);
+     *              false = las 8 con más equipos (Vista general)
+     */
+    public String graficaUnidades(boolean todas) {
+        List<FilaUnidad> filas = unidades.stream()
+                .filter(u -> u.getTotal() > 0)
+                .sorted(Comparator.comparingLong(FilaUnidad::getTotal).reversed())
+                .limit(todas ? Long.MAX_VALUE : UNIDADES_VISTA_GENERAL)
+                .toList();
+        JsonArrayBuilder etiquetas = Json.createArrayBuilder();
+        JsonArrayBuilder ids = Json.createArrayBuilder();
+        JsonArrayBuilder total = Json.createArrayBuilder();
+        JsonArrayBuilder enLinea = Json.createArrayBuilder();
+        JsonArrayBuilder conAlerta = Json.createArrayBuilder();
+        JsonArrayBuilder sinConexion = Json.createArrayBuilder();
+        for (FilaUnidad u : filas) {
+            etiquetas.add(u.getNombre() == null ? "Sin nombre" : u.getNombre());
+            if (u.getIdUnidadHomologada() == null) {
+                ids.addNull();
+            } else {
+                ids.add(u.getIdUnidadHomologada().intValue());
+            }
+            total.add(u.getTotal());
+            enLinea.add(u.getEnLinea());
+            conAlerta.add(u.getConAlerta());
+            sinConexion.add(u.getSinConexion());
+        }
+        return Json.createObjectBuilder()
+                .add("labels", etiquetas)
+                .add("ids", ids)
+                .add("total", total)
+                .add("enLinea", enLinea)
+                .add("conAlerta", conAlerta)
+                .add("sinConexion", sinConexion)
+                .build().toString();
+    }
+
+    /** ¿Hay más unidades de las que caben en la gráfica de la Vista general? */
+    public boolean isHayMasUnidades() {
+        return unidades.stream().filter(u -> u.getTotal() > 0).count() > UNIDADES_VISTA_GENERAL;
+    }
+
+    /** Porcentaje de equipos de la unidad que están en ALERTA. */
+    public long porcentajeConAlerta(FilaUnidad u) {
+        return u.getTotal() == 0 ? 0 : Math.round(100.0 * u.getConAlerta() / u.getTotal());
     }
 
     public Resumen getResumen() {

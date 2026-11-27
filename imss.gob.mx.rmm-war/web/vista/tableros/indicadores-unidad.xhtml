@@ -7,29 +7,97 @@
                 xmlns:p="primefaces"
                 template="/plantillas/plantillaPrincipal.xhtml">
 
-    <!-- Tableros → Indicadores por unidad (HU-12)
-         Página creada en la fase 0 para que el menú ya apunte aquí.
-         Reemplacen el contenido de "content" con la vista real; no cambien
-         los ui:param de seccion/subseccion (el menú los usa para resaltar). -->
+    <!-- Tableros → Indicadores por unidad (HU-12, SN-04a)
+         Gráfica con el porcentaje de equipos en línea, con alerta y sin conexión
+         de TODAS las unidades, y la misma información en tabla.
+         Clic en una barra = abrir el inventario de esa unidad con ese estado. -->
     <ui:param name="seccion" value="tableros"/>
     <ui:param name="subseccion" value="indicadores-unidad"/>
     <ui:param name="migaSeccion" value="Tableros"/>
+    <ui:param name="migaEnlace" value="/vista/tableros/vista-general"/>
     <ui:param name="migaPagina" value="Indicadores por unidad"/>
     <ui:param name="titulo" value="Indicadores por unidad"/>
 
     <ui:define name="estilos">
-        <h:outputStylesheet library="css" name="comun/formularios.css"/>
+        <h:outputStylesheet library="css" name="tableros/vista-general.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        <h:outputScript library="js" name="tableros/graficas.js"/>
+    </ui:define>
+
+    <ui:define name="accionesEncabezado">
+        <!-- El encabezado está fuera del formulario de la página: el botón lleva el suyo -->
+        <h:form id="formAcciones">
+            <p:commandButton value="Actualizar" icon="pi pi-refresh" action="#{tableroCtrl.actualizar}"
+                             process="@this" update=":formIndicadores" styleClass="btn btn-contorno"/>
+        </h:form>
     </ui:define>
 
     <ui:define name="content">
-        <div class="vista-formulario">
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    <h2>Indicadores por unidad</h2>
-                    <span class="tenue">HU-12 · En construcción</span>
+        <h:form id="formIndicadores" styleClass="tablero">
+
+            <!-- Gráfica -->
+            <section class="tarjeta tarjeta-tabla t-grafica">
+                <div class="tarjeta-encabezado">
+                    <h2>Estado de los equipos por unidad</h2>
+                    <span class="tenue">Disponibilidad general: #{tableroCtrl.resumen.disponibilidad}%</span>
                 </div>
-                <p>Esta sección todavía no está disponible.</p>
-            </div>
-        </div>
+                <h:panelGroup layout="block" styleClass="grafica-contenedor" rendered="#{not empty tableroCtrl.unidades}">
+                    <canvas id="graficaTodas" role="img"
+                            aria-label="Porcentaje de equipos en línea, con alerta y sin conexión por unidad"
+                            data-datos="#{tableroCtrl.graficaUnidades(true)}"
+                            data-enlace="#{request.contextPath}/faces/vista/inventario/equipos.xhtml?unidad="></canvas>
+                    <script>RMM.graficaUnidades('graficaTodas');</script>
+                </h:panelGroup>
+                <h:panelGroup layout="block" styleClass="sin-datos" rendered="#{empty tableroCtrl.unidades}">
+                    <i class="pi pi-chart-bar"></i>Todavía no hay equipos con unidad asignada
+                </h:panelGroup>
+            </section>
+
+            <!-- Tabla (la misma información, para leer las cifras exactas) -->
+            <section class="tarjeta tarjeta-tabla">
+                <div class="tarjeta-encabezado">
+                    <h2>Detalle por unidad</h2>
+                </div>
+                <p:dataTable value="#{tableroCtrl.unidades}" var="u" styleClass="tabla-lista"
+                             sortBy="#{u.total}" sortOrder="descending"
+                             rows="25" paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false"
+                             currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontrados"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport}">
+                    <f:facet name="emptyMessage">
+                        <div class="sin-datos"><i class="pi pi-search"></i>Todavía no hay equipos con unidad asignada</div>
+                    </f:facet>
+                    <p:column headerText="Unidad" sortBy="#{u.nombre}">
+                        <h:link outcome="/vista/inventario/equipos" value="#{u.nombre}" styleClass="enlace">
+                            <f:param name="unidad" value="#{u.idUnidadHomologada}"/>
+                        </h:link>
+                    </p:column>
+                    <p:column headerText="Equipos" styleClass="col-numero" width="85" sortBy="#{u.total}">
+                        <strong>#{u.total}</strong>
+                    </p:column>
+                    <p:column headerText="En línea" styleClass="col-numero" width="85" sortBy="#{u.enLinea}">
+                        <h:outputText value="#{u.enLinea}" styleClass="#{u.enLinea gt 0 ? 'cifra-verde' : 'tenue'}"/>
+                    </p:column>
+                    <p:column headerText="Con alerta" styleClass="col-numero" width="85" sortBy="#{u.conAlerta}">
+                        <h:outputText value="#{u.conAlerta}" styleClass="#{u.conAlerta gt 0 ? 'cifra-ambar' : 'tenue'}"/>
+                    </p:column>
+                    <p:column headerText="% con alerta" styleClass="col-numero" width="105"
+                              sortBy="#{tableroCtrl.porcentajeConAlerta(u)}">
+                        <h:outputText value="#{tableroCtrl.porcentajeConAlerta(u)}%"
+                                      styleClass="#{tableroCtrl.porcentajeConAlerta(u) gt 0 ? 'cifra-ambar' : 'tenue'}"/>
+                    </p:column>
+                    <p:column headerText="Sin conexión" styleClass="col-numero" width="100" sortBy="#{u.sinConexion}">
+                        <h:outputText value="#{u.sinConexion}" styleClass="#{u.sinConexion gt 0 ? '' : 'tenue'}"/>
+                    </p:column>
+                    <p:column headerText="Disponibilidad" width="190" sortBy="#{u.disponibilidad}">
+                        <div class="barra-disponibilidad">
+                            <span class="barra"><span class="relleno #{tableroCtrl.claseDisponibilidad(u.disponibilidad)}"
+                                                      style="width: #{u.disponibilidad}%"></span></span>
+                            <span class="valor">#{u.disponibilidad}%</span>
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </section>
+        </h:form>
     </ui:define>
+
 </ui:composition>

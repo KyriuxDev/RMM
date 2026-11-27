@@ -52,6 +52,19 @@ public class IngestaFacade {
                 .getSingleResult() > 0;
     }
 
+    /**
+     * ¿Ya hay una alerta "Activa" del equipo de ese tipo que no venga de un umbral?
+     * (desconexión, riesgo de seguridad). Evita repetirla en cada ciclo.
+     */
+    public boolean existeAlertaActivaSinUmbral(Equipo equipo, String tipoAlerta) {
+        return em.createQuery(
+                "SELECT COUNT(a) FROM Alerta a WHERE a.idEquipo = :e AND a.tipoAlerta = :t"
+                + " AND a.idUmbralAlerta IS NULL AND UPPER(a.estado) = 'ACTIVA'", Long.class)
+                .setParameter("e", equipo)
+                .setParameter("t", tipoAlerta)
+                .getSingleResult() > 0;
+    }
+
     public void crearAlerta(Alerta alerta) {
         em.persist(alerta);
     }
@@ -64,6 +77,20 @@ public class IngestaFacade {
                 + " AND (e.ultimaSenal IS NULL OR e.ultimaSenal < :limite)", Equipo.class)
                 .setParameter("limite", limite)
                 .getResultList();
+    }
+
+    /**
+     * Marca "autorizado" que ya tiene ese software en otros equipos (HU-8),
+     * o null si nadie lo ha revisado. Se usa para el software nuevo.
+     */
+    public Boolean autorizacionCatalogo(String nombre) {
+        List<Boolean> r = em.createQuery(
+                "SELECT s.autorizado FROM Software s WHERE LOWER(s.nombre) = :n AND s.autorizado IS NOT NULL"
+                + " ORDER BY s.autorizado", Boolean.class)
+                .setParameter("n", nombre.toLowerCase(java.util.Locale.ROOT))
+                .setMaxResults(1)
+                .getResultList();
+        return r.isEmpty() ? null : r.get(0);   // si hay de los dos, false va primero
     }
 
     public List<Software> softwareDe(Equipo equipo) {
