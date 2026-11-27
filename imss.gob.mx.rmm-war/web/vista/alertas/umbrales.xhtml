@@ -7,29 +7,114 @@
                 xmlns:p="primefaces"
                 template="/plantillas/plantillaPrincipal.xhtml">
 
-    <!-- Alertas → Umbrales (HU-3)
-         Página creada en la fase 0 para que el menú ya apunte aquí.
-         Reemplacen el contenido de "content" con la vista real; no cambien
-         los ui:param de seccion/subseccion (el menú los usa para resaltar). -->
+    <!-- Alertas → Umbrales (HU-3, Figura 06). Los cambios se aplican de inmediato:
+         IngestaBean lee los umbrales activos en cada captura. -->
     <ui:param name="seccion" value="alertas"/>
     <ui:param name="subseccion" value="umbrales"/>
     <ui:param name="migaSeccion" value="Alertas"/>
     <ui:param name="migaPagina" value="Umbrales"/>
-    <ui:param name="titulo" value="Umbrales"/>
+    <ui:param name="titulo" value="Umbrales de alerta"/>
 
     <ui:define name="estilos">
         <h:outputStylesheet library="css" name="comun/formularios.css"/>
+        <h:outputStylesheet library="css" name="alertas/alertas.css"/>
     </ui:define>
 
     <ui:define name="content">
-        <div class="vista-formulario">
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    <h2>Umbrales</h2>
-                    <span class="tenue">HU-3 · En construcción</span>
-                </div>
-                <p>Esta sección todavía no está disponible.</p>
+        <h:form id="formUmbrales" styleClass="vista-formulario">
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <div class="al-dos-col">
+                <!-- Lista -->
+                <section class="tarjeta tarjeta-tabla">
+                    <p class="al-nota">
+                        Los cambios se aplican de inmediato, sin reiniciar el sistema.
+                        El umbral más específico gana: equipo › unidad › global.
+                    </p>
+                    <p:dataTable id="tablaUmbrales" value="#{umbralesCtrl.filas}" var="u" styleClass="tabla-lista">
+                        <f:facet name="emptyMessage">
+                            <div class="sin-datos"><i class="pi pi-search"></i>No hay umbrales configurados</div>
+                        </f:facet>
+                        <p:column headerText="Recurso">
+                            <strong>#{u.etiquetaRecurso}</strong>
+                        </p:column>
+                        <p:column headerText="Valor">
+                            <h:outputText value="#{u.valorTexto}" styleClass="mono"/>
+                        </p:column>
+                        <p:column headerText="Ámbito">
+                            <h:outputText value="#{u.ambito}"/>
+                        </p:column>
+                        <p:column headerText="Estado" width="90">
+                            <h:outputText value="#{u.activo ? 'Activo' : 'Inactivo'}"
+                                          styleClass="estado #{u.activo ? 'estado-activo' : 'estado-inactivo'}"/>
+                        </p:column>
+                        <p:column headerText="Acciones" width="110">
+                            <p:commandLink value="#{u.activo ? 'Desactivar' : 'Activar'}" styleClass="accion"
+                                           action="#{umbralesCtrl.cambiarEstado(u)}" process="@this"
+                                           update="@form"
+                                           rendered="#{not u.informativo}"/>
+                            <h:outputText value="Informativo" styleClass="al-informativo"
+                                          title="Lo define rmm.agente.intervalosSinSenal en GlassFish"
+                                          rendered="#{u.informativo}"/>
+                        </p:column>
+                    </p:dataTable>
+                </section>
+
+                <!-- Nuevo umbral -->
+                <section class="tarjeta">
+                    <div class="al-form">
+                        <h2>Nuevo umbral</h2>
+
+                        <div class="campo">
+                            <p:outputLabel for="recurso" value="Recurso"/>
+                            <p:selectOneMenu id="recurso" value="#{umbralesCtrl.recurso}"
+                                             required="true" requiredMessage="Elija el recurso.">
+                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="CPU" itemValue="CPU"/>
+                                <f:selectItem itemLabel="RAM" itemValue="RAM"/>
+                                <f:selectItem itemLabel="Disco (partición)" itemValue="DISCO"/>
+                            </p:selectOneMenu>
+                        </div>
+
+                        <div class="campo">
+                            <p:outputLabel for="valor" value="Valor (%)"/>
+                            <p:inputNumber id="valor" value="#{umbralesCtrl.valor}" minValue="1" maxValue="100"
+                                           decimalPlaces="0" required="true"
+                                           requiredMessage="Escriba un porcentaje entre 1 y 100."/>
+                        </div>
+
+                        <div class="campo">
+                            <p:outputLabel for="ambito" value="Ámbito"/>
+                            <p:selectOneMenu id="ambito" value="#{umbralesCtrl.ambito}">
+                                <f:selectItem itemLabel="Global" itemValue="GLOBAL"/>
+                                <f:selectItem itemLabel="Unidad" itemValue="UNIDAD"/>
+                                <f:selectItem itemLabel="Equipo" itemValue="EQUIPO"/>
+                                <p:ajax process="@this" update="camposAmbito"/>
+                            </p:selectOneMenu>
+                        </div>
+
+                        <p:outputPanel id="camposAmbito" layout="block">
+                            <div class="campo" style="#{umbralesCtrl.porUnidad ? '' : 'display:none'}">
+                                <p:outputLabel for="unidad" value="Unidad"/>
+                                <p:selectOneMenu id="unidad" value="#{umbralesCtrl.idUnidad}"
+                                                 filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{umbralesCtrl.unidades}" var="un"
+                                                   itemValue="#{un.idUnidadHomologada}" itemLabel="#{un.nombre}"/>
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="campo" style="#{umbralesCtrl.porEquipo ? '' : 'display:none'}">
+                                <p:outputLabel for="hostname" value="Hostname del equipo"/>
+                                <p:inputText id="hostname" value="#{umbralesCtrl.hostname}" maxlength="255"
+                                             placeholder="OAX-HGZ1-LAB-PC11" autocomplete="off"/>
+                            </div>
+                        </p:outputPanel>
+
+                        <p:commandButton value="Guardar umbral" action="#{umbralesCtrl.guardar}"
+                                         process="@form" update="formUmbrales" styleClass="btn btn-primario"/>
+                    </div>
+                </section>
             </div>
-        </div>
+        </h:form>
     </ui:define>
 </ui:composition>

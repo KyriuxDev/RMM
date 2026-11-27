@@ -7,10 +7,10 @@
                 xmlns:p="primefaces"
                 template="/plantillas/plantillaPrincipal.xhtml">
 
-    <!-- Alertas → Alertas activas (HU-5)
-         Página creada en la fase 0 para que el menú ya apunte aquí.
-         Reemplacen el contenido de "content" con la vista real; no cambien
-         los ui:param de seccion/subseccion (el menú los usa para resaltar). -->
+    <!-- Alertas → Alertas activas (HU-5, Figura 05). Se actualiza sola cada 30 s.
+         "Atender" cierra la alerta; "Escalar" manda correo a la jefatura (HU-15).
+         TODO: cuando Sesma suba registrarDesdeAlerta() (IncidenciasBean), agregar aquí
+         el botón "Generar incidencia" en la columna Acciones. -->
     <ui:param name="seccion" value="alertas"/>
     <ui:param name="subseccion" value="alertas-activas"/>
     <ui:param name="migaSeccion" value="Alertas"/>
@@ -19,17 +19,106 @@
 
     <ui:define name="estilos">
         <h:outputStylesheet library="css" name="comun/formularios.css"/>
+        <h:outputStylesheet library="css" name="alertas/alertas.css"/>
     </ui:define>
 
     <ui:define name="content">
-        <div class="vista-formulario">
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    <h2>Alertas activas</h2>
-                    <span class="tenue">HU-5 · En construcción</span>
+        <h:form id="formAlertas" styleClass="vista-formulario">
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <p:poll interval="30" listener="#{alertasCtrl.consultar}" process="@this"
+                    update="tablaAlertas contador panelActualizado"/>
+
+            <!-- Filtro: se aplica al cambiar cualquier opción -->
+            <p:outputPanel id="panelFiltro" layout="block" styleClass="panel-filtro">
+                <span class="pestana-filtro"><i class="pi pi-filter"></i> Filtro</span>
+                <div class="campos-filtro">
+                    <p:outputLabel for="orden" value="Ordenar por"/>
+                    <p:selectOneMenu id="orden" value="#{alertasCtrl.orden}">
+                        <f:selectItem itemLabel="Severidad y fecha" itemValue="SEVERIDAD"/>
+                        <f:selectItem itemLabel="Más recientes primero" itemValue="FECHA"/>
+                        <p:ajax listener="#{alertasCtrl.consultar}" update="tablaAlertas contador panelActualizado"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="tipo" value="Tipo"/>
+                    <p:selectOneMenu id="tipo" value="#{alertasCtrl.tipo}">
+                        <f:selectItem itemLabel="Todos los tipos" itemValue=""/>
+                        <f:selectItem itemLabel="Uso anómalo de recursos" itemValue="UsoAnomalo"/>
+                        <f:selectItem itemLabel="Desconexión" itemValue="Desconexion"/>
+                        <f:selectItem itemLabel="Riesgo de seguridad" itemValue="RiesgoSeguridad"/>
+                        <p:ajax listener="#{alertasCtrl.consultar}" update="tablaAlertas contador panelActualizado"/>
+                    </p:selectOneMenu>
                 </div>
-                <p>Esta sección todavía no está disponible.</p>
+            </p:outputPanel>
+
+            <div class="barra-actualizacion">
+                <p:outputPanel id="contador">
+                    <span class="al-contador">#{alertasCtrl.filas.size()} activas</span>
+                </p:outputPanel>
+                <p:outputPanel id="panelActualizado" styleClass="tenue">
+                    Actualizado a las <h:outputText value="#{alertasCtrl.actualizado}">
+                        <f:convertDateTime pattern="HH:mm:ss" timeZone="America/Mexico_City"/>
+                    </h:outputText> · se actualiza cada 30 s
+                </p:outputPanel>
             </div>
-        </div>
+
+            <section class="tarjeta tarjeta-tabla">
+                <p:dataTable id="tablaAlertas" value="#{alertasCtrl.filas}" var="a" styleClass="tabla-lista"
+                             rows="25" paginator="true" paginatorPosition="bottom"
+                             paginatorAlwaysVisible="false" rowsPerPageTemplate="25,50,100"
+                             currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontrados"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}">
+                    <f:facet name="emptyMessage">
+                        <div class="sin-datos"><i class="pi pi-check-circle"></i>No hay alertas activas</div>
+                    </f:facet>
+
+                    <p:column headerText="Severidad" width="95">
+                        <span class="al-sev #{alertasCtrl.claseGravedad(a.gravedad)}">#{alertasCtrl.etiquetaGravedad(a.gravedad)}</span>
+                    </p:column>
+                    <p:column headerText="Alerta">
+                        <span class="al-titulo">#{alertasCtrl.etiquetaTipo(a.tipo)}</span>
+                        <span class="al-detalle">#{a.descripcion}</span>
+                    </p:column>
+                    <p:column headerText="Equipo / unidad">
+                        <h:link outcome="/vista/inventario/detalle-equipo" value="#{a.hostname}" styleClass="enlace mono"
+                                rendered="#{authCtrl.tienePermiso('GESTIONAR_INVENTARIO') and not empty a.idEquipo}">
+                            <f:param name="id" value="#{a.idEquipo}"/>
+                        </h:link>
+                        <h:outputText value="#{a.hostname}" styleClass="mono"
+                                      rendered="#{not (authCtrl.tienePermiso('GESTIONAR_INVENTARIO') and not empty a.idEquipo)}"/>
+                        <span class="al-detalle">#{a.unidad}</span>
+                    </p:column>
+                    <p:column headerText="Generada" width="110" sortBy="#{a.fecha}">
+                        <h:outputText value="#{a.fecha}">
+                            <f:convertDateTime pattern="dd/MM HH:mm" timeZone="America/Mexico_City"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Notificación" width="170">
+                        <h:outputText value="#{a.textoCorreo}" styleClass="estado #{alertasCtrl.claseCorreo(a)}"
+                                      rendered="#{not empty a.correo}"/>
+                        <h:outputText value="#{a.textoCorreo}" styleClass="tenue" rendered="#{empty a.correo}"/>
+                    </p:column>
+                    <p:column headerText="Acciones" width="170">
+                        <div class="al-acciones">
+                            <p:commandButton value="Atender" action="#{alertasCtrl.atender(a)}" process="@this"
+                                             update="@form"
+                                             styleClass="btn btn-contorno"/>
+                            <p:commandButton value="Escalar" action="#{alertasCtrl.escalar(a)}" process="@this"
+                                             update="@form"
+                                             styleClass="btn btn-primario">
+                                <p:confirm header="Escalar alerta"
+                                           message="Se enviará un correo a la jefatura con esta alerta. ¿Continuar?"
+                                           icon="pi pi-exclamation-triangle"/>
+                            </p:commandButton>
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </section>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="380">
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no btn btn-contorno"/>
+                <p:commandButton value="Sí, escalar" type="button" styleClass="ui-confirmdialog-yes btn btn-primario"/>
+            </p:confirmDialog>
+        </h:form>
     </ui:define>
 </ui:composition>

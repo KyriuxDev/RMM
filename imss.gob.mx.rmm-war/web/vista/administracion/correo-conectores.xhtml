@@ -7,10 +7,10 @@
                 xmlns:p="primefaces"
                 template="/plantillas/plantillaPrincipal.xhtml">
 
-    <!-- Administración → Correo y conectores (HU-15)
-         Página creada en la fase 0 para que el menú ya apunte aquí.
-         Reemplacen el contenido de "content" con la vista real; no cambien
-         los ui:param de seccion/subseccion (el menú los usa para resaltar). -->
+    <!-- Administración → Correo y conectores (HU-15).
+         El servidor SMTP no se captura aquí: es el recurso JavaMail "mail/rmm" de GlassFish
+         (ver configurar-correo-glassfish.md). Esta pantalla muestra su estado, quién recibe
+         las alertas críticas y manda un correo de prueba. -->
     <ui:param name="seccion" value="administracion"/>
     <ui:param name="subseccion" value="correo-conectores"/>
     <ui:param name="migaSeccion" value="Administración"/>
@@ -19,17 +19,64 @@
 
     <ui:define name="estilos">
         <h:outputStylesheet library="css" name="comun/formularios.css"/>
+        <h:outputStylesheet library="css" name="alertas/alertas.css"/>
     </ui:define>
 
     <ui:define name="content">
-        <div class="vista-formulario">
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    <h2>Correo y conectores</h2>
-                    <span class="tenue">HU-15 · En construcción</span>
+        <h:form id="formCorreo" styleClass="vista-formulario">
+            <p:messages id="mensajes" showSummary="true" showDetail="true" globalOnly="true" closable="true"/>
+
+            <!-- Estado del servicio de correo -->
+            <section class="tarjeta tarjeta-tabla">
+                <p:outputPanel id="panelEstado" layout="block" styleClass="al-estado-correo">
+                    <h:outputText value="#{correoCtrl.configurado ? 'Configurado' : 'Sin configurar'}"
+                                  styleClass="estado #{correoCtrl.configurado ? 'estado-activo' : 'estado-inactivo'}"/>
+                    <p>
+                        Sesión de correo de GlassFish: <code>#{correoCtrl.recursoJndi}</code>.
+                        <h:outputText rendered="#{not correoCtrl.configurado}"
+                                      value=" No existe todavía: créela con los pasos de configurar-correo-glassfish.md."/>
+                    </p>
+                    <span class="espacio"></span>
+                    <p:commandButton value="Verificar" action="#{correoCtrl.recargar}" process="@this"
+                                     update="panelEstado panelDestinatarios" styleClass="btn btn-contorno"/>
+                    <p:commandButton value="Enviar correo de prueba" action="#{correoCtrl.probar}" process="@this"
+                                     update="mensajes panelEstado" styleClass="btn btn-primario"
+                                     disabled="#{not correoCtrl.configurado}"/>
+                </p:outputPanel>
+                <div class="al-bloque">
+                    <h3>Cómo funciona</h3>
+                    Cuando el sistema genera una alerta <strong>crítica</strong> se manda un correo a los usuarios
+                    activos con permiso de Alertas. Al escalar una alerta, el correo va a los usuarios con permiso de
+                    Administración. Si un envío falla se reintenta hasta #{correoCtrl.intentos} veces; el resultado se ve en
+                    Alertas → Notificaciones. El correo de prueba se manda al correo de su propio usuario.
                 </div>
-                <p>Esta sección todavía no está disponible.</p>
-            </div>
-        </div>
+            </section>
+
+            <!-- Quién recibe -->
+            <p:outputPanel id="panelDestinatarios" layout="block" styleClass="al-dos-col">
+                <section class="tarjeta tarjeta-tabla">
+                    <p class="al-nota">Reciben las alertas críticas (permiso de Alertas)</p>
+                    <p:dataTable value="#{correoCtrl.destinatarios}" var="u" styleClass="tabla-lista">
+                        <f:facet name="emptyMessage">
+                            <div class="sin-datos"><i class="pi pi-users"></i>Ningún usuario activo tiene permiso de Alertas</div>
+                        </f:facet>
+                        <p:column headerText="Nombre"><h:outputText value="#{u.nombre}"/></p:column>
+                        <p:column headerText="Correo"><h:outputText value="#{u.correo}" styleClass="mono"/></p:column>
+                        <p:column headerText="Rol"><h:outputText value="#{u.idRol.nombre}"/></p:column>
+                    </p:dataTable>
+                </section>
+                <section class="tarjeta tarjeta-tabla">
+                    <p class="al-nota">Reciben las alertas escaladas (permiso de Administración)</p>
+                    <p:dataTable value="#{correoCtrl.jefatura}" var="u" styleClass="tabla-lista">
+                        <f:facet name="emptyMessage">
+                            <div class="sin-datos"><i class="pi pi-users"></i>Ningún usuario activo tiene permiso de Administración</div>
+                        </f:facet>
+                        <p:column headerText="Nombre"><h:outputText value="#{u.nombre}"/></p:column>
+                        <p:column headerText="Correo"><h:outputText value="#{u.correo}" styleClass="mono"/></p:column>
+                        <p:column headerText="Rol"><h:outputText value="#{u.idRol.nombre}"/></p:column>
+                    </p:dataTable>
+                </section>
+            </p:outputPanel>
+        </h:form>
     </ui:define>
 </ui:composition>

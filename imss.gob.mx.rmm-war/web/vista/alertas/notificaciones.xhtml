@@ -7,29 +7,65 @@
                 xmlns:p="primefaces"
                 template="/plantillas/plantillaPrincipal.xhtml">
 
-    <!-- Alertas → Notificaciones (HU-15)
-         Página creada en la fase 0 para que el menú ya apunte aquí.
-         Reemplacen el contenido de "content" con la vista real; no cambien
-         los ui:param de seccion/subseccion (el menú los usa para resaltar). -->
+    <!-- Alertas → Notificaciones (HU-15, Figura 07). Se actualiza sola cada 30 s. -->
     <ui:param name="seccion" value="alertas"/>
     <ui:param name="subseccion" value="notificaciones"/>
     <ui:param name="migaSeccion" value="Alertas"/>
     <ui:param name="migaPagina" value="Notificaciones"/>
-    <ui:param name="titulo" value="Notificaciones"/>
+    <ui:param name="titulo" value="Notificaciones por correo"/>
 
     <ui:define name="estilos">
         <h:outputStylesheet library="css" name="comun/formularios.css"/>
+        <h:outputStylesheet library="css" name="alertas/alertas.css"/>
     </ui:define>
 
     <ui:define name="content">
-        <div class="vista-formulario">
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    <h2>Notificaciones</h2>
-                    <span class="tenue">HU-15 · En construcción</span>
-                </div>
-                <p>Esta sección todavía no está disponible.</p>
+        <h:form id="formNotificaciones" styleClass="vista-formulario">
+            <p:poll interval="30" listener="#{notificacionesCtrl.consultar}" process="@this"
+                    update="tablaNotificaciones panelActualizado"/>
+
+            <div class="barra-actualizacion">
+                <span></span>
+                <p:outputPanel id="panelActualizado" styleClass="tenue">
+                    Actualizado a las <h:outputText value="#{notificacionesCtrl.actualizado}">
+                        <f:convertDateTime pattern="HH:mm:ss" timeZone="America/Mexico_City"/>
+                    </h:outputText>
+                </p:outputPanel>
             </div>
-        </div>
+
+            <section class="tarjeta tarjeta-tabla">
+                <p class="al-nota">
+                    Correos que el sistema envió por alertas críticas.
+                    Si un envío falla, se reintenta automáticamente (hasta 3 veces).
+                </p>
+                <p:dataTable id="tablaNotificaciones" value="#{notificacionesCtrl.filas}" var="n" styleClass="tabla-lista"
+                             rows="25" paginator="true" paginatorPosition="bottom"
+                             paginatorAlwaysVisible="false" rowsPerPageTemplate="25,50,100"
+                             currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontrados"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}">
+                    <f:facet name="emptyMessage">
+                        <div class="sin-datos"><i class="pi pi-envelope"></i>Todavía no se ha enviado ningún correo</div>
+                    </f:facet>
+
+                    <p:column headerText="Enviada" width="120">
+                        <h:outputText value="#{n.fecha}">
+                            <f:convertDateTime pattern="dd/MM HH:mm" timeZone="America/Mexico_City"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Alerta">
+                        <strong>#{n.alerta}</strong>
+                    </p:column>
+                    <p:column headerText="Equipo">
+                        <h:outputText value="#{n.hostname}" styleClass="mono"/>
+                    </p:column>
+                    <p:column headerText="Destinatarios">
+                        <h:outputText value="#{n.destinatarios}"/>
+                    </p:column>
+                    <p:column headerText="Estado del envío" width="170">
+                        <h:outputText value="#{n.estado}" styleClass="estado #{notificacionesCtrl.claseEstado(n)}"/>
+                    </p:column>
+                </p:dataTable>
+            </section>
+        </h:form>
     </ui:define>
 </ui:composition>
