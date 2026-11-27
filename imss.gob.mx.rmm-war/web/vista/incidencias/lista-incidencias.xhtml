@@ -8,9 +8,10 @@
                 template="/plantillas/plantillaPrincipal.xhtml">
 
     <!-- Incidencias → Lista de incidencias (HU-7)
-         Página creada en la fase 0 para que el menú ya apunte aquí.
-         Reemplacen el contenido de "content" con la vista real; no cambien
-         los ui:param de seccion/subseccion (el menú los usa para resaltar). -->
+         Lista las incidencias manuales y las generadas desde alertas en un solo
+         listado (filtros: texto, estado, prioridad y origen). El botón "Registrar
+         incidencia" abre el diálogo de HU-7 (equipo, descripción, prioridad y técnico);
+         al guardar, la nueva incidencia aparece en la tabla. -->
     <ui:param name="seccion" value="incidencias"/>
     <ui:param name="subseccion" value="lista-incidencias"/>
     <ui:param name="migaSeccion" value="Incidencias"/>
@@ -21,15 +22,191 @@
         <h:outputStylesheet library="css" name="comun/formularios.css"/>
     </ui:define>
 
+    <!-- Botón principal en el encabezado (como "Nuevo equipo" en Inventario) -->
+    <ui:define name="accionesEncabezado">
+        <h:form id="formAccionesIncidencias">
+            <p:commandButton value="Registrar incidencia" icon="pi pi-plus"
+                             action="#{incidenciasCtrl.nuevaIncidencia}"
+                             process="@this" update=":formDialogo:panelRegistro"
+                             oncomplete="PF('dlgIncidencia').show()"
+                             styleClass="btn btn-primario"/>
+        </h:form>
+    </ui:define>
+
     <ui:define name="content">
-        <div class="vista-formulario">
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    <h2>Lista de incidencias</h2>
-                    <span class="tenue">HU-7 · En construcción</span>
+        <h:form id="formIncidencias" styleClass="vista-formulario">
+            <!-- Confirmación de "Incidencia registrada" -->
+            <p:messages id="mensajes" severity="info" showSummary="true" showDetail="true"
+                        globalOnly="true" closable="true"/>
+
+            <!-- Filtro (estilo Zabbix): se aplica con "Aplicar" o Enter -->
+            <p:outputPanel id="panelFiltro" layout="block" styleClass="panel-filtro">
+                <span class="pestana-filtro"><i class="pi pi-filter"></i> Filtro</span>
+                <div class="campos-filtro">
+                    <p:outputLabel for="texto" value="Buscar"/>
+                    <p:inputText id="texto" value="#{incidenciasCtrl.texto}" maxlength="100"
+                                 placeholder="INC-0016, equipo, técnico o descripción" autocomplete="off"/>
+
+                    <p:outputLabel for="estado" value="Estado"/>
+                    <p:selectOneMenu id="estado" value="#{incidenciasCtrl.estado}">
+                        <f:selectItem itemLabel="Todos" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="Abierta" itemValue="Abierta"/>
+                        <f:selectItem itemLabel="En proceso" itemValue="EnProceso"/>
+                        <f:selectItem itemLabel="Resuelta" itemValue="Resuelta"/>
+                        <f:selectItem itemLabel="Cerrada" itemValue="Cerrada"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="prioridadFiltro" value="Prioridad"/>
+                    <p:selectOneMenu id="prioridadFiltro" value="#{incidenciasCtrl.prioridad}">
+                        <f:selectItem itemLabel="Todas" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="Crítica" itemValue="Critica"/>
+                        <f:selectItems value="#{incidenciasCtrl.prioridades}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="origen" value="Origen"/>
+                    <p:selectOneMenu id="origen" value="#{incidenciasCtrl.origen}">
+                        <f:selectItem itemLabel="Todos" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{incidenciasCtrl.origenes}"/>
+                    </p:selectOneMenu>
                 </div>
-                <p>Esta sección todavía no está disponible.</p>
-            </div>
-        </div>
+                <div class="acciones-filtro">
+                    <p:commandButton id="aplicar" value="Aplicar" action="#{incidenciasCtrl.consultar}"
+                                     process="panelFiltro" update="tablaIncidencias"
+                                     styleClass="btn btn-primario"/>
+                    <p:commandButton value="Restablecer" action="#{incidenciasCtrl.limpiarFiltros}"
+                                     process="@this" update="panelFiltro tablaIncidencias"
+                                     resetValues="true" styleClass="btn btn-contorno"/>
+                </div>
+                <p:defaultCommand target="aplicar" scope="panelFiltro"/>
+            </p:outputPanel>
+
+            <!-- Tabla: manuales y de alertas en el mismo listado -->
+            <section class="tarjeta tarjeta-tabla">
+                <p:dataTable id="tablaIncidencias" value="#{incidenciasCtrl.incidencias}" var="i"
+                             styleClass="tabla-lista"
+                             rows="25" paginator="true" paginatorPosition="bottom"
+                             paginatorAlwaysVisible="false" rowsPerPageTemplate="25,50,100"
+                             currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} encontradas"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}">
+                    <f:facet name="emptyMessage">
+                        <div class="sin-datos"><i class="pi pi-search"></i>No se encontraron datos</div>
+                    </f:facet>
+                    <p:column headerText="Código" width="90" sortBy="#{i.idIncidencia}">
+                        <h:outputText value="#{incidenciasCtrl.codigo(i)}" styleClass="mono"/>
+                    </p:column>
+                    <p:column headerText="Equipo" sortBy="#{i.idEquipo.hostname}">
+                        <!-- La ficha está en Inventario: sólo con ese permiso es enlace (el Auxiliar no lo tiene) -->
+                        <h:link outcome="/vista/inventario/detalle-equipo" value="#{i.idEquipo.hostname}"
+                                styleClass="enlace mono" title="Ver ficha del equipo"
+                                rendered="#{authCtrl.tienePermiso('GESTIONAR_INVENTARIO')}">
+                            <f:param name="id" value="#{i.idEquipo.idEquipo}"/>
+                        </h:link>
+                        <h:outputText value="#{i.idEquipo.hostname}" styleClass="mono"
+                                      rendered="#{not authCtrl.tienePermiso('GESTIONAR_INVENTARIO')}"/>
+                    </p:column>
+                    <p:column headerText="Descripción">
+                        <h:outputText value="#{i.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Prioridad" width="90" sortBy="#{i.prioridad}">
+                        <h:outputText value="#{i.prioridad}" styleClass="estado #{incidenciasCtrl.clasePrioridad(i)}"/>
+                    </p:column>
+                    <p:column headerText="Estado" width="100" sortBy="#{i.estado}">
+                        <h:outputText value="#{incidenciasCtrl.etiquetaEstado(i)}"
+                                      styleClass="estado #{incidenciasCtrl.claseEstado(i)}"/>
+                    </p:column>
+                    <p:column headerText="Origen" width="80" sortBy="#{i.origen}">
+                        <h:outputText value="#{i.origen}"/>
+                    </p:column>
+                    <p:column headerText="Técnico" sortBy="#{i.idUsuario.nombre}">
+                        <h:outputText value="#{i.idUsuario.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Registrada" width="130" sortBy="#{i.fechaRegistro}">
+                        <h:outputText value="#{i.fechaRegistro}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Mexico_City"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </section>
+        </h:form>
+
+        <!-- HU-7 Registrar incidencia: diálogo con su propio formulario (no valida el de la lista) -->
+        <p:dialog header="Registrar incidencia" widgetVar="dlgIncidencia" modal="true"
+                  resizable="false" width="560">
+            <h:form id="formDialogo" styleClass="vista-formulario">
+                <p:outputPanel id="panelRegistro" layout="block" styleClass="vista-formulario">
+                    <p:messages id="mensajesDialogo" severity="error" showSummary="true" showDetail="true"
+                                globalOnly="true" closable="true"/>
+
+                    <!-- Equipo afectado: se escribe hostname, IP, MAC o unidad y se elige de la lista -->
+                    <div class="campo">
+                        <p:outputLabel for="equipo" value="Equipo afectado *"/>
+                        <p:autoComplete id="equipo" value="#{incidenciasCtrl.hostname}"
+                                        completeMethod="#{incidenciasCtrl.completarEquipo}"
+                                        minQueryLength="2" queryDelay="300" maxlength="63"
+                                        placeholder="Escribe hostname o IP" styleClass="mono"
+                                        required="true" requiredMessage="Seleccione el equipo afectado">
+                            <p:ajax event="itemSelect" process="@this"
+                                    listener="#{incidenciasCtrl.seleccionarEquipo}" update="detalleEquipo"/>
+                            <p:ajax event="change" process="@this"
+                                    listener="#{incidenciasCtrl.seleccionarEquipo}" update="detalleEquipo"/>
+                        </p:autoComplete>
+                        <h:panelGroup id="detalleEquipo" layout="block">
+                            <h:panelGroup rendered="#{incidenciasCtrl.equipoElegido}">
+                                <h:outputText value="#{incidenciasCtrl.etiquetaEstadoEquipo}"
+                                              styleClass="estado #{incidenciasCtrl.claseEstadoEquipo}"/>
+                                <h:outputText value=" #{incidenciasCtrl.detalleEquipo} · Responsable: #{incidenciasCtrl.responsableEquipo}"
+                                              styleClass="detalle-destino"/>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                        <p:message id="msgEquipo" for="equipo"/>
+                    </div>
+
+                    <!-- Descripción de la falla -->
+                    <div class="campo">
+                        <p:outputLabel for="descripcion" value="Descripción de la falla *"/>
+                        <p:inputTextarea id="descripcion" value="#{incidenciasCtrl.descripcion}" rows="4"
+                                         maxlength="255" autoResize="false"
+                                         placeholder="Ej. Impresora térmica de recetas no responde al enviar lote"
+                                         required="true" requiredMessage="Describa la falla"/>
+                        <p:message id="msgDescripcion" for="descripcion"/>
+                    </div>
+
+                    <!-- Prioridad -->
+                    <div class="campo">
+                        <p:outputLabel for="prioridad" value="Prioridad *"/>
+                        <p:selectOneRadio id="prioridad" value="#{incidenciasCtrl.prioridadNueva}"
+                                          layout="lineDirection"
+                                          required="true" requiredMessage="Seleccione la prioridad">
+                            <f:selectItems value="#{incidenciasCtrl.prioridades}"/>
+                        </p:selectOneRadio>
+                        <p:message id="msgPrioridad" for="prioridad"/>
+                    </div>
+
+                    <!-- Asignar a técnico (por defecto, quien registra) -->
+                    <div class="campo">
+                        <p:outputLabel for="tecnico" value="Asignar a técnico *"/>
+                        <p:selectOneMenu id="tecnico" value="#{incidenciasCtrl.idTecnico}"
+                                         filter="true" filterMatchMode="contains"
+                                         required="true" requiredMessage="Seleccione el técnico a quien se asigna">
+                            <f:selectItem itemLabel="Elija un técnico" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{incidenciasCtrl.tecnicos}" var="u"
+                                           itemValue="#{u.idUsuario}" itemLabel="#{incidenciasCtrl.etiquetaTecnico(u)}"/>
+                        </p:selectOneMenu>
+                        <p:message id="msgTecnico" for="tecnico"/>
+                    </div>
+
+                    <div class="acciones">
+                        <p:commandButton value="Cancelar" type="button" onclick="PF('dlgIncidencia').hide()"
+                                         styleClass="btn btn-secundario"/>
+                        <p:commandButton value="Registrar incidencia" icon="pi pi-save"
+                                         action="#{incidenciasCtrl.guardar}"
+                                         process="@form"
+                                         update="panelRegistro :formIncidencias:mensajes :formIncidencias:tablaIncidencias"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dlgIncidencia').hide(); }"
+                                         styleClass="btn btn-primario"/>
+                    </div>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
     </ui:define>
 </ui:composition>

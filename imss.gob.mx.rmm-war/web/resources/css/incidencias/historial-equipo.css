@@ -1,0 +1,187 @@
+/* Incidencias → Historial por equipo (HU-6).
+   Reutiliza tarjeta, estado (estado-activo / estado-alerta / estado-inactivo),
+   mono y tenue; aquí sólo lo nuevo (prefijo hist-).
+   Clases dinámicas de la línea de tiempo (HistorialEquipoController.claseNivel):
+   punto-* y tipo-* con sufijo incidencia, critica, advertencia o info. */
+
+/* ---------- Filtros: equipo, tipo, desde, hasta y botón ---------- */
+.vista-formulario .filtros.hist-filtros {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+}
+
+.hist-filtros .campo .ui-autocomplete,
+.hist-filtros .campo .ui-autocomplete-input,
+.hist-filtros .campo .ui-datepicker,
+.hist-filtros .campo .ui-datepicker .ui-inputfield {
+    width: 100%;
+}
+
+.hist-filtros .campo-boton { justify-content: flex-end; }
+
+/* ---------- Cabecera del equipo consultado ---------- */
+.hist-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #DFE4E7;
+}
+
+.hist-equipo {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-width: 0;
+}
+
+.hist-host {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--azul);
+    text-decoration: none;
+}
+
+a.hist-host:hover { text-decoration: underline; }
+span.hist-host { color: var(--texto); }
+
+.hist-unidad {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--texto);
+}
+
+.hist-resumen {
+    font-size: 12px;
+    color: #768D99;
+    white-space: nowrap;
+}
+
+/* ---------- Línea de tiempo ---------- */
+.hist-lista { display: flex; flex-direction: column; }
+
+.hist-evento {
+    display: grid;
+    grid-template-columns: 110px 22px minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 0 12px;
+    padding: 12px 18px;
+    border-bottom: 1px solid #EBEEF0;
+}
+
+.hist-evento:last-child { border-bottom: none; }
+.hist-evento:hover { background-color: #F4F8FB; }
+
+.hist-fecha {
+    padding-top: 2px;
+    font-size: 12px;
+    color: #768D99;
+    white-space: nowrap;
+}
+
+/* Carril: punto de color con una línea que une los eventos */
+.hist-carril {
+    position: relative;
+    align-self: stretch;
+    display: flex;
+    justify-content: center;
+}
+
+.hist-carril::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    bottom: -12px;
+    width: 2px;
+    background-color: #E1E6E9;
+}
+
+.hist-evento:first-child .hist-carril::before { top: 8px; }
+.hist-evento:last-child .hist-carril::before { bottom: calc(100% - 8px); }
+.hist-evento:only-child .hist-carril::before { display: none; }
+
+.hist-punto {
+    position: relative;
+    z-index: 1;
+    width: 10px;
+    height: 10px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background-color: #768D99;
+    box-shadow: 0 0 0 3px var(--blanco);
+}
+
+.hist-punto.punto-incidencia { background-color: var(--azul); }
+.hist-punto.punto-critica { background-color: var(--rojo); }
+.hist-punto.punto-advertencia { background-color: #E0A100; }
+.hist-punto.punto-info { background-color: #768D99; }
+
+/* Texto del evento */
+.hist-cuerpo { min-width: 0; }
+
+.hist-titulo {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.hist-titulo strong { font-weight: 700; color: var(--texto); }
+
+.hist-detalle {
+    margin-top: 3px;
+    font-size: 12px;
+    color: var(--texto-sec);
+}
+
+/* Etiqueta "Incidencia" / "Alerta" */
+.hist-tipo {
+    display: inline-block;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 16px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.hist-tipo.tipo-incidencia { background-color: #E6F1F9; color: #005A92; border-color: #B9D7EC; }
+.hist-tipo.tipo-critica { background-color: #FDECEC; color: #A61B1B; border-color: #F3B8B8; }
+.hist-tipo.tipo-advertencia { background-color: #FFF4E0; color: #A15C00; border-color: #F2CF8C; }
+.hist-tipo.tipo-info { background-color: #F1F3F5; color: var(--texto-sec); border-color: #DFE4E7; }
+
+.hist-estado { justify-self: end; margin-top: 2px; }
+
+/* ---------- Sin eventos / sin consulta ---------- */
+.hist-vacio {
+    padding: 40px 18px;
+    text-align: center;
+    font-size: 14px;
+    color: #768D99;
+}
+
+.hist-vacio .pi {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 30px;
+    color: #ACBBC2;
+}
+
+/* ---------- Pantallas angostas ---------- */
+@media (max-width: 1000px) {
+    .vista-formulario .filtros.hist-filtros { grid-template-columns: 1fr; }
+
+    .hist-cabecera { flex-direction: column; align-items: flex-start; }
+
+    .hist-evento {
+        grid-template-columns: 22px minmax(0, 1fr);
+        row-gap: 4px;
+    }
+
+    .hist-fecha { grid-column: 2; grid-row: 1; padding-top: 0; }
+    .hist-carril { grid-column: 1; grid-row: 1 / span 3; }
+    .hist-cuerpo { grid-column: 2; }
+    .hist-estado { grid-column: 2; justify-self: start; }
+}

@@ -8,9 +8,16 @@
                 template="/plantillas/plantillaPrincipal.xhtml">
 
     <!-- Incidencias → Historial por equipo (HU-6)
-         Página creada en la fase 0 para que el menú ya apunte aquí.
-         Reemplacen el contenido de "content" con la vista real; no cambien
-         los ui:param de seccion/subseccion (el menú los usa para resaltar). -->
+         Línea de tiempo con las alertas y las incidencias de un equipo juntas
+         (la más reciente primero). Filtros: equipo, tipo de evento y rango de fechas.
+         Se puede abrir ya consultado desde otra pantalla: historial-equipo.xhtml?id=N -->
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{historialCtrl.id}"/>
+            <f:viewAction action="#{historialCtrl.cargar}"/>
+        </f:metadata>
+    </ui:define>
+
     <ui:param name="seccion" value="incidencias"/>
     <ui:param name="subseccion" value="historial-equipo"/>
     <ui:param name="migaSeccion" value="Incidencias"/>
@@ -19,17 +26,118 @@
 
     <ui:define name="estilos">
         <h:outputStylesheet library="css" name="comun/formularios.css"/>
+        <h:outputStylesheet library="css" name="incidencias/historial-equipo.css"/>
     </ui:define>
 
     <ui:define name="content">
-        <div class="vista-formulario">
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    <h2>Historial por equipo</h2>
-                    <span class="tenue">HU-6 · En construcción</span>
+        <h:form id="formHistorial" styleClass="vista-formulario">
+            <p:messages id="mensajes" severity="error" showSummary="true" showDetail="true"
+                        globalOnly="true" closable="true"/>
+
+            <!-- Filtros -->
+            <section class="tarjeta">
+                <div class="filtros hist-filtros">
+                    <div class="campo">
+                        <p:outputLabel for="equipo" value="Equipo consultado"/>
+                        <p:autoComplete id="equipo" value="#{historialCtrl.hostname}"
+                                        completeMethod="#{historialCtrl.completarEquipo}"
+                                        minQueryLength="2" queryDelay="300" maxlength="63"
+                                        placeholder="Escribe hostname o IP" styleClass="mono"
+                                        required="true" requiredMessage="Seleccione el equipo a consultar"/>
+                        <p:message id="msgEquipo" for="equipo"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="tipo" value="Tipo de evento"/>
+                        <p:selectOneMenu id="tipo" value="#{historialCtrl.tipo}">
+                            <f:selectItem itemLabel="Alertas e incidencias" itemValue="TODOS"/>
+                            <f:selectItem itemLabel="Sólo alertas" itemValue="ALERTAS"/>
+                            <f:selectItem itemLabel="Sólo incidencias" itemValue="INCIDENCIAS"/>
+                        </p:selectOneMenu>
+                        <p:message id="msgTipo" for="tipo"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="desde" value="Desde"/>
+                        <p:datePicker id="desde" value="#{historialCtrl.desde}" pattern="dd/MM/yyyy"
+                                      locale="es" showIcon="true" placeholder="dd/mm/aaaa"/>
+                        <p:message id="msgDesde" for="desde"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="hasta" value="Hasta"/>
+                        <p:datePicker id="hasta" value="#{historialCtrl.hasta}" pattern="dd/MM/yyyy"
+                                      locale="es" showIcon="true" placeholder="dd/mm/aaaa"/>
+                        <p:message id="msgHasta" for="hasta"/>
+                    </div>
+
+                    <div class="campo campo-boton">
+                        <p:commandButton id="consultar" value="Consultar" icon="pi pi-search"
+                                         action="#{historialCtrl.consultar}"
+                                         process="@form" update="@form"
+                                         styleClass="btn btn-primario"/>
+                    </div>
                 </div>
-                <p>Esta sección todavía no está disponible.</p>
-            </div>
-        </div>
+                <p:defaultCommand target="consultar"/>
+            </section>
+
+            <!-- Línea de tiempo -->
+            <p:outputPanel id="panelResultado" layout="block">
+                <h:panelGroup layout="block" styleClass="tarjeta tarjeta-tabla"
+                              rendered="#{historialCtrl.hayResultado}">
+                    <div class="hist-cabecera">
+                        <div class="hist-equipo">
+                            <!-- La ficha está en Inventario: sólo con ese permiso es enlace (el Auxiliar no lo tiene) -->
+                            <h:link outcome="/vista/inventario/detalle-equipo"
+                                    value="#{historialCtrl.historial.equipo.hostname}"
+                                    styleClass="hist-host mono" title="Ver ficha del equipo"
+                                    rendered="#{authCtrl.tienePermiso('GESTIONAR_INVENTARIO')}">
+                                <f:param name="id" value="#{historialCtrl.historial.equipo.idEquipo}"/>
+                            </h:link>
+                            <h:outputText value="#{historialCtrl.historial.equipo.hostname}"
+                                          styleClass="hist-host mono"
+                                          rendered="#{not authCtrl.tienePermiso('GESTIONAR_INVENTARIO')}"/>
+                            <span class="hist-unidad">· #{historialCtrl.descripcionEquipo}</span>
+                            <h:outputText value="Dado de baja" styleClass="estado estado-inactivo"
+                                          rendered="#{not historialCtrl.historial.equipo.estaActivo}"/>
+                        </div>
+                        <span class="tenue hist-resumen">#{historialCtrl.resumen}</span>
+                    </div>
+
+                    <h:panelGroup layout="block" styleClass="hist-vacio"
+                                  rendered="#{historialCtrl.totalEventos eq 0}">
+                        <i class="pi pi-history"></i>
+                        Este equipo no tiene alertas ni incidencias con los filtros elegidos
+                    </h:panelGroup>
+
+                    <div class="hist-lista">
+                        <ui:repeat value="#{historialCtrl.eventos}" var="ev">
+                            <div class="hist-evento">
+                                <span class="hist-fecha">#{historialCtrl.fecha(ev)}</span>
+                                <span class="hist-carril">
+                                    <span class="hist-punto punto-#{historialCtrl.claseNivel(ev)}"></span>
+                                </span>
+                                <div class="hist-cuerpo">
+                                    <div class="hist-titulo">
+                                        <span class="hist-tipo tipo-#{historialCtrl.claseNivel(ev)}">#{ev.tipo}</span>
+                                        <strong>#{ev.titulo}</strong>
+                                    </div>
+                                    <div class="hist-detalle">#{ev.detalle}</div>
+                                </div>
+                                <h:outputText value="#{ev.estado}"
+                                              styleClass="estado hist-estado #{historialCtrl.claseEstado(ev)}"/>
+                            </div>
+                        </ui:repeat>
+                    </div>
+                </h:panelGroup>
+
+                <!-- Todavía no se ha consultado -->
+                <h:panelGroup layout="block" styleClass="tarjeta hist-vacio"
+                              rendered="#{not historialCtrl.hayResultado}">
+                    <i class="pi pi-history"></i>
+                    Elija un equipo y pulse Consultar para ver su historial de alertas e incidencias
+                </h:panelGroup>
+            </p:outputPanel>
+        </h:form>
     </ui:define>
 </ui:composition>
